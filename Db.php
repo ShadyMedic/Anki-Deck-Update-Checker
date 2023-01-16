@@ -5,7 +5,7 @@ class Db
 {
     private const DB_HOST = 'localhost';
     private const DB_USER = 'root';
-    private const DB_PASS = ' ';
+    private const DB_PASS = '';
     private const DB_NAME = 'ankipacks';
     private const DB_SETTINGS = array(
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

@@ -1,7 +1,7 @@
 <?php
 
-$packageId = $_GET['id']; //At least 1
-$currentVersion = $_GET['current']; //First version is 1
+$packageId = @$_GET['id']; //At least 1
+$currentVersion = @$_GET['current']; //First version is 1
 
 if (empty($packageId) || empty($currentVersion)) {
     header("HTTP/1.0 400 Bad Request");
