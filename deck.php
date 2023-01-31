@@ -9,10 +9,10 @@ if (empty($packageId)) {
 
 if (empty($accessKey)) {
     $accessKey = null;
-    $query = 'SELECT download_link,updated_at FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;';
+    $query = 'SELECT filename,download_link,updated_at FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;';
     $arguments = array($packageId);
 } else {
-    $query = 'SELECT download_link,updated_at FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
+    $query = 'SELECT filename,download_link,updated_at FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
     $arguments = array($packageId, $accessKey);
 }
 
@@ -39,13 +39,17 @@ $packageData = $statement->fetch();
     <p>After downloading, just import the new package to your Anki client. None of your cards or planning will be
         overwritten. Anki will simply check which of your cards were changed in this version and updates their
         content.</p>
+    <p>
+        File name: <code><?= $packageData['filename'] ?></code><br>
+        File size: <code><?= number_format(filesize('decks/'.$packageId.'.apkg') / 1000000, 2) ?> MB</code><br>
+        File updated at: <code><?= $packageData['updated_at'] ?></code>
+    </p>
     <button style="display: block; background-color:limegreen; font-size: x-large;">
         <a style="color: inherit; text-decoration: none;"
            href="/download-local.php?id=<?= $packageId ?><?php if (!empty($accessKey)) : ?>&key=<?= $accessKey ?><?php endif ?>">
-            Download the update
+            Download the file
         </a>
     </button>
-    <small>This package has been updated at <?= $packageData['updated_at'] ?></small>
 </article>
 </body>
 </html>
