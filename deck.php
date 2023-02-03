@@ -9,10 +9,10 @@ if (empty($packageId)) {
 
 if (empty($accessKey)) {
     $accessKey = null;
-    $query = 'SELECT filename,download_link,updated_at FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;';
+    $query = 'SELECT filename,download_link,version,updated_at FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;';
     $arguments = array($packageId);
 } else {
-    $query = 'SELECT filename,download_link,updated_at FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
+    $query = 'SELECT filename,download_link,version,updated_at FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
     $arguments = array($packageId, $accessKey);
 }
 
