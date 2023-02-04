@@ -51,9 +51,12 @@ $packageData = $statement->fetch();
             Download the file
         </a>
     </button>
-    <p>After importing the new file, replace the description of the deck with the following code to reset the update status for the new version.</p>
-    <pre style="white-space: normal; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://anki-update-check.4fan.cz/update.php?id=<?= $packageId ?>&amp;current=<span style="color: gold;"><?= $packageData['version'] ?></span>"&gt;&lt;img src="http://anki-update-check.4fan.cz/check-update.php?id=<?= $packageId ?>&amp;current=<span style="color: gold;"><?= $packageData['version'] ?></span>" alt="Kontrola selhala, zkontroluj připojení k internetu, nebo to zkus později znovu." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
-    <p>You need to do this, because updating your current deck will not overwrite the deck description, which holds the current version of your deck (the yellow numbers in the code above). Without updating, your Anki will still thing you're using the outdated version.</p>
+    <?php if ($packageData['version'] > 1) : ?>
+        <h2>If you're updating an existing deck and not importing this one for the first time:</h2>
+        <p>After importing the new file, replace the description of the deck with the following code to reset the update status for the new version.</p>
+        <pre style="white-space: normal; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://anki-update-check.4fan.cz/update.php?id=<?= $packageId ?>&amp;current=<span style="color: gold;"><?= $packageData['version'] ?></span>"&gt;&lt;img src="http://anki-update-check.4fan.cz/check-update.php?id=<?= $packageId ?>&amp;current=<span style="color: gold;"><?= $packageData['version'] ?></span>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
+        <p>You need to do this, because updating your current deck will not overwrite the deck description, which holds the current version of your deck (the yellow numbers in the code above). Without updating the description, your Anki will still think you're using the outdated version.</p>
+    <?php endif ?>
 </article>
 </body>
 </html>
