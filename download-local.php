@@ -9,10 +9,10 @@ if (empty($packageId)) {
 
 if (empty($accessKey)) {
     $accessKey = null;
-    $query = 'SELECT filename FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;';
+    $query = 'SELECT filename, version FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;';
     $arguments = array($packageId);
 } else {
-    $query = 'SELECT filename FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
+    $query = 'SELECT filename, version FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
     $arguments = array($packageId, $accessKey);
 }
 
@@ -22,6 +22,16 @@ $db = Db::connect();
 $statement = $db->prepare($query);
 $statement->execute($arguments);
 $packageData = $statement->fetch();
+
+if (empty($packageData)) {
+    header("HTTP/1.0 404 Not Found");
+    die();
+}
+
+if ($packageData['version'] === 0) {
+    header("HTTP/1.0 406 Not Acceptable");
+    die();
+}
 
 if (!file_exists('decks/'.$packageId.'.apkg') || empty($packageData)) {
     header("HTTP/1.0 404 Not Found");

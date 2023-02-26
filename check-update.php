@@ -2,6 +2,7 @@
 
 $packageId = @$_GET['id']; //At least 1
 $currentVersion = @$_GET['current']; //First version is 1
+$accessCode = @$_GET['key']; //Access code (private packages only)
 
 if (empty($packageId) || empty($currentVersion)) {
     header("HTTP/1.0 400 Bad Request");
@@ -11,8 +12,15 @@ if (empty($packageId) || empty($currentVersion)) {
 require 'Db.php';
 $db = Db::connect();
 
-$statement = $db->prepare('SELECT version AS "v",download_link AS "l" FROM package WHERE package_id = ? LIMIT 1;');
-$statement->execute(array($packageId));
+$query = (empty($accessCode)) ?
+    'SELECT version AS "v",download_link AS "l" FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;' :
+    'SELECT version AS "v",download_link AS "l" FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
+$parameters = (empty($accessCode)) ?
+    array($packageId) :
+    array($packageId, $accessCode);
+
+$statement = $db->prepare($query);
+$statement->execute($parameters);
 $packageData = $statement->fetch();
 
 if (empty($packageData)) {
