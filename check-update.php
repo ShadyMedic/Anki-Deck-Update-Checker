@@ -16,18 +16,17 @@ $statement->execute(array($packageId));
 $packageData = $statement->fetch();
 
 if (empty($packageData)) {
-    readfile('not-found.png');
+    readfile('img/not-found.png');
     die();
 }
 
 header ('Content-Type: image/png');
 
 if ($currentVersion >= $packageData['v']) {
-    readfile('up-to-date.png');
+    readfile('img/up-to-date.png');
     die();
 } else {
-    readfile('outdated.png');
+    readfile('img/outdated.png');
     $downloadLink = $packageData['l'];
-    //TODO display the link somewhere
     die();
 }
