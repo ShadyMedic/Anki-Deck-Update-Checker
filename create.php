@@ -115,6 +115,11 @@ if (!empty($_POST)) {
             <input type="checkbox" name="public" id="public-input"
                    <?php if (!isset($public) || $public) : ?>checked<?php endif ?>/>
             <small>We recommend keeping all decks public – it won't hurt you and might help others.</small>
+            <small>
+                Private packages will have a generated access code assigned to them. This code will be contained within
+                the link that you'll be able to share with your users. Only users with this link will be able to
+                download this package and it will not be listed on the <a href="/browse.php">browse webpage</a>.
+            </small>
         </fieldset>
         <fieldset>
             <label for="key-input">Editing key:</label>
@@ -127,7 +132,10 @@ if (!empty($_POST)) {
                 push destructive updates to your users.
                 Also note, that the key cannot be recovered if forgotten, unless you personally know the webmaster
                 of this website.
-                You can use the same key for all of your decks, but you should ensure it is strong enough.
+                You should use the same key for all of your decks, but you should ensure it is strong enough.<br>
+                <strong>Do not set the editing key to the same value as any of your passwords to other services!</strong>
+                The editing key is not protected by encryption and while we do our best to keep the information private,
+                we can never completely prevent data theft.
             </small>
         </fieldset>
         <fieldset>
