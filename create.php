@@ -17,7 +17,7 @@ if (!empty($_POST)) {
         $errors[] = "Editing key is too short – 6 characters minimum.";
     }
 
-    if (mb_strlen($deckName) > 58) {
+    if (mb_strlen($deckName) > 122) {
         $errors[] = "Deck name is too long.";
     }
     if (mb_strlen($author) > 31) {
@@ -76,8 +76,8 @@ if (!empty($_POST)) {
             width: 31ch;
         }
 
-        input[maxlength="58"] {
-            width: 58ch;
+        input[maxlength="122"] {
+            width: 122ch;
         }
 
         small {
@@ -97,7 +97,7 @@ if (!empty($_POST)) {
     <form method="post" id="create-form">
         <fieldset>
             <label for="deck-name-input">Deck name:</label>
-            <input type="text" name="deck-name" id="deck-name-input" maxlength="58"
+            <input type="text" name="deck-name" id="deck-name-input" maxlength="122"
                    placeholder="Medical School__Genetics__Genomic Imprinting" value="<?= @$deckName ?: '' ?>" required/>
             <small>
                 When your package is downloaded, it'll have this name.

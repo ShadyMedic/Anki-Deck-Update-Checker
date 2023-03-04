@@ -65,19 +65,6 @@ if (!empty($_POST)) {
         fieldset {
             border: 1px solid black;
         }
-
-        input[type=text] {
-            font-family: monospace;
-        }
-
-        input[maxlength="31"] {
-            width: 31ch;
-        }
-
-        input[maxlength="58"] {
-            width: 58ch;
-        }
-
         small {
             display: block;
         }
@@ -94,28 +81,37 @@ if (!empty($_POST)) {
     <p>You now need to insert (or update) autoupdater code into the description of your Anki deck.</p>
     <p>This will allow users of your deck to receive update check and be notified when you upload a new version.</p>
     <p>Don't worry, it's not complicated, just follow the instruction below:</p>
-    <ol>
-        <li>
-            Select your deck inside your desktop Anki client.<br>
-            <img src="img/tutorial-1.jpg" alt="Tutorial screenshot n. 1" />
-        </li>
-        <li>
-            Click the "Description" button.<br>
-            <img src="img/tutorial-2.jpg" alt="Tutorial screenshot n. 2" />
-        </li>
-        <li>
-            Paste the following text into the text field and make sure the checkbox is unchecked.<br>
-            <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://anki-update-check.4fan.cz/update.php<?= $queryString ?>"&gt;&lt;img src="http://anki-update-check.4fan.cz/check-update.php<?= $queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
-        </li>
-        <li>
-            Press OK and exit the dialog box.<br>
-            <img src="img/tutorial-3.jpg" alt="Tutorial screenshot n. 3" />
-        </li>
-        <li>
-            You should now see something like this. Export the package as usual and upload it in the form below.<br>
-            <img src="img/tutorial-4.jpg" alt="Tutorial screenshot n. 4" />
-        </li>
-    </ol>
+    <fieldset id="instructions-spoiler" style="margin-bottom: 1em;">
+        <p>
+            <button id="display-instructions" style="display: none;">Display instructions</button>
+            <button id="hide-instructions">Hide instructions</button>
+        </p>
+        <ol id="instructions">
+            <li>
+                Select your deck inside your desktop Anki client.<br>
+                <img src="img/tutorial-1.jpg" alt="Tutorial screenshot n. 1" />
+            </li>
+            <li>
+                Click the "Description" button.<br>
+                <img src="img/tutorial-2.jpg" alt="Tutorial screenshot n. 2" />
+            </li>
+            <li>
+                Paste the following text into the text field and make sure the checkbox is unchecked.<br>
+                <strong>You need to do this everytime you upload a new version, because the code changes slightly between versions!</strong><br>
+                <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://anki-update-check.4fan.cz/update.php<?= $queryString ?>"&gt;&lt;img src="http://anki-update-check.4fan.cz/check-update.php<?= $queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
+            </li>
+            <li>
+                Press OK and exit the dialog box.<br>
+                <img src="img/tutorial-3.jpg" alt="Tutorial screenshot n. 3" />
+            </li>
+            <li>
+                You should now see something like this (the text will be green, if you're updating an existing package, or
+                red, if you're uploading the first version of a new package).
+                Export the package as usual and upload it in the form below.<br>
+                <img src="img/tutorial-4.jpg" alt="Tutorial screenshot n. 4" />
+            </li>
+        </ol>
+    </fieldset>
     <form method="post" enctype="multipart/form-data">
         <input type="hidden" name="package-id" value="<?= $packageId ?>"/>
         <input type="hidden" name="key" id="key-input" value="<?= $key ?>"/>
@@ -125,15 +121,19 @@ if (!empty($_POST)) {
             <input type="hidden" name="MAX_FILE_SIZE" value="8388608"/>
             <input type="file" accept=".apkg" name="package" id="file-input" required/>
             <small>
-                The file size mustn't exceed 8 MB. If your Anki package is smaller, and you compressed your media,
+                <strong>The file size mustn't exceed 8 MB.</strong><br>
+                If your Anki package is larger, and you compressed your media,
                 contact me on Discord (<code>Shady#2948</code>) or e-mail me at
-                <code>jan [dot] stech [at] posteo [dot] net</code>.
+                <code>jan [dot] stech [at] posteo [dot] net</code>. You'll still be able to use this service to share
+                your package, you'll just need to upload the file elsewhere and your users will be redirected to such
+                external webpage from here, when they click the update notification.
             </small>
         </fieldset>
         <fieldset>
-            <input type="submit" value="Upload"/>
+            <strong>Warning:</strong> Uploading a new version will permanently delete the previous version from our servers.<br>
+            <p><input type="submit" value="Upload"/></p>
             <small>
-                By clicking the button, you confirm that the uploaded Anki package doesn't contain copyrighted material.
+                By clicking the "Upload" button, you confirm that the uploaded Anki package doesn't contain copyrighted material.
             </small>
         </fieldset>
         <ul style="color: red">
@@ -147,6 +147,18 @@ if (!empty($_POST)) {
 
 <script>
     document.getElementById("key-input").value = window.localStorage.getItem('key')
+
+    document.getElementById("display-instructions").addEventListener('click', function() {
+        document.getElementById("display-instructions").style.display = "none"
+        document.getElementById("hide-instructions").style.display = "inline-block"
+        document.getElementById("instructions").style.display = "block"
+    })
+
+    document.getElementById("hide-instructions").addEventListener('click', function() {
+        document.getElementById("hide-instructions").style.display = "none"
+        document.getElementById("display-instructions").style.display = "inline-block"
+        document.getElementById("instructions").style.display = "none"
+    })
 </script>
 
 </html>

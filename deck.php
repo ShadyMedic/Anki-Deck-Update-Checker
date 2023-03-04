@@ -44,7 +44,7 @@ $queryString = "?id=$packageId&amp;current=<span style=\"color: gold;\">${packag
 </head>
 <body>
 <header>
-    <h1>Update <?= substr($packageData['filename'], 0, mb_strlen($packageData['filename']) - 5) ?></h1>
+    <h1>Update <?= mb_substr($packageData['filename'], 0, mb_strlen($packageData['filename']) - 5) ?></h1>
 </header>
 <article>
     <p>To download new version of this Anki deck, click the button below.</p>
