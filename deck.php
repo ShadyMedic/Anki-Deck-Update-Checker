@@ -29,6 +29,25 @@ if ($package->getVersion() === 0) {
     die();
 }
 
+if (isset($_GET['download'])) {
+    //Download should be triggered
+    if (!file_exists('decks/'.$packageId.'.apkg')) {
+        header("HTTP/1.0 404 Not Found");
+        die();
+    }
+
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="' . $package->getName() . '"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize('decks/'.$packageId.'.apkg'));
+    readfile('decks/'.$packageId.'.apkg');
+
+    exit();
+}
+
 $queryString = "?id=$packageId&amp;current=<span style=\"color: gold;\">".$package->getVersion()."</span>".(empty($accessKey) ? '' : "&amp;key=$accessKey");
 
 ?><!DOCTYPE html>
@@ -55,7 +74,7 @@ $queryString = "?id=$packageId&amp;current=<span style=\"color: gold;\">".$packa
     </p>
     <button style="display: block; background-color:limegreen; font-size: x-large;">
         <a style="color: inherit; text-decoration: none;"
-           href="/download-local.php?id=<?= $packageId ?><?php if (!empty($accessKey)) : ?>&key=<?= $accessKey ?><?php endif ?>">
+           href="/deck.php?id=<?= $packageId ?><?php if (!empty($accessKey)) : ?>&key=<?= $accessKey ?><?php endif ?>&download=1">
             Download the file
         </a>
     </button>
