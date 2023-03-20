@@ -23,18 +23,18 @@ $statement = $db->prepare($query);
 $statement->execute($parameters);
 $packageData = $statement->fetch();
 
+header ('Content-Type: image/svg+xml');
+
 if (empty($packageData)) {
-    readfile('img/not-found.png');
+    readfile('img/not-found.svg');
     die();
 }
 
-header ('Content-Type: image/png');
-
 if ($currentVersion >= $packageData['v']) {
-    readfile('img/up-to-date.png');
+    readfile('img/up-to-date.svg');
     die();
 } else {
-    readfile('img/outdated.png');
+    readfile('img/outdated.svg');
     $downloadLink = $packageData['l'];
     die();
 }
