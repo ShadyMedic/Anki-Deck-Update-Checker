@@ -1,14 +1,11 @@
 <?php
 
-$accessKey = null;
-$query = 'SELECT package_id,filename,author,version,updated_at FROM package WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL ORDER BY updated_at DESC;';
+use Models\PackageManager;
 
-require 'Db.php';
-$db = Db::connect();
+require 'autoloader.php';
 
-$statement = $db->prepare($query);
-$statement->execute(array());
-$packages = $statement->fetchAll();
+$manager = new PackageManager();
+$packages = $manager->getPublicPackages();
 
 ?><!DOCTYPE html>
 <html>

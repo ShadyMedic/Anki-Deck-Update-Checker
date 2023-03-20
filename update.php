@@ -1,37 +1,30 @@
 <?php
 
-$packageId = @$_GET['id']; //At least 1
-$currentVersion = @$_GET['current']; //Current package ID
-$accessCode = @$_GET['key']; //Access code (private packages only)
+use Models\Package;
+use Models\PackageManager;
 
-if (empty($packageId) || empty($currentVersion)) {
+require 'autoloader.php';
+
+$packageId = $_GET['id'] ?? null; //At least 1
+$currentVersion = $_GET['current'] ?? null; //First version is 1
+$accessCode = $_GET['key'] ?? null; //Access code (private packages only)
+
+if (is_null($packageId) || is_null($currentVersion)) {
     header("HTTP/1.0 400 Bad Request");
     die();
 }
 
-require 'Db.php';
-$db = Db::connect();
+$package = new Package();
+$authenticator = new PackageManager();
+$packageFound = $package->load($packageId) && $authenticator->checkReadAccess($packageId, $accessCode);
 
-$query = (empty($accessCode)) ?
-    'SELECT version AS "v",download_link AS "l" FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;' :
-    'SELECT version AS "v",download_link AS "l" FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
-$parameters = (empty($accessCode)) ?
-    array($packageId) :
-    array($packageId, $accessCode);
-
-$statement = $db->prepare($query);
-$statement->execute($parameters);
-$packageData = $statement->fetch();
-
-if (empty($packageData)) {
+if (!$packageFound) {
     header("HTTP/1.0 404 Not Found");
     die();
 }
 
-if ($currentVersion < $packageData['v']) {
-    $downloadLink = $packageData['l'];
-    $url = $downloadLink.((empty($accessCode)) ? '' : '&key='.$accessCode);
-    header("Location: $url");
+if ($currentVersion < $package->getVersion()) {
+    header('Location: '.$package->getDownloadLink());
     die();
 }
 

@@ -1,16 +1,14 @@
 <?php
-$key = null;
-if (!empty($_POST)) {
-    $key = $_POST['key'];
+
+use Models\PackageManager;
+
+require 'autoloader.php';
+
+$key = $_POST['key'] ?? null;
+$manager = new PackageManager();
+if (!is_null($key)) {
+    $packages = $manager->getOwnedPackages($key);
 }
-$query = 'SELECT package_id,filename,access_key,version,updated_at FROM package WHERE edit_key = ?;';
-
-require 'Db.php';
-$db = Db::connect();
-
-$statement = $db->prepare($query);
-$statement->execute(array($key));
-$packages = $statement->fetchAll();
 
 ?><!DOCTYPE html>
 <html>
