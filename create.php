@@ -28,7 +28,7 @@ if (!empty($_POST)) {
             try {
                 $accessKey = $tools->generateAccessKey();
             } catch (Exception $e) {
-                $error = 'Something went wrong while creating an access key for your private deck.<br>'.
+                $error = 'Something went wrong while creating an access key for your private deck. '.
                     'Either make the deck public, or try again later please.';
                 $accessKey = null;
             }

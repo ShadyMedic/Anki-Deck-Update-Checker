@@ -29,7 +29,7 @@ class Package implements DatabaseRecord
             'INSERT INTO package (access_key, filename, author, edit_key) VALUES (?,?,?,?)';
         $parameters = (empty($accessKey)) ?
             array($name.'.apkg', $author, $editKey) :
-            array($accessKey, $name.'.apkg', $author, $accessKey);
+            array($accessKey, $name.'.apkg', $author, $editKey);
 
         try {
             $statement = $db->prepare($query);
