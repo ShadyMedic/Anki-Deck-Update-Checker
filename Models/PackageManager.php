@@ -120,7 +120,7 @@ class PackageManager
         }
     }
 
-    public function getPublicPackages()
+    public function getPublicPackages() : array
     {
         $query = '
             SELECT package_id,filename,author,version,updated_at FROM package
@@ -131,6 +131,20 @@ class PackageManager
         $db = Db::connect();
         $statement = $db->prepare($query);
         $statement->execute(array());
+        return $statement->fetchAll();
+    }
+
+    public function getOwnedPackages(string $key) : array
+    {
+        $query = '
+            SELECT package_id,filename,access_key,version,updated_at FROM package
+            WHERE edit_key = ?
+            ORDER BY updated_at DESC;
+        ';
+
+        $db = Db::connect();
+        $statement = $db->prepare($query);
+        $statement->execute(array($key));
         return $statement->fetchAll();
     }
 }
