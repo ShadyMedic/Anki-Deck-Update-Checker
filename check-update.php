@@ -1,44 +1,32 @@
 <?php
 
-use Models\Db;
+use Models\Package;
+use Models\PackageManager;
 
 require 'autoloader.php';
 
-$packageId = @$_GET['id']; //At least 1
-$currentVersion = @$_GET['current']; //First version is 1
-$accessCode = @$_GET['key']; //Access code (private packages only)
+$packageId = $_GET['id'] ?? null; //At least 1
+$currentVersion = $_GET['current'] ?? null; //First version is 1
+$accessCode = $_GET['key'] ?? null; //Access code (private packages only)
 
-if (empty($packageId) || empty($currentVersion)) {
+if (is_null($packageId) || is_null($currentVersion)) {
     header("HTTP/1.0 400 Bad Request");
     die();
 }
 
-require 'Db.php';
-$db = Db::connect();
-
-$query = (empty($accessCode)) ?
-    'SELECT version AS "v",download_link AS "l" FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;' :
-    'SELECT version AS "v",download_link AS "l" FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
-$parameters = (empty($accessCode)) ?
-    array($packageId) :
-    array($packageId, $accessCode);
-
-$statement = $db->prepare($query);
-$statement->execute($parameters);
-$packageData = $statement->fetch();
+$package = new Package();
+$authenticator = new PackageManager();
+$packageFound = $package->load($packageId) && $authenticator->checkReadAccess($packageId, $accessCode);
 
 header ('Content-Type: image/svg+xml');
 
-if (empty($packageData)) {
+if (!$packageFound) {
     readfile('img/not-found.svg');
     die();
 }
 
-if ($currentVersion >= $packageData['v']) {
+if ($currentVersion >= $package->getVersion()) {
     readfile('img/up-to-date.svg');
-    die();
 } else {
     readfile('img/outdated.svg');
-    $downloadLink = $packageData['l'];
-    die();
 }
