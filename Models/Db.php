@@ -15,6 +15,11 @@ class Db
         PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
         PDO::ATTR_EMULATE_PREPARES => false
     );
+
+    /**
+     * @var PDO Singleton design pattern
+     */
+    private static PDO $connection;
     
     /**
      * Connects to the database
@@ -22,7 +27,9 @@ class Db
      */
     public static function connect(): PDO
     {
-        $pdo = new PDO('mysql:host='.self::DB_HOST.';dbname='.self::DB_NAME, self::DB_USER, self::DB_PASS, self::DB_SETTINGS);
-        return $pdo;
+        if (!isset(self::$connection)) {
+            self::$connection = new PDO('mysql:host='.self::DB_HOST.';dbname='.self::DB_NAME, self::DB_USER, self::DB_PASS, self::DB_SETTINGS);
+        }
+        return self::$connection;
     }
 }
