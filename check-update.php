@@ -1,5 +1,9 @@
 <?php
 
+use Models\Db;
+
+require 'autoloader.php';
+
 $packageId = @$_GET['id']; //At least 1
 $currentVersion = @$_GET['current']; //First version is 1
 $accessCode = @$_GET['key']; //Access code (private packages only)

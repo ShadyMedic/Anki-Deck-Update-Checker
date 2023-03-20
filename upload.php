@@ -1,4 +1,9 @@
 <?php
+
+use Models\Db;
+
+require 'autoloader.php';
+
 $errors = array();
 $packageId = @$_REQUEST['id'];
 $key = @$_REQUEST['key'];

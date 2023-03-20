@@ -1,5 +1,9 @@
 <?php
 
+use Models\Db;
+
+require 'autoloader.php';
+
 $accessKey = null;
 $query = 'SELECT package_id,filename,author,version,updated_at FROM package WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL ORDER BY updated_at DESC;';
 

@@ -1,4 +1,11 @@
 <?php
+
+use Models\Package;
+use Models\PackageManager;
+use Models\UserException;
+
+require 'autoloader.php';
+
 $errors = array();
 
 if (!empty($_POST)) {
@@ -7,50 +14,37 @@ if (!empty($_POST)) {
     $public = isset($_POST['public']);
     $key = trim($_POST['key']);
 
-    if (empty($deckName)) {
-        $errors[] = "Deck name mustn't be empty";
-    }
-    if (empty($author)) {
-        $errors[] = "Author's name mustn't be empty";
-    }
-    if (strlen($key) < 6) {
-        $errors[] = "Editing key is too short – 6 characters minimum.";
-    }
-
-    if (mb_strlen($deckName) > 122) {
-        $errors[] = "Deck name is too long.";
-    }
-    if (mb_strlen($author) > 31) {
-        $errors[] = "Author's name is too long.";
-    }
-    if (strlen($key) > 31) {
-        $errors[] = "Editing key is too long.";
+    $tools = new PackageManager();
+    try {
+        $tools->validateName($deckName);
+        $tools->validateAuthor($author);
+        $tools->validateEditKey($key);
+    } catch (UserException $e) {
+        $error = $e->getMessage();
     }
 
-    if (preg_match('/[^A-Za-z0-9]/', $key)) {
-        $errors[] = "The editing key may only contain letters and numbers.";
-    }
-
-    if (empty($errors)) {
+    if (!isset($error)) {
         if (!$public) {
-            $accessKey = substr(bin2hex(random_bytes(16)), 1); //31 characters
+            try {
+                $accessKey = $tools->generateAccessKey();
+            } catch (Exception $e) {
+                $error = 'Something went wrong while creating an access key for your private deck.<br>'.
+                    'Either make the deck public, or try again later please.';
+                $accessKey = null;
+            }
         } else {
             $accessKey = null;
         }
 
-        require 'Db.php';
-        $db = Db::connect();
+        $package = new Package();
+        $package->create(array(
+            'name' => $deckName,
+            'author' => $author,
+            'accessKey' => $accessKey,
+            'editKey' => $key
+        ));
 
-        $query = ($public) ?
-            'INSERT INTO package (filename, author, edit_key) VALUES (?,?,?)' :
-            'INSERT INTO package (access_key, filename, author, edit_key) VALUES (?,?,?,?)';
-        $parameters = ($public) ?
-            array($deckName.'.apkg', $author, $key) :
-            array($accessKey, $deckName.'.apkg', $author, $key);
-
-        $statement = $db->prepare($query);
-        $statement->execute($parameters);
-        $packageId = $db->lastInsertId();
+        $packageId = $package->getId();
 
         $url = '/upload.php?id='.$packageId.(($public) ? '' : '&access-key='.$accessKey);
         header('Location: '.$url);
@@ -98,7 +92,7 @@ if (!empty($_POST)) {
         <fieldset>
             <label for="deck-name-input">Deck name:</label>
             <input type="text" name="deck-name" id="deck-name-input" maxlength="122"
-                   placeholder="Medical School__Genetics__Genomic Imprinting" value="<?= @$deckName ?: '' ?>" required/>
+                   placeholder="Medical School__Genetics__Genomic Imprinting" value="<?= $deckName ?? '' ?>" required/>
             <small>
                 When your package is downloaded, it'll have this name.
                 <strong>Do not include the <code>.apkg</code> extension in this field.</strong>
@@ -106,14 +100,14 @@ if (!empty($_POST)) {
         </fieldset>
         <fieldset>
             <label for="author-input">Author:</label>
-            <input type="text" name="author" id="author-input" value="<?= @$author ?: 'Anonymous' ?>" maxlength="31"
+            <input type="text" name="author" id="author-input" value="<?= $author ?? 'Anonymous' ?>" maxlength="31"
                    required/>
             <small>This name will be displayed next to the deck name. You can keep it as "Anonymous".</small>
         </fieldset>
         <fieldset>
             <label for="public-input">Keep package public?</label>
             <input type="checkbox" name="public" id="public-input"
-                   <?php if (!isset($public) || $public) : ?>checked<?php endif ?>/>
+                   <?php if (($public ?? true) !== false) : ?>checked<?php endif ?>/>
             <small>We recommend keeping all decks public – it won't hurt you and might help others.</small>
             <small>
                 Private packages will have a generated access code assigned to them. This code will be contained within
@@ -123,7 +117,7 @@ if (!empty($_POST)) {
         </fieldset>
         <fieldset>
             <label for="key-input">Editing key:</label>
-            <input type="text" name="key" id="key-input" maxlength="31" value="<?= @$key ?: '' ?>" required/>
+            <input type="text" name="key" id="key-input" maxlength="31" value="<?= $key ?? '' ?>" required/>
             <button id="generate-key-button">Generate</button>
             <button id="load-key-button">Load last used</button>
             <small>
@@ -146,11 +140,9 @@ if (!empty($_POST)) {
                 <strong>You won't be able to change any of the information above later.</strong>
             </small>
         </fieldset>
-        <ul style="color: red">
-            <?php foreach ($errors as $error) : ?>
-                <li><?= $error ?></li>
-            <?php endforeach ?>
-        </ul>
+        <div style="color: red">
+            <?= $error ?? '' ?>
+        </div>
     </form>
 </article>
 </body>

@@ -1,4 +1,9 @@
 <?php
+
+use Models\Db;
+
+require 'autoloader.php';
+
 $packageId = @$_GET['id']; //At least 1
 $accessKey = @$_GET['key']; //Filled in only for protected decks
 

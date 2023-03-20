@@ -1,4 +1,9 @@
 <?php
+
+use Models\Db;
+
+require 'autoloader.php';
+
 $key = null;
 if (!empty($_POST)) {
     $key = $_POST['key'];

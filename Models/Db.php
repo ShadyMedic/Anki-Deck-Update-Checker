@@ -1,6 +1,9 @@
 <?php
 
 
+namespace Models;
+use PDO;
+
 class Db
 {
     private const DB_HOST = 'localhost';
