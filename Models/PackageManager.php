@@ -119,5 +119,19 @@ class PackageManager
             throw new UserException("An error occurred while uploading the file. Please try again later.");
         }
     }
+
+    public function getPublicPackages()
+    {
+        $query = '
+            SELECT package_id,filename,author,version,updated_at FROM package
+            WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL
+            ORDER BY updated_at DESC;
+        ';
+
+        $db = Db::connect();
+        $statement = $db->prepare($query);
+        $statement->execute(array());
+        return $statement->fetchAll();
+    }
 }
 
