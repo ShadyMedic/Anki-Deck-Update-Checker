@@ -43,6 +43,10 @@ class Package implements DatabaseRecord
 
     public function update(array $data) : bool
     {
+        if (is_null($this->packageId)) {
+            throw new \BadMethodCallException('The package cannot be updated, because its ID wasn\'t specified');
+        }
+
         $columns = array_keys($data);
         $values = array_values($data);
 
@@ -82,8 +86,13 @@ class Package implements DatabaseRecord
 
     public function delete() : bool
     {
-        // TODO: Implement delete() method.
-        return false;
+        if (is_null($this->packageId)) {
+            throw new \BadMethodCallException('The package cannot be deleted, because its ID wasn\'t specified');
+        }
+
+        $db = Db::connect();
+        $statement = $db->prepare('DELETE FROM package WHERE package_id = ? LIMIT 1');
+        return $statement->execute(array($this->packageId));
     }
 
     public function getId() : ?int
