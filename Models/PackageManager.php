@@ -4,9 +4,6 @@ namespace Models;
 
 class PackageManager
 {
-    public function create() {
-        //TODO
-    }
 
     public function update(int $packageId, string $downloadLink = null) : bool
     {
@@ -19,14 +16,6 @@ class PackageManager
             'download_link' => $downloadLink,
             'version' => $package->getVersion() + 1
         ));
-    }
-
-    public function edit() {
-        //TODO
-    }
-
-    public function delete() {
-        //TODO
     }
 
     /**
