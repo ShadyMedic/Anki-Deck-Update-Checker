@@ -43,14 +43,38 @@ class Package implements DatabaseRecord
 
     public function update(array $data): bool
     {
-        // TODO: Implement update() method.
-        return false;
+        $columns = array_keys($data);
+        $values = array_values($data);
+
+        $columnSting = '';
+        foreach ($columns as $column) {
+            $columnSting .= $column.' = ?, ';
+        }
+        $columnString = rtrim($columnSting, ', ');
+
+        $db = Db::connect();
+        $query = 'UPDATE package SET '.$columnString.' WHERE package_id = ?;';
+        $statement = $db->prepare($query);
+        return $statement->execute(array_merge($values, [$this->getId()]));
     }
 
-    public function load(): bool
+    public function load(int $id): bool
     {
-        // TODO: Implement load() method.
-        return false;
+        $db = Db::connect();
+        $statement = $db->prepare('SELECT * FROM package WHERE package_id = ? LIMIT 1');
+        $statement->execute(array($id));
+        $data = $statement->fetch();
+
+        $this->packageId = $data['package_id'];
+        $this->version = $data['version'];
+        $this->accessKey = $data['access_key'];
+        $this->downloadLink = $data['download_link'];
+        $this->name = $data['filename'];
+        $this->author = $data['author'];
+        $this->editKey = $data['edit_key'];
+        $this->updatedAt = new DateTime($data['updated_at']);
+
+        return true;
     }
 
     public function delete(): bool
@@ -62,6 +86,11 @@ class Package implements DatabaseRecord
     public function getId(): ?int
     {
         return $this->packageId;
+    }
+
+    public function getVersion(): ?int
+    {
+        return $this->version;
     }
 }
 

@@ -8,8 +8,17 @@ class PackageManager
         //TODO
     }
 
-    public function update() {
-        //TODO
+    public function update(int $packageId, string $downloadLink = null) : bool
+    {
+        $package = new Package();
+        $package->load($packageId);
+
+        $downloadLink = $downloadLink ?? '/deck.php?id='.$package->getId();
+
+        return $package->update(array(
+            'download_link' => $downloadLink,
+            'version' => $package->getVersion() + 1
+        ));
     }
 
     public function edit() {
@@ -75,6 +84,32 @@ class PackageManager
     public function generateAccessKey() : string
     {
         return substr(bin2hex(random_bytes(16)), 1); //31 characters
+    }
+
+    public function checkWriteAccess(int $packageId, string $key) : bool
+    {
+        $db = Db::connect();
+        $statement = $db->prepare('SELECT COUNT(*) AS "cnt" FROM package WHERE package_id = ? AND edit_key = ? LIMIT 1');
+        $statement->execute(array($packageId, $key));
+        return ($statement->fetch()['cnt'] === 1);
+    }
+
+    /**
+     * @throws UserException
+     */
+    public function checkFileUpload(array $fileUploadInfo)
+    {
+        $fileSize = $fileUploadInfo['size'];
+        $tmpFileName = $fileUploadInfo['tmp_name'];
+        $uploadError = $fileUploadInfo['error'];
+
+        if ($uploadError === UPLOAD_ERR_INI_SIZE || $uploadError === UPLOAD_ERR_FORM_SIZE || $fileSize > 8388608) {
+            throw new UserException("Your package file is too large – maximum allowed size is 8 MB for now.");
+        } else if ($uploadError === UPLOAD_ERR_NO_FILE) {
+            throw new UserException("No file was selected.");
+        } else if (!empty($uploadError)) {
+            throw new UserException("An error occurred while uploading the file. Please try again later.");
+        }
     }
 }
 

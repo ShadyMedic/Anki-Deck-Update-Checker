@@ -1,58 +1,44 @@
 <?php
 
-use Models\Db;
+use Models\Package;
+use Models\PackageManager;
+use Models\UserException;
 
 require 'autoloader.php';
 
-$errors = array();
-$packageId = @$_REQUEST['id'];
-$key = @$_REQUEST['key'];
-$accessKey = @$_REQUEST['access-key'];
+$packageId = $_REQUEST['id'] ?? null;
+$key = $_POST['key'] ?? null; //This will be filled in only when submitting the upload form
+$accessKey = $_REQUEST['access-key'] ?? null;
 
-if (empty($packageId)) {
+if (is_null($packageId)) {
     header("HTTP/1.0 400 Bad Request");
     die();
 }
 
-require 'Db.php';
-$db = Db::connect();
-$statement = $db->prepare('SELECT version FROM package WHERE package_id = ? LIMIT 1');
-$statement->execute(array($packageId));
-$nextVersion = $statement->fetch()['version'] + 1;
+$package = new Package();
+$package->load($packageId);
+$nextVersion = $package->getVersion() + 1;
 $queryString = "?id=$packageId&amp;current=$nextVersion".((empty($accessKey)) ? '' : '&amp;key='.$accessKey);
 
 if (!empty($_POST)) {
+    $authenticator = new PackageManager();
 
     //Do authentication
-    $statement = $db->prepare('SELECT COUNT(*) AS "cnt" FROM package WHERE package_id = ? AND edit_key = ? LIMIT 1');
-    $statement->execute(array($packageId, $key));
-    if ($statement->fetch()['cnt'] !== 1) {
+    if (!$authenticator->checkWriteAccess($packageId, $key)) {
         header("HTTP/1.0 401 Unauthorized");
         die();
     }
 
-    $fileSize = $_FILES['package']['size'];
-    $tmpFileName = $_FILES['package']['tmp_name'];
-    $uploadError = $_FILES['package']['error'];
-
-    if ($uploadError === UPLOAD_ERR_INI_SIZE || $uploadError === UPLOAD_ERR_FORM_SIZE || $fileSize > 8388608) {
-        $errors[] = "Your package file is too large – maximum allowed size is 8 MB for now.";
-        /*
-        header("HTTP/1.0 413 Payload Too Large");
-        die();
-        */
-    } else if ($uploadError === UPLOAD_ERR_NO_FILE) {
-        $errors[] = "No file was selected.";
-    } else if (!empty($uploadError)) {
-        $errors[] = "An error occurred while uploading the file. Please try again later.";
+    try {
+        $authenticator->checkFileUpload($_FILES['package']);
+    } catch (UserException $e) {
+        $error = $e->getMessage();
     }
 
-    if (empty($errors)) {
-
+    if (!isset($error)) {
         move_uploaded_file($_FILES['package']['tmp_name'], 'decks/'.$packageId.'.apkg');
 
-        $statement = $db->prepare('UPDATE package SET download_link = ?, version = version + 1 WHERE package_id = ?');
-        $statement->execute(array('/deck.php?id='.$packageId, $packageId));
+        $authenticator->update($packageId);
 
         $url = '/uploaded.php?id='.$packageId.((empty($accessKey)) ? '' : '&key='.$accessKey);
         header('Location: '.$url);
@@ -70,6 +56,7 @@ if (!empty($_POST)) {
         fieldset {
             border: 1px solid black;
         }
+
         small {
             display: block;
         }
@@ -94,32 +81,34 @@ if (!empty($_POST)) {
         <ol id="instructions">
             <li>
                 Select your deck inside your desktop Anki client.<br>
-                <img src="img/tutorial-1.jpg" alt="Tutorial screenshot n. 1" />
+                <img src="img/tutorial-1.jpg" alt="Tutorial screenshot n. 1"/>
             </li>
             <li>
                 Click the "Description" button.<br>
-                <img src="img/tutorial-2.jpg" alt="Tutorial screenshot n. 2" />
+                <img src="img/tutorial-2.jpg" alt="Tutorial screenshot n. 2"/>
             </li>
             <li>
                 Paste the following text into the text field and make sure the checkbox is unchecked.<br>
-                <strong>You need to do this everytime you upload a new version, because the code changes slightly between versions!</strong><br>
+                <strong>You need to do this everytime you upload a new version, because the code changes slightly
+                    between versions!</strong><br>
                 <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://anki-update-check.4fan.cz/update.php<?= $queryString ?>"&gt;&lt;img src="http://anki-update-check.4fan.cz/check-update.php<?= $queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
             </li>
             <li>
                 Press OK and exit the dialog box.<br>
-                <img src="img/tutorial-3.jpg" alt="Tutorial screenshot n. 3" />
+                <img src="img/tutorial-3.jpg" alt="Tutorial screenshot n. 3"/>
             </li>
             <li>
-                You should now see something like this (the text will be green, if you're updating an existing package, or
+                You should now see something like this (the text will be green, if you're updating an existing package,
+                or
                 red, if you're uploading the first version of a new package).
                 Export the package as usual and upload it in the form below.<br>
-                <img src="img/tutorial-4.jpg" alt="Tutorial screenshot n. 4" />
+                <img src="img/tutorial-4.jpg" alt="Tutorial screenshot n. 4"/>
             </li>
         </ol>
     </fieldset>
     <form method="post" enctype="multipart/form-data">
         <input type="hidden" name="package-id" value="<?= $packageId ?>"/>
-        <input type="hidden" name="key" id="key-input" value="<?= $key ?>"/>
+        <input type="hidden" name="key" id="key-input" value=""/> <!-- Value will be filled in by JavaScript -->
         <input type="hidden" name="access-key" id="access-key-input" value="<?= $accessKey ?>"/>
         <fieldset>
             <label for="file-input">Package file:</label>
@@ -135,17 +124,17 @@ if (!empty($_POST)) {
             </small>
         </fieldset>
         <fieldset>
-            <strong>Warning:</strong> Uploading a new version will permanently delete the previous version from our servers.<br>
+            <strong>Warning:</strong> Uploading a new version will permanently delete the previous version from our
+            servers.<br>
             <p><input type="submit" value="Upload"/></p>
             <small>
-                By clicking the "Upload" button, you confirm that the uploaded Anki package doesn't contain copyrighted material.
+                By clicking the "Upload" button, you confirm that the uploaded Anki package doesn't contain copyrighted
+                material.
             </small>
         </fieldset>
-        <ul style="color: red">
-            <?php foreach ($errors as $error) : ?>
-                <li><?= $error ?></li>
-            <?php endforeach ?>
-        </ul>
+        <div style="color: red">
+            <?= $error ?? '' ?>
+        </div>
     </form>
 </article>
 </body>
@@ -153,13 +142,13 @@ if (!empty($_POST)) {
 <script>
     document.getElementById("key-input").value = window.localStorage.getItem('key')
 
-    document.getElementById("display-instructions").addEventListener('click', function() {
+    document.getElementById("display-instructions").addEventListener('click', function () {
         document.getElementById("display-instructions").style.display = "none"
         document.getElementById("hide-instructions").style.display = "inline-block"
         document.getElementById("instructions").style.display = "block"
     })
 
-    document.getElementById("hide-instructions").addEventListener('click', function() {
+    document.getElementById("hide-instructions").addEventListener('click', function () {
         document.getElementById("hide-instructions").style.display = "none"
         document.getElementById("display-instructions").style.display = "inline-block"
         document.getElementById("instructions").style.display = "none"
