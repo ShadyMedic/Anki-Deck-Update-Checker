@@ -94,6 +94,14 @@ class PackageManager
         return ($statement->fetch()['cnt'] === 1);
     }
 
+    public function checkReadAccess(int $packageId, ?string $accessKey) : bool
+    {
+        $db = Db::connect();
+        $statement = $db->prepare('SELECT COUNT(*) AS "cnt" FROM package WHERE package_id = ? AND (access_key = ? OR access_key IS NULL) LIMIT 1');
+        $statement->execute(array($packageId, $accessKey));
+        return ($statement->fetch()['cnt'] === 1);
+    }
+
     /**
      * @throws UserException
      */

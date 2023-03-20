@@ -1,47 +1,34 @@
 <?php
 
-use Models\Db;
+use Models\Package;
+use Models\PackageManager;
 
 require 'autoloader.php';
 
-$packageId = @$_GET['id']; //At least 1
-$accessKey = @$_GET['key']; //Filled in only for protected decks
+$packageId = $_GET['id'] ?? null; //At least 1
+$accessKey = $_GET['key'] ?? null; //Filled in only for protected decks
 
-if (empty($packageId)) {
+if (is_null($packageId)) {
     header("HTTP/1.0 400 Bad Request");
     die();
 }
 
-if (empty($accessKey)) {
-    $accessKey = null;
-    $query = 'SELECT download_link,version FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;';
-    $arguments = array($packageId);
-} else {
-    $query = 'SELECT download_link,version FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
-    $arguments = array($packageId, $accessKey);
+$authenticator = new PackageManager();
+if (!$authenticator->checkReadAccess($packageId, $accessKey)) {
+    header("HTTP/1.0 401 Unauthorized");
+    die();
 }
 
-require 'Db.php';
-$db = Db::connect();
+$package = new Package();
+$packageFound = $package->load($packageId);
 
-$statement = $db->prepare($query);
-$statement->execute($arguments);
-$packageData = $statement->fetch();
-
-if (empty($packageData)) {
+if (!$packageFound) {
     header("HTTP/1.0 404 Not Found");
     die();
 }
 
-$isHostedLocally = (strpos($packageData['download_link'], '/deck.php?') === 0); //Always TRUE for now
-if ($isHostedLocally) {
-    $downloadLink = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].$packageData['download_link'];
-} else {
-    $downloadLink = $packageData['download_link'];
-}
-
-$downloadLink = (empty($accessKey)) ? $downloadLink : $downloadLink.'&key='.$accessKey;
-$version = $packageData['version'];
+$downloadLink = $package->getDownloadLink();
+$version = $package->getVersion();
 
 ?><!DOCTYPE html>
 <html>

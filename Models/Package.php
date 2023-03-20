@@ -63,6 +63,9 @@ class Package implements DatabaseRecord
         $db = Db::connect();
         $statement = $db->prepare('SELECT * FROM package WHERE package_id = ? LIMIT 1');
         $statement->execute(array($id));
+        if ($statement->rowCount() === 0) {
+            return false;
+        }
         $data = $statement->fetch();
 
         $this->packageId = $data['package_id'];
@@ -91,6 +94,22 @@ class Package implements DatabaseRecord
     public function getVersion(): ?int
     {
         return $this->version;
+    }
+
+    public function getDownloadLink() : ?string
+    {
+        $isHostedLocally = (strpos($this->downloadLink, '/deck.php?') === 0); //Always TRUE for now
+        if ($isHostedLocally) {
+            $downloadLink = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].$this->downloadLink;
+        } else {
+            $downloadLink = $this->downloadLink;
+        }
+
+        if (!empty($this->accessKey)) {
+            $downloadLink .= '&key='.$this->accessKey;
+        }
+
+        return $downloadLink;
     }
 }
 
