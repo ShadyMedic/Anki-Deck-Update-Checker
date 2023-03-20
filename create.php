@@ -132,10 +132,11 @@ if (!empty($_POST)) {
                 push destructive updates to your users.
                 Also note, that the key cannot be recovered if forgotten, unless you personally know the webmaster
                 of this website.
-                You should use the same key for all of your decks, but you should ensure it is strong enough.<br>
+                You are supposed to use the same key for all of your decks in order to make the work with the system
+                easier, but you need to ensure it is strong enough.<br>
                 <strong>Do not set the editing key to the same value as any of your passwords to other services!</strong>
-                The editing key is not protected by encryption and while we do our best to keep the information private,
-                we can never completely prevent data theft.
+                The editing key is not protected by encryption for technical reasons and while we do our best to keep
+                the information private, we can never completely prevent data theft.
             </small>
         </fieldset>
         <fieldset>
