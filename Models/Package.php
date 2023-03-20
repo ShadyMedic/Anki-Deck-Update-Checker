@@ -16,7 +16,7 @@ class Package implements DatabaseRecord
     private ?string $editKey = null;
     private DateTime $updatedAt;
 
-    public function create(array $data): bool
+    public function create(array $data) : bool
     {
         $author = $data['author'];
         $name = $data['name'];
@@ -41,7 +41,7 @@ class Package implements DatabaseRecord
         return true;
     }
 
-    public function update(array $data): bool
+    public function update(array $data) : bool
     {
         $columns = array_keys($data);
         $values = array_values($data);
@@ -58,7 +58,7 @@ class Package implements DatabaseRecord
         return $statement->execute(array_merge($values, [$this->getId()]));
     }
 
-    public function load(int $id): bool
+    public function load(int $id) : bool
     {
         $db = Db::connect();
         $statement = $db->prepare('SELECT * FROM package WHERE package_id = ? LIMIT 1');
@@ -80,15 +80,20 @@ class Package implements DatabaseRecord
         return true;
     }
 
-    public function delete(): bool
+    public function delete() : bool
     {
         // TODO: Implement delete() method.
         return false;
     }
 
-    public function getId(): ?int
+    public function getId() : ?int
     {
         return $this->packageId;
+    }
+
+    public function getName() : ?string
+    {
+        return $this->name;
     }
 
     public function getVersion(): ?int
@@ -110,6 +115,11 @@ class Package implements DatabaseRecord
         }
 
         return $downloadLink;
+    }
+
+    public function getUpdatedDate() : DateTime
+    {
+        return $this->updatedAt;
     }
 }
 

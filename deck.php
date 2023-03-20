@@ -1,44 +1,35 @@
 <?php
 
-use Models\Db;
+use Models\Package;
+use Models\PackageManager;
 
 require 'autoloader.php';
 
-$packageId = @$_GET['id']; //At least 1
-$accessKey = @$_GET['key']; //Filled in only for protected decks
+$packageId = $_GET['id'] ?? null; //At least 1
+$accessKey = $_GET['key'] ?? null; //Filled in only for protected decks
 
-if (empty($packageId)) {
+if (is_null($packageId)) {
     header("HTTP/1.0 400 Bad Request");
     die();
 }
 
-if (empty($accessKey)) {
-    $accessKey = null;
-    $query = 'SELECT filename,download_link,version,updated_at FROM package WHERE package_id = ? AND access_key IS NULL LIMIT 1;';
-    $arguments = array($packageId);
-} else {
-    $query = 'SELECT filename,download_link,version,updated_at FROM package WHERE package_id = ? AND access_key = ? LIMIT 1;';
-    $arguments = array($packageId, $accessKey);
-}
+$authenticator = new PackageManager();
+$authenticator->checkReadAccess($packageId, $accessKey);
 
-require 'Db.php';
-$db = Db::connect();
+$package = new Package();
+$packageFound = $package->load($packageId);
 
-$statement = $db->prepare($query);
-$statement->execute($arguments);
-$packageData = $statement->fetch();
-
-if (empty($packageData)) {
+if (!$packageFound) {
     header("HTTP/1.0 404 Not Found");
     die();
 }
 
-if ($packageData['version'] === 0) {
+if ($package->getVersion() === 0) {
     header("HTTP/1.0 406 Not Acceptable");
     die();
 }
 
-$queryString = "?id=$packageId&amp;current=<span style=\"color: gold;\">${packageData["version"]}</span>".(empty($accessKey) ? '' : "&amp;key=$accessKey");
+$queryString = "?id=$packageId&amp;current=<span style=\"color: gold;\">".$package->getVersion()."</span>".(empty($accessKey) ? '' : "&amp;key=$accessKey");
 
 ?><!DOCTYPE html>
 <html>
@@ -49,7 +40,7 @@ $queryString = "?id=$packageId&amp;current=<span style=\"color: gold;\">${packag
 </head>
 <body>
 <header>
-    <h1>Update <?= mb_substr($packageData['filename'], 0, mb_strlen($packageData['filename']) - 5) ?></h1>
+    <h1>Update <?= mb_substr($package->getName(), 0, mb_strlen($package->getName()) - 5) ?></h1>
 </header>
 <article>
     <p>To download new version of this Anki deck, click the button below.</p>
@@ -57,10 +48,10 @@ $queryString = "?id=$packageId&amp;current=<span style=\"color: gold;\">${packag
         overwritten. Anki will simply check which of your cards were changed in this version and updates their
         content.</p>
     <p>
-        File name: <code><?= $packageData['filename'] ?></code><br>
+        File name: <code><?= $package->getName() ?></code><br>
         File size: <code><?= number_format(filesize('decks/'.$packageId.'.apkg') / 1000000, 2) ?> MB</code><br>
-        Version number: <code><?= $packageData['version'] ?></code><br>
-        File updated at: <code><?= $packageData['updated_at'] ?></code>
+        Version number: <code><?= $package->getVersion() ?></code><br>
+        File updated at: <code><?= $package->getUpdatedDate()->format('Y-m-d H:i:s'); ?></code>
     </p>
     <button style="display: block; background-color:limegreen; font-size: x-large;">
         <a style="color: inherit; text-decoration: none;"
