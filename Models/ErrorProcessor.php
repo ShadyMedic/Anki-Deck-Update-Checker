@@ -40,6 +40,24 @@ class ErrorProcessor
     public function processError(int $errorCode, ?string $errorMessage = null): bool
     {
         switch ($errorCode / 1000) {
+            case 400:
+                //Bad request
+                $this->httpHeaderCode = 400;
+                $this->httpHeaderMessage = 'Bad Request';
+                switch ($errorCode) {
+                    case 400000:
+                        $this->errorWebpageView = "errors/error400.html";
+                        return true;
+                    case 400001:
+                        //No ID was specified for a deck info page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 400002:
+                        //No ID was specified for a deck download request
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                }
+                break;
             case 404:
                 //Not found
                 $this->httpHeaderCode = 404;
@@ -48,8 +66,37 @@ class ErrorProcessor
                     case 404000:
                         $this->errorWebpageView = "errors/error404.html";
                         return true;
+                    case 404001:
+                        //Package with a given ID was not found when generating a deck info page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 404002:
+                        //Package with a given ID was not found when triggering download of the package file
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 404003:
+                        //Package file with a given ID in its filename was not found in the file system when download was requested
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
+            case 406:
+                //Not acceptable
+                $this->httpHeaderCode = 406;
+                $this->httpHeaderMessage = 'Not Acceptable';
+                switch ($errorCode) {
+                    case 406000:
+                        $this->errorWebpageView = "errors/error406.html";
+                        return true;
+                    case 406001:
+                        //Package with the given ID has version equal to 0 and its info page can't be generated
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 406002:
+                        //Package with the given ID has version equal to 0 and the request to download it cannot be fulfilled
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                }
             case 500:
                 //Internal server error
                 $this->httpHeaderCode = 500;
