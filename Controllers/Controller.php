@@ -138,5 +138,17 @@ abstract class Controller
                 throw new InvalidArgumentException('Couldn\'t sanitize variable of type '.gettype($data).' against XSS attack.', 500001);
         }
     }
+
+    /**
+     * Method sending a classical "Location" redirect leading to a 302 (Found) response code.
+     * Script execution is stopped within this method with exit()
+     * @param string $location Location to redirect to
+     * @return never
+     */
+    protected function redirect(string $location): never
+    {
+        header('Location: '.$location);
+        exit();
+    }
 }
 

@@ -1,0 +1,21 @@
+fieldset {
+    border: 1px solid black;
+    overflow-x: auto;
+}
+
+input[type=text] {
+    font-family: monospace;
+}
+
+input[maxlength="31"] {
+    width: 31ch;
+}
+
+input[maxlength="122"] {
+    width: -webkit-fill-available;
+}
+
+small {
+    display: block;
+}
+
