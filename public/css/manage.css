@@ -6,8 +6,35 @@ th, td {
 .txt-l {
     text-align: left;
 }
+
+.no-results {
+    text-align: center;
+    color: orangered;
+}
+
 input[type=password] {
     font-family: monospace;
     width: 31ch;
+}
+
+.plain-link {
+    text-decoration: unset;
+    color: unset;
+}
+
+.icon {
+    height: 1em;
+}
+
+a > .shadow-blue:hover {
+    box-shadow: 0 0 8px #4d9cff;
+    background-color: #b1d4ff;
+    clip-path: circle();
+}
+
+a > .shadow-yellow:hover {
+    box-shadow: 0 0 8px #ffcc00;
+    background-color: #ffe98f;
+    clip-path: circle();
 }
 

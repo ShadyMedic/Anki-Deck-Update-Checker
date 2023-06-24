@@ -9,26 +9,39 @@
 <hr />
 <section>
     <p>This is a list of Anki decks registered in our database, that were created with the editing key you provided.</p>
-    <p>Click any of the decks below to upload a new version.</p>
+    <p>Use the icons to modify any of the deck:</p>
+    <ul>
+        <li>
+            <img src="img/upload.png" alt="Upload new version" class="icon" /> – Upload an update of the Anki deck.
+        </li>
+        <li>
+            <img src="img/edit.png" alt="Edit metadata" class="icon" /> – Edit name, author, description, editing key or protection of the Anki deck.
+        </li>
+    </ul>
 
     <?php if (empty($manage_packages)) : ?>
-        <p><strong>No packages created with the editing key you provided found.</strong></p>
+        <p class="no-results"><strong>No packages created with the editing key you provided found.</strong></p>
     <?php else : ?>
         <table>
             <tr>
                 <th class="txt-l">Deck name</th>
                 <th>Version number</th>
                 <th>Last updated at</th>
+                <th>Action</th>
             </tr>
             <?php foreach ($manage_packages as $package) : ?>
                 <tr>
-                    <td class="txt-l">
-                        <a href="/upload.php?id=<?= $package['package_id'].(empty($package['access_key']) ? '' : '&access-key='.$package['access_key']) ?>">
-                            <?= $package['filename'] ?>
-                        </a>
-                    </td>
+                    <td class="txt-l"><?= $package['filename'] ?></td>
                     <td><?= $package['version'] ?></td>
                     <td><?= $package['updated_at'] ?></td>
+                    <td>
+                        <a href="/upload/<?= $package['package_id'].(empty($package['access_key']) ? '' : '?access-key='.$package['access_key']) ?>" class="plain-link">
+                            <img src="img/upload.png" alt="Upload new version" class="icon shadow-blue" />
+                        </a>
+                        <a href="/edit/<?= $package['package_id'].(empty($package['access_key']) ? '' : '?access-key='.$package['access_key']) ?>" class="plain-link">
+                            <img src="img/edit.png" alt="Edit metadata" class="icon shadow-yellow" />
+                        </a>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </table>
