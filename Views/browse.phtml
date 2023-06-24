@@ -1,0 +1,25 @@
+<p>This is the list of all public Anki decks uploaded to this webserver.</p>
+<p>All decks uploaded are considered public, if they don't have an access key specified.</p>
+<p>To view more information about any file or to download it, simply click its name.</p>
+
+<table>
+    <tr>
+        <th class="txt-l">Deck name</th>
+        <th class="txt-l">Author</th>
+        <th>Version number</th>
+        <th>Last updated at</th>
+    </tr>
+    <?php foreach ($browse_packages as $package) : ?>
+        <tr>
+            <td class="txt-l">
+                <a href="/deck.php?id=<?= $package['package_id'] ?>">
+                    <?= $package['filename'] ?>
+                </a>
+            </td>
+            <td class="txt-l"><?= $package['author'] ?></td>
+            <td><?= $package['version'] ?></td>
+            <td><?= $package['updated_at'] ?></td>
+        </tr>
+    <?php endforeach ?>
+</table>
+
