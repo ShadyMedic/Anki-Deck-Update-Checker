@@ -1,0 +1,37 @@
+<section>
+    <form id="manage-form" method="post">
+        <label for="key-input">Enter your editing key:</label>
+        <input type="password" name="key" id="key-input" maxlength="31" required/>
+        <button id="load-key-button">Load last used</button><br>
+        <input id="submit-button" type="submit"/>
+    </form>
+</section>
+<hr />
+<section>
+    <p>This is a list of Anki decks registered in our database, that were created with the editing key you provided.</p>
+    <p>Click any of the decks below to upload a new version.</p>
+
+    <?php if (empty($manage_packages)) : ?>
+        <p><strong>No packages created with the editing key you provided found.</strong></p>
+    <?php else : ?>
+        <table>
+            <tr>
+                <th class="txt-l">Deck name</th>
+                <th>Version number</th>
+                <th>Last updated at</th>
+            </tr>
+            <?php foreach ($manage_packages as $package) : ?>
+                <tr>
+                    <td class="txt-l">
+                        <a href="/upload.php?id=<?= $package['package_id'].(empty($package['access_key']) ? '' : '&access-key='.$package['access_key']) ?>">
+                            <?= $package['filename'] ?>
+                        </a>
+                    </td>
+                    <td><?= $package['version'] ?></td>
+                    <td><?= $package['updated_at'] ?></td>
+                </tr>
+            <?php endforeach ?>
+        </table>
+    <?php endif ?>
+</section>
+
