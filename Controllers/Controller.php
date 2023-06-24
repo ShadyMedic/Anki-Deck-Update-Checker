@@ -2,7 +2,7 @@
 
 namespace AnkiDeckUpdateChecker\Controllers;
 
-use Models\Sanitizable;
+use AnkiDeckUpdateChecker\Models\Sanitizable;
 use InvalidArgumentException;
 
 /**
