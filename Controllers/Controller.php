@@ -3,6 +3,7 @@
 namespace AnkiDeckUpdateChecker\Controllers;
 
 use AnkiDeckUpdateChecker\Models\Sanitizable;
+use AnkiDeckUpdateChecker\Models\UserException;
 use InvalidArgumentException;
 
 /**
@@ -54,6 +55,7 @@ abstract class Controller
      * Method responsible for getting the data from models and then generating the webpage.
      * @param array $args Array of arguments for the function, not all controller need to use this, default empty array
      * @return int HTTP response code to return to the client
+     * @throws UserException In case the request is invalid
      */
     public abstract function process(array $args = []): int;
 
