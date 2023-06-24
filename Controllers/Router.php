@@ -29,6 +29,7 @@ class Router extends Controller
         $urlPath = '/'.$urlPath;
 
         self::$views[] = 'layout';
+        self::$cssFiles[] = 'layout';
 
         $controllerName = $this->loadRoutes($urlPath);
         $nextController = new ('AnkiDeckUpdateChecker\\'.self::CONTROLLERS_DIRECTORY.'\\'.$controllerName)();

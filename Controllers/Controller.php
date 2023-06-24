@@ -43,6 +43,14 @@ abstract class Controller
     protected static array $views = [];
 
     /**
+     * @var array $cssFiles
+     * Array containing the list of CSS stylesheets that should be used to generate the webpage for which
+     * the controller is responsible.
+     * All CSS files specified here are included at the same place, in their respective order
+     */
+    protected static array $cssFiles = [];
+
+    /**
      * Method responsible for getting the data from models and then generating the webpage.
      * @param array $args Array of arguments for the function, not all controller need to use this, default empty array
      * @return int HTTP response code to return to the client

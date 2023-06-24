@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="public/css/layout.css">
+    <?php foreach (self::$cssFiles as $cssFile) : ?>
+        <link rel="stylesheet" href="public/css/<?= $cssFile ?>.css">
+    <?php endforeach ?>
     <title>Anki Package Update Checker</title>
 </head>
 <body data-page-id="<?= $layout_page_id ?>">
