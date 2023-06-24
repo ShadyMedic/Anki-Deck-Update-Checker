@@ -31,6 +31,9 @@
         <?php require self::VIEWS_DIRECTORY.'/'.array_shift(self::$views).'.phtml'; ?>
     </article>
 </main>
+<?php foreach (self::$jsFiles as $jsFile) : ?>
+    <script type="text/javascript" src="/public/js/<?= $jsFile ?>.js"></script>
+<?php endforeach ?>
 </body>
 </html>
 
