@@ -25,15 +25,49 @@ class Router extends Controller
 
         $url = array_shift($args);
         $urlPath = parse_url($url, PHP_URL_PATH);
-        $urlPath = trim($urlPath, '/'); //Remove the trailing slash
+        $urlPath = trim($urlPath, '/'); //Remove the trailing slash (if present)
         $urlPath = '/'.$urlPath;
 
         self::$views[] = 'layout';
         self::$cssFiles[] = 'layout';
 
-        $controllerName = $this->loadRoutes($urlPath);
+        $variables = array();
+        $pathTemplate = $this->separateUrlVariables($urlPath, $variables);
+        $controllerAndArguments = $this->loadRoutes($pathTemplate);
+        $controllerName = strtok($controllerAndArguments, '?');
         $nextController = new ('AnkiDeckUpdateChecker\\'.self::CONTROLLERS_DIRECTORY.'\\'.$controllerName)();
-        return $nextController->process();
+        return $nextController->process($variables);
+    }
+
+    /**
+     * Method separating absolute URL path values from variables and returning the URL path with variables replaced
+     * with placeholders
+     * @param string $urlPath URL path requested by the client
+     * @param array $variables An empty array passed by reference, which is filled by the variable values during this
+     * method's execution
+     * @return string The URL path with variables replaced by <n> placeholders (where n is a whole number starting at 0)
+     */
+    private function separateUrlVariables(string $urlPath, array &$variables) : string
+    {
+        $urlPath = trim($urlPath, '/');
+
+        if (empty($urlPath)) {
+            $urlArguments = [];
+        } else {
+            $urlArguments = explode('/', $urlPath);
+        }
+
+        $variableslessUrl = '';
+        foreach ($urlArguments as $urlArgument) {
+            if (!is_numeric($urlArgument)) { //TODO: add support for non-numeric variables
+                $variableslessUrl .= $urlArgument.'/';
+            } else {
+                $variableslessUrl .= '<'.count($variables).'>/';
+                $variables[] = $urlArgument;
+            }
+        }
+
+        return '/'.trim($variableslessUrl, '/'); //Remove the trailing slash
     }
 
     /**
