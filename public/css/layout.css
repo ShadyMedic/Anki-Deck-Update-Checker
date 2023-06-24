@@ -37,6 +37,9 @@ nav li:hover {
 nav li a {
     text-decoration: none;
     color: black;
+    width: 100%;
+    line-height: 32px;
+    text-align: center;
 }
 
 nav li:not(:last-child) {
