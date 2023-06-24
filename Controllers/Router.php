@@ -5,6 +5,9 @@ namespace AnkiDeckUpdateChecker\Controllers;
 use BadMethodCallException;
 use UnexpectedValueException;
 
+/**
+ * @see Controller
+ */
 class Router extends Controller
 {
 

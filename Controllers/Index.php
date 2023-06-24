@@ -2,6 +2,9 @@
 
 namespace AnkiDeckUpdateChecker\Controllers;
 
+/**
+ * @see Controller
+ */
 class Index extends Controller
 {
 
