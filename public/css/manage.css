@@ -29,12 +29,15 @@ input[type=password] {
 a > .shadow-blue:hover {
     box-shadow: 0 0 8px #4d9cff;
     background-color: #b1d4ff;
-    clip-path: circle();
 }
 
 a > .shadow-yellow:hover {
     box-shadow: 0 0 8px #ffcc00;
     background-color: #ffe98f;
-    clip-path: circle();
+}
+
+a > .shadow-red:hover {
+    box-shadow: 0 0 8px #ff4f4f;
+    background-color: #ffb2b2;
 }
 

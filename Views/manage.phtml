@@ -17,6 +17,9 @@
         <li>
             <img src="img/edit.png" alt="Edit metadata" class="icon" /> – Edit name, author, description, editing key or protection of the Anki deck.
         </li>
+        <li>
+            <img src="img/delete.png" alt="Delete" class="icon" /> – Permanently delete the Anki deck from this service.
+        </li>
     </ul>
 
     <?php if (empty($manage_packages)) : ?>
@@ -40,6 +43,9 @@
                         </a>
                         <a href="/edit/<?= $package['package_id'].(empty($package['access_key']) ? '' : '?access-key='.$package['access_key']) ?>" class="plain-link">
                             <img src="img/edit.png" alt="Edit metadata" class="icon shadow-yellow" />
+                        </a>
+                        <a href="/delete/<?= $package['package_id'].(empty($package['access_key']) ? '' : '?access-key='.$package['access_key']) ?>" class="plain-link">
+                            <img src="img/delete.png" alt="Delete" class="icon shadow-red" />
                         </a>
                     </td>
                 </tr>
