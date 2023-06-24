@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="public/css/layout.css">
+    <title>Anki Package Update Checker</title>
+</head>
+<body data-page-id="<?= $layout_page_id ?>">
+<nav>
+    <ul>
+        <li><a href="/">Homepage</a></li>
+        <li><a href="/browse">Public Decks</a></li>
+        <li><a href="/my-decks">My Decks</a></li>
+        <li><a href="/new-deck">Upload a New Deck</a></li>
+    </ul>
+</nav>
+<main>
+    <header>
+        <h1><?= $layout_title ?></h1>
+    </header>
+    <article>
+        <?php require self::VIEWS_DIRECTORY.'/'.array_shift(self::$views).'.phtml'; ?>
+    </article>
+</main>
+</body>
+</html>
+

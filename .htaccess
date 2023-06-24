@@ -1,9 +1,41 @@
-# Simple File List Access Restricter
+Options -Indexes
 
 RewriteEngine On
 
-# Deny access to these types
-RewriteRule \.(apkg?)$ - [F]
+# Pokud server bude mít problémy se správným zpracováním přesměrování, může pomoci odkomentování následujícího řádku
+RewriteBase /
 
-ErrorDocument 403 /error403.html
-ErrorDocument 404 /error404.html
+# Povolení přímého přístupu k konfiguračním souborům pro prohlížeče
+RewriteCond %{REQUEST_URI} !^/robots\.txt
+
+# Povolení přímého přístupu k souborům s danými příponami
+RewriteRule !\.(css|js|txt|ico|svg|gif|png|jpg|gz)$ index.php [L]
+
+# Nastavení .phtml souborů jako .php soubory
+AddType application/x-httpd-php .php .phtml
+
+# Komprese HTML, CSS, JavaScript, Text, XML a fontů
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+</IfModule>
+
+ErrorDocument 403 /Views/errors/403.html
+ErrorDocument 404 /Views/errors/404.html
