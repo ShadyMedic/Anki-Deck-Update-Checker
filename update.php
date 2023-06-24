@@ -1,7 +1,7 @@
 <?php
 
-use Models\Package;
-use Models\PackageManager;
+use AnkiDeckUpdateChecker\Models\Package;
+use AnkiDeckUpdateChecker\Models\PackageManager;
 
 require 'autoloader.php';
 

@@ -1,8 +1,8 @@
 <?php
 
-use Models\Package;
-use Models\PackageManager;
-use Models\UserException;
+use AnkiDeckUpdateChecker\Models\Package;
+use AnkiDeckUpdateChecker\Models\PackageManager;
+use AnkiDeckUpdateChecker\Models\UserException;
 
 require 'autoloader.php';
 

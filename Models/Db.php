@@ -1,7 +1,7 @@
 <?php
 
+namespace AnkiDeckUpdateChecker\Models;
 
-namespace Models;
 use PDO;
 
 class Db

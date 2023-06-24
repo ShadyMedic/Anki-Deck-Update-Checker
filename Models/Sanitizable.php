@@ -1,6 +1,6 @@
 <?php
 
-namespace Models;
+namespace AnkiDeckUpdateChecker\Models;
 
 /**
  * Interface that all automatically-santizable classes need to implement.

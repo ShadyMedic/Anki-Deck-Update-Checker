@@ -1,6 +1,6 @@
 <?php
 
-use Models\PackageManager;
+use AnkiDeckUpdateChecker\Models\PackageManager;
 
 require 'autoloader.php';
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Models;
+namespace AnkiDeckUpdateChecker\Models;
 
 use DateTime;
 use PDOException;
