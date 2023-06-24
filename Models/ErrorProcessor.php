@@ -37,12 +37,12 @@ class ErrorProcessor
      * @param string|null $errorMessage Specific error message to display, optional and might be ignored
      * @return bool TRUE, if the error webpage was successfully composed, FALSE otherwise (in case of an unknown error)
      */
-    public function processError(int $errorCode, ?string $errorMessage = null) : bool
+    public function processError(int $errorCode, ?string $errorMessage = null): bool
     {
         switch ($errorCode / 1000) {
             case 404:
                 //Not found
-                $this->httpHeaderCode = $errorCode;
+                $this->httpHeaderCode = 404;
                 $this->httpHeaderMessage = 'Not Found';
                 switch ($errorCode) {
                     case 404000:
@@ -52,7 +52,7 @@ class ErrorProcessor
                 break;
             case 500:
                 //Internal server error
-                $this->httpHeaderCode = $errorCode;
+                $this->httpHeaderCode = 500;
                 $this->httpHeaderMessage = 'Internal Server Error';
                 switch ($errorCode) {
                     case 500000:
@@ -70,7 +70,7 @@ class ErrorProcessor
                 break;
             case 501:
                 //Not implemented
-                $this->httpHeaderCode = $errorCode;
+                $this->httpHeaderCode = 501;
                 $this->httpHeaderMessage = 'Not Implemented';
                 switch ($errorCode) {
                     //No errors yet
@@ -80,7 +80,7 @@ class ErrorProcessor
                 break;
             case 503:
                 //Service unavailable
-                $this->httpHeaderCode = $errorCode;
+                $this->httpHeaderCode = 503;
                 $this->httpHeaderMessage = 'Service Unavailable';
                 switch ($errorCode) {
                     //No errors yet
@@ -90,7 +90,7 @@ class ErrorProcessor
                 break;
             case 507:
                 //Insufficient storage
-                $this->httpHeaderCode = $errorCode;
+                $this->httpHeaderCode = 507;
                 $this->httpHeaderMessage = 'Insufficient Storage';
                 switch ($errorCode) {
                     //No errors yet
@@ -100,7 +100,7 @@ class ErrorProcessor
                 break;
             case 508:
                 //Loop detected
-                $this->httpHeaderCode = $errorCode;
+                $this->httpHeaderCode = 508;
                 $this->httpHeaderMessage = 'Loop Detected';
                 switch ($errorCode) {
                     //No errors yet
@@ -110,7 +110,7 @@ class ErrorProcessor
                 break;
             case 509:
                 //Bandwidth limit exceeded
-                $this->httpHeaderCode = $errorCode;
+                $this->httpHeaderCode = 509;
                 $this->httpHeaderMessage = 'Bandwidth Limit Exceeded';
                 switch ($errorCode) {
                     //No errors yet
