@@ -1,3 +1,23 @@
+<?php if (isset($deck_uploadAction)) : ?>
+    <div style="border: 1px solid black; background-color:lightskyblue; padding: 8px;">
+        <p><strong>Package has successfully been <?= $deck_uploadAction ?>.</strong></p>
+        <p>Time to share it with others, just send them the following link: <code style="white-space: normal; background-color: #ddd; color: #222; padding: 4px;"><?= $deck_downloadLink ?></code></p>
+        <?php if ($deck_uploadAction === 'updated') : ?>
+            <p>
+                All users that use the previous (or any older) version of your deck will now see an update notification
+                when they open it to study.
+            </p>
+        <?php endif ?>
+        <?php if (!empty($deck_accessKey)) : ?>
+            <p>
+                Your Anki package is set as private. This means that it won't be listed on the
+                <a href="/browse">Deck List webpage</a> and only users using a link with the access code will be able
+                to download the package.
+            </p>
+            <p>The access code is contained in the link above, so be careful with whom you share it.</p>
+        <?php endif ?>
+    </div>
+<?php endif ?>
 <p>To download new version of this Anki deck, click the button below.</p>
 <p>After downloading, just import the new package to your Anki client. None of your cards or planning will be
     overwritten. Anki will simply check which of your cards were changed in this version and updates their

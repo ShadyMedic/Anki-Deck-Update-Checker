@@ -110,6 +110,11 @@ class Package implements DatabaseRecord
         return $this->version;
     }
 
+    public function incrementVersion()
+    {
+        $this->version++;
+    }
+
     public function getDownloadLink() : ?string
     {
         $isHostedLocally = (strpos($this->downloadLink, '/deck.php?') === 0); //Always TRUE for now

@@ -44,9 +44,15 @@ class Upload extends Controller
             if (!isset($error)) {
                 move_uploaded_file($_FILES['package']['tmp_name'], 'decks/'.$packageId.'.apkg');
 
-                $authenticator->update($packageId);
+                $authenticator->update($package);
 
-                $url = '/uploaded/'.$packageId.((empty($accessKey)) ? '' : '?key='.$accessKey);
+                echo $package->getVersion();
+                if ($package->getVersion() === 1) {
+                    $url = '/uploaded/'.$packageId.((empty($accessKey)) ? '' : '?key='.$accessKey);
+                } else {
+                    $url = '/updated/'.$packageId.((empty($accessKey)) ? '' : '?key='.$accessKey);
+                }
+
                 $this->redirect($url);
             }
         }

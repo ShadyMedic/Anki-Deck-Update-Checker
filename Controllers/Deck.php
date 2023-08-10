@@ -15,6 +15,10 @@ class Deck extends Controller
     public function process(array $args = []): int
     {
         $packageId = array_shift($args) ?? null;
+        if (!empty($args)) {
+            self::$data['deck']['uploadAction'] = array_shift($args);
+        }
+
         $accessKey = $_GET['key'] ?? null; //Filled in only for protected decks
 
         if (is_null($packageId)) {
@@ -44,6 +48,7 @@ class Deck extends Controller
         self::$data['deck']['packageId'] = $packageId;
         self::$data['deck']['accessKey'] = $accessKey;
         self::$data['deck']['queryString'] = $queryString;
+        self::$data['deck']['downloadLink'] = 'http://'.$_SERVER['SERVER_NAME'].'/deck/'.$package->getId().(empty($accessKey) ? '' : "&amp;key=$accessKey");
 
         self::$views[] = 'deck';
 
