@@ -39,7 +39,7 @@ class ErrorProcessor
      */
     public function processError(int $errorCode, ?string $errorMessage = null): bool
     {
-        switch ($errorCode / 1000) {
+        switch (floor($errorCode / 1000)) {
             case 400:
                 //Bad request
                 $this->httpHeaderCode = 400;
@@ -72,6 +72,10 @@ class ErrorProcessor
                         return true;
                     case 401001:
                         //Editing key for the given deck isn't valid on the upload page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 401002:
+                        //Access key for the given private deck isn't correct or is missing
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                 }

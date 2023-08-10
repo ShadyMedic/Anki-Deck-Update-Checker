@@ -25,14 +25,16 @@ class Deck extends Controller
             throw new UserException('No package ID was specified.', 400001);
         }
 
-        $authenticator = new PackageManager();
-        $authenticator->checkReadAccess($packageId, $accessKey);
-
         $package = new Package();
         $packageFound = $package->load($packageId);
 
         if (!$packageFound) {
             throw new UserException('No package with this ID was found.', 404001);
+        }
+
+        $authenticator = new PackageManager();
+        if (!$authenticator->checkReadAccess($packageId, $accessKey)) {
+            throw new UserException('This package is private and the access key is either wrong or missing.', 401002);
         }
 
         if ($package->getVersion() === 0) {
