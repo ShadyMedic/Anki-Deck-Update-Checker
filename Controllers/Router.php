@@ -34,9 +34,18 @@ class Router extends Controller
         $variables = array();
         $pathTemplate = $this->separateUrlVariables($urlPath, $variables);
         $controllerAndArguments = $this->loadRoutes($pathTemplate);
-        $controllerName = strtok($controllerAndArguments, '?');
+        $argumentsArr = explode('?', $controllerAndArguments);
+        $controllerName = array_shift($argumentsArr);
+        $finalVariables = array();
+        foreach ($argumentsArr as $argument) {
+            if (preg_match('/\<\d*\>/', $argument)) {
+                $finalVariables[] = $variables[trim($argument, '<>')]; //Variable argument
+            } else {
+                $finalVariables[] = $argument; //Literal argument
+            }
+        }
         $nextController = new ('AnkiDeckUpdateChecker\\'.self::CONTROLLERS_DIRECTORY.'\\'.$controllerName)();
-        return $nextController->process($variables);
+        return $nextController->process($finalVariables);
     }
 
     /**
@@ -63,7 +72,7 @@ class Router extends Controller
                 $variableslessUrl .= $urlArgument.'/';
             } else {
                 $variableslessUrl .= '<'.count($variables).'>/';
-                $variables[] = $urlArgument;
+                $variables[(string)count($variables)] = $urlArgument;
             }
         }
 
