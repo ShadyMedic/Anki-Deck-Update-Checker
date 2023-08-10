@@ -56,6 +56,24 @@ class ErrorProcessor
                         //No ID was specified for a deck download request
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 400003:
+                        //No ID was specified for the upload page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                }
+                break;
+            case 401:
+                //Unauthorized
+                $this->httpHeaderCode = 401;
+                $this->httpHeaderMessage = 'Unauthorized';
+                switch ($errorCode) {
+                    case 401000:
+                        $this->errorWebpageView = "errors/error401.html";
+                        return true;
+                    case 401001:
+                        //Editing key for the given deck isn't valid on the upload page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 404:

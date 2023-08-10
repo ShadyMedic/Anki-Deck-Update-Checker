@@ -1,0 +1,22 @@
+fieldset {
+    border: 1px solid black;
+}
+
+small {
+    display: block;
+}
+
+.instructions-spoiler {
+    border: 1px solid black;
+    margin: 8px 2px;
+}
+
+.instructions-spoiler-header {
+    text-align: center;
+}
+
+.instructions-spoiler-header > * {
+    display: inline-block;
+    margin: 0.5em 0;
+    text-decoration: underline dotted 2px gray;
+}
