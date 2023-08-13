@@ -48,18 +48,17 @@ class Package implements DatabaseRecord
         }
 
         $columns = array_keys($data);
-        $values = array_values($data);
 
-        $columnSting = '';
+        $columnString = '';
         foreach ($columns as $column) {
-            $columnSting .= $column.' = ?, ';
+            $columnString .= $column.' = :'.$column.', ';
         }
-        $columnString = rtrim($columnSting, ', ');
+        $columnString = rtrim($columnString, ', ');
 
         $db = Db::connect();
-        $query = 'UPDATE package SET '.$columnString.' WHERE package_id = ?;';
+        $query = 'UPDATE package SET '.$columnString.' WHERE package_id = :package_id';
         $statement = $db->prepare($query);
-        return $statement->execute(array_merge($values, [$this->getId()]));
+        return $statement->execute(array_merge($data, ['package_id' => $this->getId()]));
     }
 
     public function load(int $id) : bool
