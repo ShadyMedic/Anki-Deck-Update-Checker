@@ -1,0 +1,54 @@
+<form method="post" id="edit-form">
+    <fieldset>
+        <label for="deck-name-input">Deck name:</label>
+        <input type="text" name="deck-name" id="deck-name-input" maxlength="122"
+               placeholder="Respiratory Physiology" value="<?= $edit_deckName ?? '' ?>" required/>
+    </fieldset>
+    <fieldset>
+        <label for="author-input">Author:</label>
+        <input type="text" name="author" id="author-input" value="<?= $edit_author ?? 'Anonymous' ?>" maxlength="31"
+               required/>
+    </fieldset>
+    <?php if (!$edit_public) : ?>
+        <fieldset>
+            <label for="public-input">Publish package</label>
+            <input type="checkbox" name="public" id="public-input"/>
+            <small>
+                Your package was created as private, meaning it isn't being listed on the <a href="/browse">browse
+                webpage</a> and only users with the original link (containing a unique access code) can view and
+                download it.<br>
+                You can choose to remove the need for the access code and make the package public, so anyone on the
+                internet can view and download it. All current users of this package will still be able to use it as if
+                nothing changed.<br>
+                <strong>Warning:</strong> Published package cannot be made private again!
+            </small>
+        </fieldset>
+    <?php endif ?>
+    <fieldset>
+        <label for="key-input">Editing key:</label>
+        <input type="text" name="key" id="key-input" maxlength="31" value="<?= $edit_key ?? '' ?>" required/>
+        <button id="generate-key-button">Generate</button>
+        <button id="load-key-button">Load last used</button>
+        <small>
+            You are supposed to use the same key for all of your decks in order to make the work with the system
+            easier, but you need to ensure it is strong enough.<br>
+            <strong>Do not set the editing key to the same value as any of your passwords to other services!</strong>
+            The editing key is not protected by encryption for technical reasons and while we do our best to keep
+            the information private, we can never completely prevent data theft.
+        </small>
+    </fieldset>
+    <fieldset>
+        <button id="submit-button">Save</button>
+        <div style="color: red">
+            <?php foreach ($edit_errors as $error) : ?>
+                <span><?= $error ?></span><br>
+            <?php endforeach ?>
+        </div>
+        <div style="color: green">
+            <?php foreach ($edit_saves as $saves) : ?>
+                <span><?= $saves ?></span><br>
+            <?php endforeach ?>
+        </div>
+    </fieldset>
+</form>
+

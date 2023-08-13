@@ -104,6 +104,11 @@ class Package implements DatabaseRecord
         return $this->name;
     }
 
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
     public function getVersion(): ?int
     {
         return $this->version;

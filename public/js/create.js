@@ -26,7 +26,7 @@ window.addEventListener('load', function() {
         let key = document.getElementById("key-input").value;
         window.localStorage.setItem('key', key)
 
-        document.getElementById("create-form").submit()
+        document.getElementById("edit-form").submit()
     })
 })
 

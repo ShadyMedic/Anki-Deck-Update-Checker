@@ -60,6 +60,10 @@ class ErrorProcessor
                         //No ID was specified for the upload page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 400004:
+                        //No ID was specified for the edit page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 401:
@@ -98,6 +102,10 @@ class ErrorProcessor
                         return true;
                     case 404003:
                         //Package file with a given ID in its filename was not found in the file system when download was requested
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 404004:
+                        //Package with a given ID was not found when generating a deck edit page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                 }
