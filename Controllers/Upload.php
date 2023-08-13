@@ -44,7 +44,6 @@ class Upload extends Controller
 
                 $authenticator->update($package);
 
-                echo $package->getVersion();
                 if ($package->getVersion() === 1) {
                     $url = '/uploaded/'.$packageId.(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
                 } else {

@@ -12,7 +12,7 @@ class PackageManager
         $package->incrementVersion();
         return $package->update(array(
             'download_link' => $downloadLink,
-            'version' => $package->getVersion() + 1
+            'version' => $package->getVersion()
         ));
     }
 
