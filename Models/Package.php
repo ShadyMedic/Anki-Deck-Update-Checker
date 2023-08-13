@@ -114,6 +114,21 @@ class Package implements DatabaseRecord
         $this->version++;
     }
 
+    public function isPublic(): bool
+    {
+        return $this->accessKey === null;
+    }
+
+    public function getAccessKey() : ?string
+    {
+        return $this->accessKey;
+    }
+
+    public function getEditKey() : ?string
+    {
+        return $this->editKey;
+    }
+
     public function getDownloadLink() : ?string
     {
         $isHostedLocally = (strpos($this->downloadLink, '/deck.php?') === 0); //Always TRUE for now

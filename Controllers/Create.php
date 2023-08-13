@@ -54,7 +54,7 @@ class Create extends Controller
 
                 $packageId = $package->getId();
 
-                $url = '/upload/'.$packageId.(($public) ? '' : '?access-key='.$accessKey);
+                $url = '/upload/'.$packageId.($public);
                 $this->redirect($url);
             }
         }

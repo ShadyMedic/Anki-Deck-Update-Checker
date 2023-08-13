@@ -38,13 +38,13 @@
                     <td><?= $package['version'] ?></td>
                     <td><?= $package['updated_at'] ?></td>
                     <td>
-                        <a href="/upload/<?= $package['package_id'].(empty($package['access_key']) ? '' : '?access-key='.$package['access_key']) ?>" class="plain-link">
+                        <a href="/upload/<?= $package['package_id'] ?>" class="plain-link">
                             <img src="img/upload.png" alt="Upload new version" class="icon shadow-blue" />
                         </a>
-                        <a href="/edit/<?= $package['package_id'].(empty($package['access_key']) ? '' : '?access-key='.$package['access_key']) ?>" class="plain-link">
+                        <a href="/edit/<?= $package['package_id'] ?>" class="plain-link">
                             <img src="img/edit.png" alt="Edit metadata" class="icon shadow-yellow" />
                         </a>
-                        <a href="/delete/<?= $package['package_id'].(empty($package['access_key']) ? '' : '?access-key='.$package['access_key']) ?>" class="plain-link">
+                        <a href="/delete/<?= $package['package_id'] ?>" class="plain-link">
                             <img src="img/delete.png" alt="Delete" class="icon shadow-red" />
                         </a>
                     </td>
