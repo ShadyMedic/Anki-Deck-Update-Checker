@@ -37,10 +37,10 @@
     <input type="hidden" name="access-key" id="access-key-input" value="<?= $upload_accessKey ?>"/>
     <fieldset>
         <label for="file-input">Package file:</label>
-        <input type="hidden" name="MAX_FILE_SIZE" value="8388608"/>
+        <input type="hidden" name="MAX_FILE_SIZE" value="26214400"/>
         <input type="file" accept=".apkg" name="package" id="file-input" required/>
         <small>
-            <strong>The file size mustn't exceed 8 MB.</strong><br>
+            <strong>The file size mustn't exceed 20 MiB.</strong><br>
             If your Anki package is larger, and you compressed your media,
             contact me on Discord (<code>shady_medic</code>) or e-mail me at
             <code>jan [dot] stech [at] posteo [dot] net</code>. You'll still be able to use this service to share

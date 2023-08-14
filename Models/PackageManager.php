@@ -96,11 +96,10 @@ class PackageManager
     public function checkFileUpload(array $fileUploadInfo)
     {
         $fileSize = $fileUploadInfo['size'];
-        $tmpFileName = $fileUploadInfo['tmp_name'];
         $uploadError = $fileUploadInfo['error'];
 
-        if ($uploadError === UPLOAD_ERR_INI_SIZE || $uploadError === UPLOAD_ERR_FORM_SIZE || $fileSize > 8388608) {
-            throw new UserException("Your package file is too large – maximum allowed size is 8 MB for now.");
+        if ($uploadError === UPLOAD_ERR_INI_SIZE || $uploadError === UPLOAD_ERR_FORM_SIZE || $fileSize > 26214400) {
+            throw new UserException("Your package file is too large – maximum allowed size is 20 MiB for now.");
         } else if ($uploadError === UPLOAD_ERR_NO_FILE) {
             throw new UserException("No file was selected.");
         } else if (!empty($uploadError)) {
