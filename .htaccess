@@ -37,5 +37,10 @@ AddType application/x-httpd-php .php .phtml
     AddOutputFilterByType DEFLATE text/xml
 </IfModule>
 
-ErrorDocument 403 /Views/errors/403.html
-ErrorDocument 404 /Views/errors/404.html
+ErrorDocument 400 /Views/errors/400.phtml
+ErrorDocument 401 /Views/errors/401.phtml
+ErrorDocument 403 /Views/errors/403.phtml
+ErrorDocument 404 /Views/errors/404.phtml
+ErrorDocument 406 /Views/errors/406.phtml
+ErrorDocument 410 /Views/errors/410.phtml
+ErrorDocument 500 /Views/errors/500.phtml
