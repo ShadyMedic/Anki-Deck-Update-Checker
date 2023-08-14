@@ -49,35 +49,19 @@ class ErrorProcessor
                         $this->errorWebpageView = "errors/error400";
                         return true;
                     case 400001:
-                        //No ID was specified for a deck info page
-                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        //No ID was specified for the update-status image generator (legacy requests only)
+                        $this->errorWebpageView = 'image-outputs/no-id';
                         return true;
                     case 400002:
-                        //No ID was specified for a deck download request
-                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        //No current version was specified for the update-status image generator (legacy requests only)
+                        $this->errorWebpageView = 'image-outputs/no-version';
                         return true;
                     case 400003:
-                        //No ID was specified for the upload page
+                        //No ID was specified when trying to get to the update page for a deck (legacy requests only)
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                     case 400004:
-                        //No ID was specified for the edit page
-                        $this->errorWebpageData['errorMessage'] = $errorMessage;
-                        return true;
-                    case 400005:
-                        //No ID was specified for the delete page
-                        $this->errorWebpageData['errorMessage'] = $errorMessage;
-                        return true;
-                    case 400006:
-                        //No ID was specified for the deleted page
-                        $this->errorWebpageData['errorMessage'] = $errorMessage;
-                        return true;
-                    case 400007:
-                        //No ID was specified for the update-status image generator
-                        $this->errorWebpageView = 'image-outputs/no-id';
-                        return true;
-                    case 400008:
-                        //No ID was specified when trying to get to the update page for a deck
+                        //No current version was specified when trying to get to the update page for a deck (legacy requests only)
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                 }

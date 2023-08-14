@@ -18,8 +18,16 @@ class Update extends Controller
         $currentVersion = array_shift($args);
         $accessCode = $_GET['key'] ?? null; //Access code (private packages only)
 
-        if (is_null($packageId)) {
-            throw new UserException('No package ID was specified', 400008);
+        if ($packageId === 'legacy') {
+            $packageId = $_GET['id'] ?? null;
+            $currentVersion = $_GET['current'] ?? null;
+
+            if (is_null($packageId)) {
+                throw new UserException('No package ID was specified', 400003);
+            }
+            if (is_null($currentVersion)) {
+                throw new UserException('No package ID was specified', 400004);
+            }
         }
 
         $package = new Package();
