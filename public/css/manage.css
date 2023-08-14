@@ -30,17 +30,17 @@ input[type=password] {
     cursor: pointer;
 }
 
-.clickable-icon > .shadow-blue:hover {
+.clickable-icon.shadow-blue:hover {
     box-shadow: 0 0 8px #4d9cff;
     background-color: #b1d4ff;
 }
 
-.clickable-icon > .shadow-yellow:hover {
+.clickable-icon.shadow-yellow:hover {
     box-shadow: 0 0 8px #ffcc00;
     background-color: #ffe98f;
 }
 
-.clickable-icon > .shadow-red:hover {
+.clickable-icon.shadow-red:hover {
     box-shadow: 0 0 8px #ff4f4f;
     background-color: #ffb2b2;
 }
