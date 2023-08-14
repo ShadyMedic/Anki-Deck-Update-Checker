@@ -145,7 +145,7 @@ class Package implements DatabaseRecord
 
     public function getDownloadLink() : ?string
     {
-        $isHostedLocally = (strpos($this->downloadLink, '/deck.php?') === 0); //Always TRUE for now
+        $isHostedLocally = (strpos($this->downloadLink, '/deck/') === 0); //Always TRUE for now
         if ($isHostedLocally) {
             $downloadLink = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].$this->downloadLink;
         } else {
