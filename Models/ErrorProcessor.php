@@ -76,6 +76,10 @@ class ErrorProcessor
                         //No ID was specified for the update-status image generator
                         $this->errorWebpageView = 'image-outputs/no-id';
                         return true;
+                    case 400008:
+                        //No ID was specified when trying to get to the update page for a deck
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 401:
@@ -109,6 +113,10 @@ class ErrorProcessor
                     case 401006:
                         //Access key for the given private deck isn't correct or is missing when generating the update-status image
                         $this->errorWebpageView = 'image-outputs/restricted';
+                        return true;
+                    case 401007:
+                        //Access key for the given private deck isn't correct or is missing when trying to get to the update page for it
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                 }
                 break;
@@ -170,6 +178,10 @@ class ErrorProcessor
                         //Package with a given ID was not found when generating an update-status image
                         $this->errorWebpageView = 'image-outputs/not-found';
                         return true;
+                    case 404008:
+                        //Package with a given ID was not found when trying to get to the update page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 406:
@@ -220,6 +232,10 @@ class ErrorProcessor
                     case 410006:
                         //Package with the given ID is deleted and its update-status image can't be generated
                         $this->errorWebpageView = "image-outputs/deleted";
+                        return true;
+                    case 410007:
+                        //Package with the given ID is deleted and the user can't be forwarded to its download page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                 }
             case 500:
