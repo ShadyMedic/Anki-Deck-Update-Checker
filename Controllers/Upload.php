@@ -22,7 +22,25 @@ class Upload extends Controller
         }
 
         $package = new Package();
-        $package->load($packageId);
+        $packageFound = $package->load($packageId);
+
+        if (!$packageFound) {
+            throw new UserException('No package with this ID was found.', 404006);
+        }
+
+        if ($package->isDeleted()) {
+            throw new UserException('This package was deleted.', 410003);
+        }
+
+        //Do authentication
+        if (is_null($key)) {
+            throw new UserException('No editing key was provided.', 401004);
+        }
+        $authenticator = new PackageManager();
+        if (!$authenticator->checkWriteAccess($packageId, $key)) {
+            throw new UserException('The editing key for this package is not valid.', 403001);
+        }
+
         $nextVersion = $package->getVersion() + 1;
         $queryString = "/$packageId/$nextVersion".(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
         if (isset($_FILES['package'])) { //Form was submitted, webpage loading is also POST because of "key" submission

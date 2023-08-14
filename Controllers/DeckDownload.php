@@ -21,9 +21,6 @@ class DeckDownload extends Controller
             throw new UserException('No package ID was specified.', 400002);
         }
 
-        $authenticator = new PackageManager();
-        $authenticator->checkReadAccess($packageId, $accessKey);
-
         $package = new Package();
         $packageFound = $package->load($packageId);
 
@@ -31,8 +28,21 @@ class DeckDownload extends Controller
             throw new UserException('No package with this ID was found.', 404002);
         }
 
+        if ($package->isDeleted()) {
+            throw new UserException('This package was deleted.', 410006);
+        }
+
+        $authenticator = new PackageManager();
+        if (!$authenticator->checkReadAccess($packageId, $accessKey)) {
+            throw new UserException('This package is private and the access key is either wrong or missing.', 401002);
+        }
+
         if ($package->getVersion() === 0) {
             throw new UserException('This package hasn\'t been uploaded yet.', 406002);
+        }
+
+        if ($package->isDeleted()) {
+            throw new UserException('This package was deleted.', 410002);
         }
 
         if (!file_exists('decks/'.$packageId.'.apkg')) {

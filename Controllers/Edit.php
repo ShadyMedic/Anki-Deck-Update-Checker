@@ -29,6 +29,19 @@ class Edit extends Controller
             throw new UserException('No package with this ID was found.', 404004);
         }
 
+        if ($package->isDeleted()) {
+            throw new UserException('This package was deleted.', 410004);
+        }
+
+        //Do authentication
+        if (is_null($originalKey)) {
+            throw new UserException('No editing key was provided.', 401003);
+        }
+        $tools = new PackageManager();
+        if (!$tools->checkWriteAccess($packageId, $originalKey)) {
+            throw new UserException('The editing key for this package is not valid.', 403002);
+        }
+
         $deckName = $package->getName();
         $author = $package->getAuthor();
         $public = $package->isPublic();

@@ -15,6 +15,7 @@ class Package implements DatabaseRecord
     private ?string $author = null;
     private ?string $editKey = null;
     private DateTime $updatedAt;
+    private bool $deleted = false;
 
     public function create(array $data) : bool
     {
@@ -28,8 +29,8 @@ class Package implements DatabaseRecord
             'INSERT INTO package (filename, author, edit_key) VALUES (?,?,?)' :
             'INSERT INTO package (access_key, filename, author, edit_key) VALUES (?,?,?,?)';
         $parameters = (empty($accessKey)) ?
-            array($name.'.apkg', $author, $editKey) :
-            array($accessKey, $name.'.apkg', $author, $editKey);
+            array($name, $author, $editKey) :
+            array($accessKey, $name, $author, $editKey);
 
         try {
             $statement = $db->prepare($query);
@@ -79,6 +80,7 @@ class Package implements DatabaseRecord
         $this->author = $data['author'];
         $this->editKey = $data['edit_key'];
         $this->updatedAt = new DateTime($data['updated_at']);
+        $this->deleted = $data['deleted'];
 
         return true;
     }
@@ -89,9 +91,16 @@ class Package implements DatabaseRecord
             throw new \BadMethodCallException('The package cannot be deleted, because its ID wasn\'t specified');
         }
 
-        $db = Db::connect();
-        $statement = $db->prepare('DELETE FROM package WHERE package_id = ? LIMIT 1');
-        return $statement->execute(array($this->packageId));
+        return $this->update([
+            'version' => 0,
+            'access_key' => null,
+            'download_link' => null,
+            'filename' => null,
+            'author' => null,
+            'edit_key' => null,
+            'updated_at' => null,
+            'deleted' => true
+        ]);
     }
 
     public function getId() : ?int
@@ -153,6 +162,11 @@ class Package implements DatabaseRecord
     public function getUpdatedDate() : DateTime
     {
         return $this->updatedAt;
+    }
+
+    public function isDeleted()
+    {
+        return $this->deleted;
     }
 }
 

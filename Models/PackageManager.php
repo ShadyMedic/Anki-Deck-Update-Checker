@@ -7,12 +7,13 @@ class PackageManager
 
     public function update(Package $package, string $downloadLink = null) : bool
     {
-        $downloadLink = $downloadLink ?? '/deck.php?id='.$package->getId(); //TODO allow other website hosting
+        $downloadLink = $downloadLink ?? '/deck/'.$package->getId(); //TODO allow other website hosting
 
         $package->incrementVersion();
         return $package->update(array(
             'download_link' => $downloadLink,
-            'version' => $package->getVersion()
+            'version' => $package->getVersion(),
+            'updated_at' => date(DATE_W3C)
         ));
     }
 
@@ -111,7 +112,7 @@ class PackageManager
     {
         $query = '
             SELECT package_id,filename,author,version,updated_at FROM package
-            WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL
+            WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL AND deleted = 0
             ORDER BY updated_at DESC;
         ';
 
@@ -133,6 +134,13 @@ class PackageManager
         $statement = $db->prepare($query);
         $statement->execute(array($key));
         return $statement->fetchAll();
+    }
+
+    public function delete(Package $package)
+    {
+        $package->delete();
+        unlink('decks/'.$package->getId().'.apkg');
+        unset($package);
     }
 }
 
