@@ -1,6 +1,7 @@
 <?php
 namespace AnkiDeckUpdateChecker;
 
+use AnkiDeckUpdateChecker\Controllers\Controller;
 use AnkiDeckUpdateChecker\Controllers\Router;
 use AnkiDeckUpdateChecker\Models\ErrorProcessor;
 use Throwable;
@@ -52,7 +53,7 @@ function fatalExceptionHandler(Throwable $e) : void
     extract($errProc->errorWebpageData);
 
     header("HTTP/1.0 $headerCode $headerMessage");
-    require "Views/$errorView";
+    require Controller::VIEWS_DIRECTORY.'/'.$errorView.'.phtml';
 }
 set_exception_handler('AnkiDeckUpdateChecker\\fatalExceptionHandler');
 

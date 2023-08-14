@@ -22,7 +22,7 @@ class ErrorProcessor
      * @var string $errorWebpageView View to display as an error webpage (defaults to an empty view containing nothing
      * but the error message specified in the $errorWebpageData attribute)
      */
-    public string $errorWebpageView = 'errors/empty.phtml';
+    public string $errorWebpageView = 'errors/empty';
 
     /**
      * @var array $errorWebpageData Data to fill in into the error views.
@@ -46,7 +46,7 @@ class ErrorProcessor
                 $this->httpHeaderMessage = 'Bad Request';
                 switch ($errorCode) {
                     case 400000:
-                        $this->errorWebpageView = "errors/error400.html";
+                        $this->errorWebpageView = "errors/error400";
                         return true;
                     case 400001:
                         //No ID was specified for a deck info page
@@ -80,7 +80,7 @@ class ErrorProcessor
                 $this->httpHeaderMessage = 'Unauthorized';
                 switch ($errorCode) {
                     case 401000:
-                        $this->errorWebpageView = "errors/error401.html";
+                        $this->errorWebpageView = "errors/error401";
                         return true;
                     case 401001:
                         //Access key for the given private deck isn't correct or is missing on the deck info page
@@ -110,7 +110,7 @@ class ErrorProcessor
                 $this->httpHeaderMessage = 'Forbidden';
                 switch ($errorCode) {
                     case 403000:
-                        $this->errorWebpageView = "errors/error401.html";
+                        $this->errorWebpageView = "errors/error401";
                         return true;
                     case 403001:
                         //Editing key for the given deck isn't valid on the upload page
@@ -132,7 +132,7 @@ class ErrorProcessor
                 $this->httpHeaderMessage = 'Not Found';
                 switch ($errorCode) {
                     case 404000:
-                        $this->errorWebpageView = "errors/error404.html";
+                        $this->errorWebpageView = "errors/error404";
                         return true;
                     case 404001:
                         //Package with a given ID was not found when generating a deck info page
@@ -166,7 +166,7 @@ class ErrorProcessor
                 $this->httpHeaderMessage = 'Not Acceptable';
                 switch ($errorCode) {
                     case 406000:
-                        $this->errorWebpageView = "errors/error406.html";
+                        $this->errorWebpageView = "errors/error406";
                         return true;
                     case 406001:
                         //Package with the given ID has version equal to 0 and its info page can't be generated
@@ -183,7 +183,7 @@ class ErrorProcessor
                 $this->httpHeaderMessage = 'Gone';
                 switch ($errorCode) {
                     case 410000:
-                        $this->errorWebpageView = "errors/error410.html";
+                        $this->errorWebpageView = "errors/error410";
                         return true;
                     case 410001:
                         //Package with the given ID is deleted and its deck page can't be generated
@@ -216,7 +216,7 @@ class ErrorProcessor
                 $this->httpHeaderMessage = 'Internal Server Error';
                 switch ($errorCode) {
                     case 500000:
-                        $this->errorWebpageView = "errors/error500.html";
+                        $this->errorWebpageView = "errors/error500";
                         return true;
                     case 500001:
                         //Couldn't sanitize a variable of the given type
