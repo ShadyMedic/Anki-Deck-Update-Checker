@@ -72,6 +72,10 @@ class ErrorProcessor
                         //No ID was specified for the deleted page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 400007:
+                        //No ID was specified for the update-status image generator
+                        $this->errorWebpageView = 'image-outputs/no-id';
+                        return true;
                 }
                 break;
             case 401:
@@ -101,6 +105,10 @@ class ErrorProcessor
                     case 401005:
                         //Editing key for the given deck is missing on the delete page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 401006:
+                        //Access key for the given private deck isn't correct or is missing when generating the update-status image
+                        $this->errorWebpageView = 'image-outputs/restricted';
                         return true;
                 }
                 break;
@@ -158,6 +166,10 @@ class ErrorProcessor
                         //Package with a given ID was not found when generating an upload page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 404007:
+                        //Package with a given ID was not found when generating an update-status image
+                        $this->errorWebpageView = 'image-outputs/not-found';
+                        return true;
                 }
                 break;
             case 406:
@@ -206,8 +218,8 @@ class ErrorProcessor
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                     case 410006:
-                        //Package with the given ID is deleted and its download can't be started
-                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        //Package with the given ID is deleted and its update-status image can't be generated
+                        $this->errorWebpageView = "image-outputs/deleted";
                         return true;
                 }
             case 500:
