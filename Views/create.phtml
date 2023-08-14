@@ -1,0 +1,60 @@
+<?php if (isset($create_createdId)) : //Form was just submitted with valid data and a package entry has been created?>
+<form id="proceed-form" method="POST" action="/upload/<?= $create_createdId ?>">
+    <input type="hidden" name="key" value="<?= $create_key ?>"/>
+</form>
+<script>
+    document.getElementById("proceed-form").submit();
+</script>
+<?php else : ?>
+<form method="post" id="edit-form">
+    <fieldset>
+        <label for="deck-name-input">Deck name:</label>
+        <input type="text" name="deck-name" id="deck-name-input" maxlength="122"
+               placeholder="Respiratory Physiology" value="<?= $create_deckName ?? '' ?>" required/>
+        <small>
+            When your package is downloaded, the file will have this name.
+            <strong>Do not include the <code>.apkg</code> extension in this field.</strong>
+        </small>
+    </fieldset>
+    <fieldset>
+        <label for="author-input">Author (pre-filled from your <a href="/account">account settings</a>):</label>
+        <input type="text" name="author" id="author-input" value="<?= $create_author ?? '' ?>" maxlength="31"
+               required/>
+        <small>This name will be displayed next to the deck name. You can keep it as "Anonymous".</small>
+    </fieldset>
+    <fieldset>
+        <label for="public-input">Keep package public?</label>
+        <input type="checkbox" name="public" id="public-input"
+               <?php if (($create_public ?? true) !== false) : ?>checked<?php endif ?>/>
+        <small>We recommend keeping all decks public – it won't hurt you and might help others.</small>
+        <small>
+            Private packages will have a generated access code assigned to them. This code will be contained within
+            the link that you'll be able to share with your users. Only users with this link will be able to
+            download this package, and it will not be listed on the <a href="/browse">browse webpage</a>.<br>
+            <strong>Warning:</strong> A package created as public cannot be made private later!
+        </small>
+    </fieldset>
+    <fieldset>
+        <label for="new-key-input">Editing key (pre-filled from your <a href="/account">account settings</a>):</label>
+        <input type="password" name="key" id="key-input" maxlength="31" value="<?= $create_key ?? '' ?>" required/>
+        <small>
+            Editing key is something like a password that is necessary to update this package in the future.
+            Take care of the key and keep it private, as anyone with access to it can modify your package and
+            push destructive updates to your users.
+            Also note, that the key cannot be recovered if forgotten, unless you personally know the webmaster
+            of this website.
+            You are supposed to use the same key for all of your decks in order to make the work with the system
+            easier, but you need to ensure it is strong enough.<br>
+            <strong>Do not set the editing key to the same value as any of your passwords to other services!</strong>
+            The editing key is not protected by encryption for technical reasons and while we do our best to keep
+            the information private, we can never completely prevent data theft.
+        </small>
+    </fieldset>
+    <fieldset>
+        <button id="submit-button">Proceed</button>
+        <div style="color: red">
+            <?= $create_error ?? '' ?>
+        </div>
+    </fieldset>
+</form>
+<?php endif ?>

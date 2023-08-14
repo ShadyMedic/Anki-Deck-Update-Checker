@@ -1,6 +1,6 @@
 <?php
 
-namespace Models;
+namespace AnkiDeckUpdateChecker\Models;
 
 class UserException extends \Exception {}
 

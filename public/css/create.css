@@ -1,0 +1,25 @@
+fieldset {
+    border: 1px solid black;
+    overflow-x: auto;
+}
+
+input[type=text], input[type=password] {
+    font-family: monospace;
+}
+
+input[type=text][maxlength="31"] {
+    width: 31ch;
+}
+
+input[type=password][maxlength="31"] {
+    width: 35ch;
+}
+
+input[maxlength="122"] {
+    width: -webkit-fill-available;
+}
+
+small {
+    display: block;
+}
+

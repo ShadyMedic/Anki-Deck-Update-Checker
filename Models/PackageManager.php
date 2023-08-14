@@ -1,20 +1,19 @@
 <?php
 
-namespace Models;
+namespace AnkiDeckUpdateChecker\Models;
 
 class PackageManager
 {
 
-    public function update(int $packageId, string $downloadLink = null) : bool
+    public function update(Package $package, string $downloadLink = null) : bool
     {
-        $package = new Package();
-        $package->load($packageId);
+        $downloadLink = $downloadLink ?? '/deck/'.$package->getId(); //TODO allow other website hosting
 
-        $downloadLink = $downloadLink ?? '/deck.php?id='.$package->getId();
-
+        $package->incrementVersion();
         return $package->update(array(
             'download_link' => $downloadLink,
-            'version' => $package->getVersion() + 1
+            'version' => $package->getVersion(),
+            'updated_at' => date(DATE_W3C)
         ));
     }
 
@@ -97,11 +96,10 @@ class PackageManager
     public function checkFileUpload(array $fileUploadInfo)
     {
         $fileSize = $fileUploadInfo['size'];
-        $tmpFileName = $fileUploadInfo['tmp_name'];
         $uploadError = $fileUploadInfo['error'];
 
-        if ($uploadError === UPLOAD_ERR_INI_SIZE || $uploadError === UPLOAD_ERR_FORM_SIZE || $fileSize > 8388608) {
-            throw new UserException("Your package file is too large – maximum allowed size is 8 MB for now.");
+        if ($uploadError === UPLOAD_ERR_INI_SIZE || $uploadError === UPLOAD_ERR_FORM_SIZE || $fileSize > 26214400) {
+            throw new UserException("Your package file is too large – maximum allowed size is 20 MiB for now.");
         } else if ($uploadError === UPLOAD_ERR_NO_FILE) {
             throw new UserException("No file was selected.");
         } else if (!empty($uploadError)) {
@@ -113,7 +111,7 @@ class PackageManager
     {
         $query = '
             SELECT package_id,filename,author,version,updated_at FROM package
-            WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL
+            WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL AND deleted = 0
             ORDER BY updated_at DESC;
         ';
 
@@ -135,6 +133,13 @@ class PackageManager
         $statement = $db->prepare($query);
         $statement->execute(array($key));
         return $statement->fetchAll();
+    }
+
+    public function delete(Package $package)
+    {
+        $package->delete();
+        unlink('decks/'.$package->getId().'.apkg');
+        unset($package);
     }
 }
 

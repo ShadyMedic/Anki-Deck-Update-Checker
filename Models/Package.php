@@ -1,6 +1,6 @@
 <?php
 
-namespace Models;
+namespace AnkiDeckUpdateChecker\Models;
 
 use DateTime;
 use PDOException;
@@ -15,6 +15,7 @@ class Package implements DatabaseRecord
     private ?string $author = null;
     private ?string $editKey = null;
     private DateTime $updatedAt;
+    private bool $deleted = false;
 
     public function create(array $data) : bool
     {
@@ -28,8 +29,8 @@ class Package implements DatabaseRecord
             'INSERT INTO package (filename, author, edit_key) VALUES (?,?,?)' :
             'INSERT INTO package (access_key, filename, author, edit_key) VALUES (?,?,?,?)';
         $parameters = (empty($accessKey)) ?
-            array($name.'.apkg', $author, $editKey) :
-            array($accessKey, $name.'.apkg', $author, $editKey);
+            array($name, $author, $editKey) :
+            array($accessKey, $name, $author, $editKey);
 
         try {
             $statement = $db->prepare($query);
@@ -48,18 +49,17 @@ class Package implements DatabaseRecord
         }
 
         $columns = array_keys($data);
-        $values = array_values($data);
 
-        $columnSting = '';
+        $columnString = '';
         foreach ($columns as $column) {
-            $columnSting .= $column.' = ?, ';
+            $columnString .= $column.' = :'.$column.', ';
         }
-        $columnString = rtrim($columnSting, ', ');
+        $columnString = rtrim($columnString, ', ');
 
         $db = Db::connect();
-        $query = 'UPDATE package SET '.$columnString.' WHERE package_id = ?;';
+        $query = 'UPDATE package SET '.$columnString.' WHERE package_id = :package_id';
         $statement = $db->prepare($query);
-        return $statement->execute(array_merge($values, [$this->getId()]));
+        return $statement->execute(array_merge($data, ['package_id' => $this->getId()]));
     }
 
     public function load(int $id) : bool
@@ -80,6 +80,7 @@ class Package implements DatabaseRecord
         $this->author = $data['author'];
         $this->editKey = $data['edit_key'];
         $this->updatedAt = new DateTime($data['updated_at']);
+        $this->deleted = $data['deleted'];
 
         return true;
     }
@@ -90,9 +91,16 @@ class Package implements DatabaseRecord
             throw new \BadMethodCallException('The package cannot be deleted, because its ID wasn\'t specified');
         }
 
-        $db = Db::connect();
-        $statement = $db->prepare('DELETE FROM package WHERE package_id = ? LIMIT 1');
-        return $statement->execute(array($this->packageId));
+        return $this->update([
+            'version' => 0,
+            'access_key' => null,
+            'download_link' => null,
+            'filename' => null,
+            'author' => null,
+            'edit_key' => null,
+            'updated_at' => null,
+            'deleted' => true
+        ]);
     }
 
     public function getId() : ?int
@@ -105,14 +113,39 @@ class Package implements DatabaseRecord
         return $this->name;
     }
 
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
     public function getVersion(): ?int
     {
         return $this->version;
     }
 
+    public function incrementVersion()
+    {
+        $this->version++;
+    }
+
+    public function isPublic(): bool
+    {
+        return $this->accessKey === null;
+    }
+
+    public function getAccessKey() : ?string
+    {
+        return $this->accessKey;
+    }
+
+    public function getEditKey() : ?string
+    {
+        return $this->editKey;
+    }
+
     public function getDownloadLink() : ?string
     {
-        $isHostedLocally = (strpos($this->downloadLink, '/deck.php?') === 0); //Always TRUE for now
+        $isHostedLocally = (strpos($this->downloadLink, '/deck/') === 0); //Always TRUE for now
         if ($isHostedLocally) {
             $downloadLink = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].$this->downloadLink;
         } else {
@@ -129,6 +162,11 @@ class Package implements DatabaseRecord
     public function getUpdatedDate() : DateTime
     {
         return $this->updatedAt;
+    }
+
+    public function isDeleted()
+    {
+        return $this->deleted;
     }
 }
 

@@ -1,0 +1,23 @@
+fieldset {
+    border: 1px solid black;
+}
+
+small {
+    display: block;
+}
+
+details {
+    border: 1px solid black;
+    margin: 8px 2px;
+    padding: 8px;
+}
+
+summary {
+    text-align: center;
+}
+
+summary > * {
+    display: inline-block;
+    margin: 0.5em 0;
+    text-decoration: underline dotted 2px gray;
+}

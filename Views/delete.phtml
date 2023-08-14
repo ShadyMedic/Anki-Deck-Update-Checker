@@ -1,0 +1,41 @@
+<p>Are you sure you want to delete <strong><?= $delete_deckName ?></strong>?</p>
+<p>Just so you know the consequences:</p>
+<ul>
+    <li>
+        All of the users of this deck will see a notification when they open this deck, saying that their deck wasn't
+        found in our database and it was most likely deleted by the author.
+    </li>
+    <li>
+        Going to update page for this deck will return a "410 – Gone" error. All links to the deck's page on our website
+        will be removed from public view as well.
+    </li>
+    <li>
+        If you choose to reupload this package, it will have a different ID and users of the deck you're going to delete
+        will not start seeing potential update notifications again.
+    </li>
+    <li>
+        The Anki package will be permanently deleted from our servers and we won't be able to recover it, if you
+        lose your copy.
+    </li>
+    <li>
+        This package's metadata (name, author, description, version, download link, editing key, last-modification date
+        and access key for private decks) will be purged from our database as well.
+    </li>
+    <li>
+        The only information left of this package on our servers will be its ID and a note that it was deleted.
+    </li>
+</ul>
+<form method="POST">
+    <fieldset>
+        <p>
+            If you are certain that you understand the consequences, please, fill in the editing key for this deck
+            to confirm and press the button.
+        </p>
+        <input type="hidden" name="key" value="<?= $delete_key ?>" required/>
+        <input type="password" name="confirm-key" maxlength="31" required/>
+        <input type="submit" value="Permanently Delete This Deck"/>
+        <div style="color: red">
+            <?= $delete_error ?? '' ?>
+        </div>
+    </fieldset>
+</form>

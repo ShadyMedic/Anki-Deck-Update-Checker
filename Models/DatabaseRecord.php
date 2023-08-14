@@ -1,6 +1,6 @@
 <?php
 
-namespace Models;
+namespace AnkiDeckUpdateChecker\Models;
 
 interface DatabaseRecord
 {
