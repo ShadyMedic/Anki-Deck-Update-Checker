@@ -12,7 +12,7 @@ use InvalidArgumentException;
  */
 abstract class Controller
 {
-    private const VIEWS_DIRECTORY = 'Views';
+    public const VIEWS_DIRECTORY = 'Views';
     protected const CONTROLLERS_DIRECTORY = 'Controllers';
 
     /**
