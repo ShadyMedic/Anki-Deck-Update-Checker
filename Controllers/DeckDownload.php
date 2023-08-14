@@ -29,7 +29,7 @@ class DeckDownload extends Controller
         }
 
         if ($package->isDeleted()) {
-            throw new UserException('This package was deleted.', 410006);
+            throw new UserException('This package was deleted.', 410002);
         }
 
         $authenticator = new PackageManager();
@@ -39,10 +39,6 @@ class DeckDownload extends Controller
 
         if ($package->getVersion() === 0) {
             throw new UserException('This package hasn\'t been uploaded yet.', 406002);
-        }
-
-        if ($package->isDeleted()) {
-            throw new UserException('This package was deleted.', 410002);
         }
 
         if (!file_exists('decks/'.$packageId.'.apkg')) {
