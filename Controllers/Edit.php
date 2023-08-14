@@ -5,7 +5,6 @@ namespace AnkiDeckUpdateChecker\Controllers;
 use AnkiDeckUpdateChecker\Models\Package;
 use AnkiDeckUpdateChecker\Models\PackageManager;
 use AnkiDeckUpdateChecker\Models\UserException;
-use PDO;
 
 class Edit extends Controller
 {
@@ -45,17 +44,16 @@ class Edit extends Controller
         $deckName = $package->getName();
         $author = $package->getAuthor();
         $public = $package->isPublic();
-        $key = $package->getEditKey();
         $errors = array();
         $saves = array();
 
-        if (!empty($_POST)) {
+        if (isset($_POST['deck-name'])) { //Form was submitted, webpage loading is also POST because of "key" submission
             $deckName = trim($_POST['deck-name']);
             $author = trim($_POST['author']);
-            $public = isset($_POST['public']) && $_POST['public'] === 'on';
-            $key = trim($_POST['key']);
+            $justPublished = isset($_POST['public']) && $_POST['public'] === 'on';
+            $public = $public || $justPublished;
+            $key = trim($_POST['new-key']);
 
-            $tools = new PackageManager();
             $edits = array();
 
             try {
@@ -85,7 +83,7 @@ class Edit extends Controller
                 $errors[] = $e->getMessage();
             }
 
-            if ($public) {
+            if ($justPublished) {
                 $edits['access_key'] = null;
                 $saves[] = 'Package was published';
             }
@@ -98,16 +96,17 @@ class Edit extends Controller
         self::$data['layout']['page_id'] = 'new-deck';
         self::$data['layout']['title'] = 'Edit Deck Details';
 
+        self::$data['edit']['key'] = $originalKey;
         self::$data['edit']['deckName'] = $deckName ?? null;
         self::$data['edit']['author'] = $author ?? null;
         self::$data['edit']['public'] = $public ?? null;
-        self::$data['edit']['key'] = $key ?? null;
+        self::$data['edit']['newKey'] = $key ?? $originalKey;
         self::$data['edit']['errors'] = $errors;
         self::$data['edit']['saves'] = $saves;
 
         self::$views[] = 'edit';
         self::$cssFiles[] = 'create';
-        self::$jsFiles[] = 'create';
+        self::$jsFiles[] = 'auth-fill'; //For loading key-input and author-input
 
         return 200;
     }

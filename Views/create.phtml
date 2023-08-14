@@ -1,3 +1,11 @@
+<?php if (isset($create_createdId)) : //Form was just submitted with valid data and a package entry has been created?>
+<form id="proceed-form" method="POST" action="/upload/<?= $create_createdId ?>">
+    <input type="hidden" name="key" value="<?= $create_key ?>"/>
+</form>
+<script>
+    document.getElementById("proceed-form").submit();
+</script>
+<?php else : ?>
 <form method="post" id="edit-form">
     <fieldset>
         <label for="deck-name-input">Deck name:</label>
@@ -49,4 +57,4 @@
         </div>
     </fieldset>
 </form>
-
+<?php endif ?>

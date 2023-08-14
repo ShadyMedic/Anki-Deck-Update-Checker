@@ -53,9 +53,7 @@ class Create extends Controller
                 ));
 
                 $packageId = $package->getId();
-
-                $url = '/upload/'.$packageId;
-                $this->redirect($url);
+                self::$data['create']['createdId'] = $packageId;
             }
         }
 
@@ -69,8 +67,14 @@ class Create extends Controller
         self::$data['create']['error'] = $error ?? null;
 
         self::$views[] = 'create';
-        self::$cssFiles[] = 'create';
-        self::$jsFiles[] = 'create';
+        if (isset(self::$data['create']['createdId'])) {
+            //Include front-end scripts only if the generated webpage isn't a quick front-end redirect.
+            self::$cssFiles = [];
+            self::$jsFiles = [];
+        } else {
+            self::$cssFiles[] = 'create';
+            self::$jsFiles[] = 'auth-fill';
+        }
 
         return 200;
     }
