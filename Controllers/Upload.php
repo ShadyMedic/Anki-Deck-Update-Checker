@@ -17,10 +17,6 @@ class Upload extends Controller
         $packageId = array_shift($args) ?? null;
         $key = $_POST['key'] ?? null;
 
-        if (is_null($packageId)) {
-            throw new UserException('Missing package ID.', 400003);
-        }
-
         $package = new Package();
         $packageFound = $package->load($packageId);
 

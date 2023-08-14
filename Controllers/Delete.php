@@ -17,10 +17,6 @@ class Delete extends Controller
         $packageId = array_shift($args) ?? null;
         $key = $_POST['key'] ?? null;
 
-        if (is_null($packageId)) {
-            throw new UserException('No package ID was specified.', 400005);
-        }
-
         $package = new Package();
         $packageFound = $package->load($packageId);
 

@@ -17,10 +17,6 @@ class Edit extends Controller
         $packageId = array_shift($args) ?? null;
         $originalKey = $_POST['key'] ?? null;
 
-        if (is_null($packageId)) {
-            throw new UserException('No package ID was specified.', 400004);
-        }
-
         $package = new Package();
         $packageFound = $package->load($packageId);
 

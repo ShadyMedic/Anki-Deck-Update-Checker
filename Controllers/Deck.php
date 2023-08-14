@@ -21,10 +21,6 @@ class Deck extends Controller
 
         $accessKey = $_GET['key'] ?? null; //Filled in only for protected decks
 
-        if (is_null($packageId)) {
-            throw new UserException('No package ID was specified.', 400001);
-        }
-
         $package = new Package();
         $packageFound = $package->load($packageId);
 
