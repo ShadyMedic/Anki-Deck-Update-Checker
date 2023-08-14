@@ -16,7 +16,7 @@
             Paste the following text into the text field and make sure the checkbox is unchecked.<br>
             <strong>You need to do this everytime you upload a new version, because the code changes slightly
                 between versions!</strong><br>
-            <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://anki-update-check.4fan.cz/update.php<?= $upload_queryString ?>"&gt;&lt;img src="http://anki-update-check.4fan.cz/check-update.php<?= $upload_queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
+            <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://<?= $_SERVER['SERVER_NAME'] ?>/update<?= $upload_queryString ?>"&gt;&lt;img src="http://<?= $_SERVER['SERVER_NAME'] ?>/check-update<?= $upload_queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
         </li>
         <li>
             Press OK and exit the dialog box.<br>
