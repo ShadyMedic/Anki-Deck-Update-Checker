@@ -16,11 +16,13 @@ class Manage extends Controller
         self::$data['layout']['title'] = 'My Published Anki Decks';
 
         self::$data['manage']['packages'] = [];
+        self::$data['manage']['latestKey'] = '';
 
         $key = $_POST['key'] ?? null;
         if (!is_null($key)) {
             $manager = new PackageManager();
             self::$data['manage']['packages'] = $manager->getOwnedPackages($key);
+            self::$data['manage']['latestKey'] = $key;
         }
 
         self::$views[] = 'manage';

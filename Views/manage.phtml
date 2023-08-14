@@ -1,14 +1,21 @@
 <section>
+    <p>
+        This is a list of Anki packages registered in our database, that were created with the editing key saved in your
+        <a href="/account">account setting</a> or that you entered in the form below.
+    </p>
+</section>
+<section>
+    <p>
+        Are you looking for a package created with a different editing key? Enter the key in the form below:
+    </p>
     <form id="manage-form" method="post">
-        <label for="key-input">Enter your editing key:</label>
-        <input type="password" name="key" id="key-input" maxlength="31" required/>
-        <button id="load-key-button">Load last used</button><br>
-        <input id="submit-button" type="submit"/>
+        <input type="password" name="key" id="key-input" maxlength="31" placeholder="Enter your unsaved editing key" required/>
+        <input id="submit-button" type="submit" value="Enter"/>
+        <button id="reset-button">Reload Saved Key</button>
     </form>
 </section>
 <hr />
 <section>
-    <p>This is a list of Anki decks registered in our database, that were created with the editing key you provided.</p>
     <p>Use the icons to modify any of the deck:</p>
     <ul>
         <li>
@@ -21,7 +28,8 @@
             <img src="img/delete.png" alt="Delete" class="icon" /> – Permanently delete the Anki deck from this service.
         </li>
     </ul>
-
+</section>
+<section>
     <?php if (empty($manage_packages)) : ?>
         <p class="no-results"><strong>No packages created with the editing key you provided found.</strong></p>
     <?php else : ?>
@@ -38,19 +46,16 @@
                     <td><?= $package['version'] ?></td>
                     <td><?= $package['updated_at'] ?></td>
                     <td>
-                        <a href="/upload/<?= $package['package_id'] ?>" class="plain-link">
-                            <img src="img/upload.png" alt="Upload new version" class="icon shadow-blue" />
-                        </a>
-                        <a href="/edit/<?= $package['package_id'] ?>" class="plain-link">
-                            <img src="img/edit.png" alt="Edit metadata" class="icon shadow-yellow" />
-                        </a>
-                        <a href="/delete/<?= $package['package_id'] ?>" class="plain-link">
-                            <img src="img/delete.png" alt="Delete" class="icon shadow-red" />
-                        </a>
+                        <img src="img/upload.png" alt="Upload new version" class="clickable-icon icon shadow-blue" data-href="/upload/<?= $package['package_id'] ?>"/>
+                        <img src="img/edit.png" alt="Edit metadata" class="clickable-icon icon shadow-yellow" data-href="/edit/<?= $package['package_id'] ?>"/>
+                        <img src="img/delete.png" alt="Delete" class="clickable-icon icon shadow-red" data-href="/delete/<?= $package['package_id'] ?>"/>
                     </td>
                 </tr>
             <?php endforeach ?>
         </table>
+        <form id="deck-modification-link-data-sender" action="" method="POST"> <!-- Action will be filled in by JavaScript -->
+            <input type="hidden" id="deck-modification-link-key-input" name="key" value="<?= $manage_latestKey ?>">
+        </form>
     <?php endif ?>
 </section>
 

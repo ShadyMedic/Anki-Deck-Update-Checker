@@ -1,25 +1,21 @@
-document.getElementById("load-key-button").addEventListener('click', function (event) {
-    event.preventDefault()
+window.addEventListener('load', function() {
+    let buttons = document.getElementsByClassName("clickable-icon")
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function (event) {
+            document.getElementById("deck-modification-link-data-sender").action = event.target.getAttribute("data-href");
+            document.getElementById("deck-modification-link-data-sender").submit();
+        })
+    }
 
-    document.getElementById("key-input").value = window.localStorage.getItem('key')
+    document.getElementById("reset-button").addEventListener('click', function(event){
+        document.getElementById('manage-link').click();
+    })
 })
-
-function formSubmitted(event) {
-    event.preventDefault()
-
-    let key = document.getElementById("key-input").value
-    window.localStorage.setItem('key', key)
-    console.log("saving " + key)
-
-    document.getElementById("manage-form").submit()
-}
-
-document.getElementById("manage-form").addEventListener('submit', formSubmitted)
 
 window.onkeydown = function(event){
     if(event.keyCode === 13) {
         event.preventDefault()
-        formSubmitted(event)
+        document.getElementById("manage-form").submit()
     }
 }
 

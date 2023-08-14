@@ -26,17 +26,21 @@ input[type=password] {
     height: 1em;
 }
 
-a > .shadow-blue:hover {
+.clickable-icon {
+    cursor: pointer;
+}
+
+.clickable-icon > .shadow-blue:hover {
     box-shadow: 0 0 8px #4d9cff;
     background-color: #b1d4ff;
 }
 
-a > .shadow-yellow:hover {
+.clickable-icon > .shadow-yellow:hover {
     box-shadow: 0 0 8px #ffcc00;
     background-color: #ffe98f;
 }
 
-a > .shadow-red:hover {
+.clickable-icon > .shadow-red:hover {
     box-shadow: 0 0 8px #ff4f4f;
     background-color: #ffb2b2;
 }
