@@ -14,6 +14,11 @@ window.addEventListener('load', function() {
         document.getElementById("key-input").value = pass
     })
 
+    document.getElementById("manage-link-account").addEventListener('click', function (event) {
+        event.preventDefault()
+        document.getElementById("manage-link").click();
+    })
+
     document.getElementById("submit-button").addEventListener('click', function (event) {
         event.preventDefault()
 
