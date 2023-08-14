@@ -64,6 +64,14 @@ class ErrorProcessor
                         //No ID was specified for the edit page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 400005:
+                        //No ID was specified for the delete page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 400006:
+                        //No ID was specified for the deleted page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 401:
@@ -75,11 +83,45 @@ class ErrorProcessor
                         $this->errorWebpageView = "errors/error401.html";
                         return true;
                     case 401001:
-                        //Editing key for the given deck isn't valid on the upload page
+                        //Access key for the given private deck isn't correct or is missing on the deck info page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                     case 401002:
-                        //Access key for the given private deck isn't correct or is missing
+                        //Access key for the given private deck isn't correct or is missing on the deck download page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 401003:
+                        //Editing key for the given deck is missing on the edit page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 401004:
+                        //Editing key for the given deck is missing on the upload page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 401005:
+                        //Editing key for the given deck is missing on the delete page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                }
+                break;
+            case 403:
+                //Forbidden
+                $this->httpHeaderCode = 403;
+                $this->httpHeaderMessage = 'Forbidden';
+                switch ($errorCode) {
+                    case 403000:
+                        $this->errorWebpageView = "errors/error401.html";
+                        return true;
+                    case 403001:
+                        //Editing key for the given deck isn't valid on the upload page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 403002:
+                        //Editing key for the given deck isn't valid on the edit page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 403003:
+                        //Editing key for the given deck isn't valid on the delete page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                 }
@@ -108,6 +150,14 @@ class ErrorProcessor
                         //Package with a given ID was not found when generating a deck edit page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 404005:
+                        //Package with a given ID was not found when generating a deck delete page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 404006:
+                        //Package with a given ID was not found when generating an upload page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 406:
@@ -124,6 +174,39 @@ class ErrorProcessor
                         return true;
                     case 406002:
                         //Package with the given ID has version equal to 0 and the request to download it cannot be fulfilled
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                }
+            case 410:
+                //Gone
+                $this->httpHeaderCode = 410;
+                $this->httpHeaderMessage = 'Gone';
+                switch ($errorCode) {
+                    case 410000:
+                        $this->errorWebpageView = "errors/error410.html";
+                        return true;
+                    case 410001:
+                        //Package with the given ID is deleted and its deck page can't be generated
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 410002:
+                        //Package with the given ID is deleted and its download can't be started
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 410003:
+                        //Package with the given ID is deleted and its upload page can't be generated
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 410004:
+                        //Package with the given ID is deleted and its edit page can't be generated
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 410005:
+                        //Package with the given ID is deleted and its delete page can't be generated
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 410006:
+                        //Package with the given ID is deleted and its download can't be started
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                 }
