@@ -3,8 +3,8 @@
 
 <svg
    width="256"
-   height="192"
-   viewBox="0 0 67.733332 50.8"
+   height="176"
+   viewBox="0 0 67.733332 46.566667"
    version="1.1"
    id="svg4365"
    xmlns="http://www.w3.org/2000/svg"
@@ -34,15 +34,11 @@
          style="fill:#d80000;fill-opacity:1;stroke-width:0"
          x="33.932434"
          y="19.913467"
-         id="tspan9790">Information about this deck wasn't</tspan><tspan
+         id="tspan9790">No deck ID was provided</tspan><tspan
          style="fill:#d80000;fill-opacity:1;stroke-width:0"
          x="33.932434"
          y="25.091829"
-         id="tspan9794">found in our database – it was not</tspan><tspan
-         style="fill:#d80000;fill-opacity:1;stroke-width:0"
-         x="33.932434"
-         y="30.270193"
-         id="tspan445">created in our service yet.</tspan></text>
+         id="tspan9794">in the update-check link.</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:8.46667px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:#000000;stroke-width:0.4;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke markers fill"
@@ -56,20 +52,20 @@
     <text
        xml:space="preserve"
        style="font-size:4.14269px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:#d80000;fill-opacity:1;stroke:#00a313;stroke-width:0;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke markers fill"
-       x="33.2897"
-       y="38.869816"
+       x="33.164883"
+       y="34.064411"
        id="text7392-6"><tspan
          style="fill:#808080;fill-opacity:1;stroke-width:0"
-         x="33.2897"
-         y="38.869816"
+         x="33.164883"
+         y="34.064411"
          id="tspan445-5">Double-check the updater code</tspan><tspan
          style="fill:#808080;fill-opacity:1;stroke-width:0"
-         x="33.2897"
-         y="44.04818"
+         x="33.164883"
+         y="39.242775"
          id="tspan523">in this deck's description. It is</tspan><tspan
          style="fill:#808080;fill-opacity:1;stroke-width:0"
-         x="33.2897"
-         y="49.22654"
+         x="33.164883"
+         y="44.421135"
          id="tspan525">most likely incorrect.</tspan></text>
   </g>
 </svg>
