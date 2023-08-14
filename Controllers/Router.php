@@ -30,6 +30,7 @@ class Router extends Controller
 
         self::$views[] = 'layout';
         self::$cssFiles[] = 'layout';
+        self::$jsFiles[] = 'navigation';
 
         $variables = array();
         $pathTemplate = $this->separateUrlVariables($urlPath, $variables);

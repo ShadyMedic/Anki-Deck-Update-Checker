@@ -33,7 +33,7 @@
 </details>
 <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="package-id" value="<?= $upload_packageId ?>"/>
-    <input type="hidden" name="key" id="key-input" value=""/> <!-- Value will be filled in by JavaScript -->
+    <input type="hidden" name="key" id="key-input" value="<?= $upload_key ?>"/> <!-- Value will be filled in by JavaScript -->
     <input type="hidden" name="access-key" id="access-key-input" value="<?= $upload_accessKey ?>"/>
     <fieldset>
         <label for="file-input">Package file:</label>

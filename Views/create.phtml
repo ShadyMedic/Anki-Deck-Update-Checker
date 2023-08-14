@@ -9,8 +9,8 @@
         </small>
     </fieldset>
     <fieldset>
-        <label for="author-input">Author:</label>
-        <input type="text" name="author" id="author-input" value="<?= $create_author ?? 'Anonymous' ?>" maxlength="31"
+        <label for="author-input">Author (pre-filled from your <a href="/account">account settings</a>):</label>
+        <input type="text" name="author" id="author-input" value="<?= $create_author ?? '' ?>" maxlength="31"
                required/>
         <small>This name will be displayed next to the deck name. You can keep it as "Anonymous".</small>
     </fieldset>
@@ -27,10 +27,8 @@
         </small>
     </fieldset>
     <fieldset>
-        <label for="key-input">Editing key:</label>
-        <input type="text" name="key" id="key-input" maxlength="31" value="<?= $create_key ?? '' ?>" required/>
-        <button id="generate-key-button">Generate</button>
-        <button id="load-key-button">Load last used</button>
+        <label for="new-key-input">Editing key (pre-filled from your <a href="/account">account settings</a>):</label>
+        <input type="password" name="key" id="key-input" maxlength="31" value="<?= $create_key ?? '' ?>" required/>
         <small>
             Editing key is something like a password that is necessary to update this package in the future.
             Take care of the key and keep it private, as anyone with access to it can modify your package and

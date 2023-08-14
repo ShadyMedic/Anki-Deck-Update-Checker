@@ -14,11 +14,14 @@
 ?>">
 <nav>
     <ul>
-        <li><a href="/">Homepage</a></li>
-        <li><a href="/browse">Public Decks</a></li>
-        <li><a href="/my-decks">My Decks</a></li>
-        <li><a href="/new-deck">Upload a New Deck</a></li>
+        <li id="home-link">Homepage</li>
+        <li id="browse-link">Public Decks</li>
+        <li id="manage-link">My Decks</li>
+        <li id="create-link">Upload a New Deck</li>
     </ul>
+    <form id="manage-link-data-sender" action="/my-decks" method="POST">
+        <input type="hidden" id="manage-link-key-input" name="key" value=""> <!-- Value will be filled in by JavaScript -->
+    </form>
 </nav>
 <main>
     <header>

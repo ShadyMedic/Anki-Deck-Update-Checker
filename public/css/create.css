@@ -3,12 +3,16 @@ fieldset {
     overflow-x: auto;
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
     font-family: monospace;
 }
 
-input[maxlength="31"] {
+input[type=text][maxlength="31"] {
     width: 31ch;
+}
+
+input[type=password][maxlength="31"] {
+    width: 35ch;
 }
 
 input[maxlength="122"] {

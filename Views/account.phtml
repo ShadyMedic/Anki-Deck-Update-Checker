@@ -1,0 +1,52 @@
+<p>
+    Whenever you upload a new Anki package, it is saved along with your author name and an "editing key"
+</p>
+<p>
+    In order to make the work with our system easier, you can pre-fill these two pieces of information here. Whenever
+    you create a new package, the author name and editing key that you set up here will be automatically used. And
+    whenever you manage an existing deck, these pieces of information will be automatically used to authenticate you.
+</p>
+<p>
+    Please note, that after filling and submitting the form below, <strong>no data will be sent to our servers</strong>.
+    This form only creates a <strong>local "account" at your machine</strong> by saving the name and the key in your
+    browser's local storage (something like a cookie). If you clear cookies or reinstall your browser, the name and key
+    will be lost. So make sure you remember these details (especially the key) in case you need to input them manually
+    in the future again.
+</p>
+
+<details>
+    <summary><h3>Display the form (it contains your current editing key in plain text!)</h3></summary>
+    <form method="POST">
+        <p>
+            <label for="author-input">Author name: </label><br>
+            <input type="text" id="author-input" name="author" value="<?= $account_author ?? '' ?>" maxlength="31" required/><br>
+            <small>
+                The author name serves just to give you credit for your work and to make it easier for users of your
+                decks to find packages made by you. Multiple people can choose the same author name, but it is not
+                recommended.
+            </small>
+        </p>
+        <p>
+            <label for="key-input">Editing key: </label><br>
+            <input type="text" id="key-input" name="key" value="<?= $account_key ?? '' ?>" maxlength="31" required/>
+            <button id="generate-key-button">Generate</button><br>
+            <small>
+                Editing key is something like a password that is necessary to update, modify or delete packages created
+                with it in the future. Take care of the key and keep it private, as anyone with access to it can modify
+                your packages and push destructive updates to your users. Also note, that the key cannot be recovered,
+                if forgotten, unless you personally know the webmaster of this website.<br>
+                <strong>Do not set the editing key to the same value as any of your passwords to other services!</strong>
+                The editing key is not protected by encryption for technical reasons and while we do our best to keep
+                the information private, we can never completely prevent data theft.
+            </small>
+        </p>
+        <p>
+            Resetting the author name and editing key here will <strong>not</strong> change it for the packages you
+            created in the past. It is recommended to edit the details of your past decks to the new author name and
+            editing key on the <a href="/my-decks">my decks page</a> before changing the values in this form (unless you
+            want to start publishing new packages under new identity of course).
+        </p>
+        <button id="submit-button">Save</button>
+    </form>
+</details>
+

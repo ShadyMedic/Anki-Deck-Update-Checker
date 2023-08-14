@@ -6,16 +6,17 @@ small {
     display: block;
 }
 
-.instructions-spoiler {
+details {
     border: 1px solid black;
     margin: 8px 2px;
+    padding: 8px;
 }
 
-.instructions-spoiler-header {
+summary {
     text-align: center;
 }
 
-.instructions-spoiler-header > * {
+summary > * {
     display: inline-block;
     margin: 0.5em 0;
     text-decoration: underline dotted 2px gray;

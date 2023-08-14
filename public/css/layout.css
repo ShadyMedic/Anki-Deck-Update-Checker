@@ -28,18 +28,11 @@ nav li {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 nav li:hover {
     background-color: #ddd;
-}
-
-nav li a {
-    text-decoration: none;
-    color: black;
-    width: 100%;
-    line-height: 32px;
-    text-align: center;
 }
 
 nav li:not(:last-child) {
@@ -58,6 +51,10 @@ nav li:last-child {
     border-bottom: 0;
     border-style: outset;
     border-color: black;
+}
+
+#manage-link-data-sender {
+    display: none;
 }
 
 main {

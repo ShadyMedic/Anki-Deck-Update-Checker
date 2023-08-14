@@ -16,6 +16,7 @@ class Edit extends Controller
     public function process(array $args = []): int
     {
         $packageId = array_shift($args) ?? null;
+        $originalKey = $_POST['key'] ?? null;
 
         if (is_null($packageId)) {
             throw new UserException('No package ID was specified.', 400004);

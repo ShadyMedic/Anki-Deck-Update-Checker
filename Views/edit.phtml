@@ -1,13 +1,13 @@
 <form method="post" id="edit-form">
+    <input type="hidden" name="key" id="key-input" value="<?= $edit_key ?>"/> <!-- Value will be filled in by JavaScript -->
     <fieldset>
         <label for="deck-name-input">Deck name:</label>
         <input type="text" name="deck-name" id="deck-name-input" maxlength="122"
                placeholder="Respiratory Physiology" value="<?= $edit_deckName ?? '' ?>" required/>
     </fieldset>
     <fieldset>
-        <label for="author-input">Author:</label>
-        <input type="text" name="author" id="author-input" value="<?= $edit_author ?? 'Anonymous' ?>" maxlength="31"
-               required/>
+        <label for="author-input">Author (pre-filled from your <a href="/account">account settings</a>):</label>
+        <input type="text" name="author" id="author-input" value="<?= $edit_author ?? '' ?>" maxlength="31" required/>
     </fieldset>
     <?php if (!$edit_public) : ?>
         <fieldset>
@@ -25,10 +25,8 @@
         </fieldset>
     <?php endif ?>
     <fieldset>
-        <label for="key-input">Editing key:</label>
-        <input type="text" name="key" id="key-input" maxlength="31" value="<?= $edit_key ?? '' ?>" required/>
-        <button id="generate-key-button">Generate</button>
-        <button id="load-key-button">Load last used</button>
+        <label for="new-key-input">Editing key (pre-filled from your <a href="/account">account settings</a>):</label>
+        <input type="password" name="new-key" id="new-key-input" maxlength="31" value="<?= $edit_newKey ?>" required/> <!-- Value will be filled in by JavaScript -->
         <small>
             You are supposed to use the same key for all of your decks in order to make the work with the system
             easier, but you need to ensure it is strong enough.<br>
