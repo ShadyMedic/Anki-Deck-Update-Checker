@@ -19,13 +19,16 @@
     <p>Use the icons to modify any of the deck:</p>
     <ul>
         <li>
-            <img src="img/icons/upload.png" alt="Upload new version" class="icon" /> – Upload an update of the Anki deck.
+            <img src="img/icons/download.png" alt="Download current version" class="icon" /> &minus; View the download page for the Anki deck.
         </li>
         <li>
-            <img src="img/icons/edit.png" alt="Edit metadata" class="icon" /> – Edit name, author, description, editing key or protection of the Anki deck.
+            <img src="img/icons/upload.png" alt="Upload new version" class="icon" /> &minus; Upload an update of the Anki deck.
         </li>
         <li>
-            <img src="img/icons/delete.png" alt="Delete" class="icon" /> – Permanently delete the Anki deck from this service.
+            <img src="img/icons/edit.png" alt="Edit metadata" class="icon" /> &minus; Edit name, author, description, editing key or protection of the Anki deck.
+        </li>
+        <li>
+            <img src="img/icons/delete.png" alt="Delete" class="icon" /> &minus; Permanently delete the Anki deck from this service.
         </li>
     </ul>
 </section>
@@ -38,18 +41,17 @@
                 <th class="txt-l">Deck name</th>
                 <th>Version number</th>
                 <th>Last updated at</th>
-                <th>Action</th>
+                <th colspan="4">Action</th>
             </tr>
             <?php foreach ($manage_packages as $package) : ?>
                 <tr>
                     <td class="txt-l"><?= $package['filename'] ?></td>
                     <td><?= $package['version'] ?></td>
                     <td><?= $package['updated_at'] ?></td>
-                    <td>
-                        <img src="img/icons/upload.png" alt="Upload new version" class="clickable-icon icon shadow-blue" data-href="/upload/<?= $package['package_id'] ?>"/>
-                        <img src="img/icons/edit.png" alt="Edit metadata" class="clickable-icon icon shadow-yellow" data-href="/edit/<?= $package['package_id'] ?>"/>
-                        <img src="img/icons/delete.png" alt="Delete" class="clickable-icon icon shadow-red" data-href="/delete/<?= $package['package_id'] ?>"/>
-                    </td>
+                    <td class="icon-wrapper"><img src="img/icons/download.png" alt="Download current version" class="clickable-icon icon shadow-green" data-href="/deck/<?= $package['package_id'].(($package['access_key']) ? '?key='.$package['access_key'] : '') ?>"/></td>
+                    <td class="icon-wrapper"><img src="img/icons/upload.png" alt="Upload new version" class="clickable-icon icon shadow-blue" data-href="/upload/<?= $package['package_id'] ?>"/></td>
+                    <td class="icon-wrapper"><img src="img/icons/edit.png" alt="Edit metadata" class="clickable-icon icon shadow-yellow" data-href="/edit/<?= $package['package_id'] ?>"/></td>
+                    <td class="icon-wrapper"><img src="img/icons/delete.png" alt="Delete" class="clickable-icon icon shadow-red" data-href="/delete/<?= $package['package_id'] ?>"/></td>
                 </tr>
             <?php endforeach ?>
         </table>
