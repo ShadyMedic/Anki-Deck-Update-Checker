@@ -41,7 +41,7 @@ class Deck extends Controller
             throw new UserException('This package hasn\'t been uploaded yet.', 406001);
         }
 
-        $queryString = "?id=$packageId&amp;current=<span style=\"color: gold;\">".$package->getVersion()."</span>".(empty($accessKey) ? '' : "&amp;key=$accessKey");
+        $queryString = "/$packageId/<span style=\"color: gold;\">".$package->getVersion()."</span>".(empty($accessKey) ? '' : "&amp;key=$accessKey");
 
         self::$data['layout']['page_id'] = 'deck-info';
         self::$data['layout']['title'] = $package->getName();
