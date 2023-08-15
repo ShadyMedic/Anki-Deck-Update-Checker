@@ -23,11 +23,16 @@ class PackageManager
     public function validateName(string $deckName) : bool
     {
         if (empty($deckName)) {
-            throw new UserException("Deck name mustn't be empty");
+            throw new UserException('Deck name mustn\'t be empty');
         }
 
-        if (mb_strlen($deckName) > 122) {
-            throw new UserException("Deck name is too long.");
+        // Replace with "(substr($deckName, -5) === '.apkg')" in PHP version < 8
+        if (str_ends_with($deckName, '.apkg')) {
+            throw new UserException('Deck name should not contain the ".apkg" file extension.');
+        }
+
+        if (mb_strlen($deckName) > 63) {
+            throw new UserException('Deck name is too long.');
         }
 
         return true;
