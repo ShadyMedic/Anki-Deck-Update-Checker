@@ -61,5 +61,24 @@ main {
     width: 50%;
     min-width: 600px;
     margin: auto;
+    position:relative;
+}
+
+.wide-table {
+    display: block;
+    width: max-content;
+    min-width: 100%;
+    max-width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.striped-table {
+    border-collapse: collapse;
+}
+
+.striped-table tr:nth-child(even) {
+    background-color: #eee;
 }
 

@@ -3,6 +3,10 @@ th, td {
     padding: 0 16px;
 }
 
+.icon-wrapper {
+    padding: 0;
+}
+
 .txt-l {
     text-align: left;
 }
@@ -24,23 +28,29 @@ input[type=password] {
 
 .icon {
     height: 1em;
+    display: inline;
 }
 
 .clickable-icon {
     cursor: pointer;
 }
 
-.clickable-icon.shadow-blue:hover {
+.icon.shadow-green:hover {
+    box-shadow: 0 0 8px #8eff4d;
+    background-color: #c2ffb1;
+}
+
+.icon.shadow-blue:hover {
     box-shadow: 0 0 8px #4d9cff;
     background-color: #b1d4ff;
 }
 
-.clickable-icon.shadow-yellow:hover {
+.icon.shadow-yellow:hover {
     box-shadow: 0 0 8px #ffcc00;
     background-color: #ffe98f;
 }
 
-.clickable-icon.shadow-red:hover {
+.icon.shadow-red:hover {
     box-shadow: 0 0 8px #ff4f4f;
     background-color: #ffb2b2;
 }

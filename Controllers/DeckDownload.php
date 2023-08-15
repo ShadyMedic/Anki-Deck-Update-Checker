@@ -41,18 +41,11 @@ class DeckDownload extends Controller
             throw new UserException('This package file doesn\'t exist on our servers.', 404003);
         }
 
-        self::$views = []; //Don't generate any webpage
+        self::$views = []; //Don't output any HTML
+        self::$views[] = 'file-outputs/deck-download';
+        self::$data['deckdownload']['Package'] = $package;
 
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . $package->getName() . '"');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize('decks/'.$packageId.'.apkg'));
-        readfile('decks/'.$packageId.'.apkg');
-
-        return 200; //TODO: replaced exit(), will this break something?
+        return 200;
     }
 }
 

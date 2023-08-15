@@ -2,6 +2,7 @@ window.addEventListener('load', function() {
     let buttons = document.getElementsByClassName("clickable-icon")
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener('click', function (event) {
+            event.preventDefault();
             document.getElementById("deck-modification-link-data-sender").action = event.target.getAttribute("data-href");
             document.getElementById("deck-modification-link-data-sender").submit();
         })

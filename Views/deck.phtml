@@ -23,7 +23,7 @@
     overwritten. Anki will simply check which of your cards were changed in this version and updates their
     content.</p>
 <p>
-    File name: <code><?= $deck_package->getName() ?></code><br>
+    File name: <code><?= $deck_package->getName() ?>.apkg</code><br>
     File size: <code><?= number_format(filesize('decks/'.$deck_packageId.'.apkg') / 1000000, 2) ?> MB</code><br>
     Version number: <code><?= $deck_package->getVersion() ?></code><br>
     File updated at: <code><?= $deck_package->getUpdatedDate()->format('Y-m-d H:i:s'); ?></code>
