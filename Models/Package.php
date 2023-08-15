@@ -5,7 +5,7 @@ namespace AnkiDeckUpdateChecker\Models;
 use DateTime;
 use PDOException;
 
-class Package implements DatabaseRecord
+class Package implements DatabaseRecord, Sanitizable
 {
     private ?int $packageId = null;
     private ?int $version = 0;
@@ -167,6 +167,20 @@ class Package implements DatabaseRecord
     public function isDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Method responsible for sanitizing all applicable attributes of the current instance.
+     * The after this method is called, the state of the instance should no longer be changed and no other
+     * methods should be called.
+     * @return void
+     */
+    public function sanitize(): void
+    {
+        $this->name = htmlspecialchars($this->name, ENT_QUOTES);
+        $this->author = htmlspecialchars($this->author, ENT_QUOTES);
+        $this->downloadLink = htmlspecialchars($this->downloadLink, ENT_QUOTES);
+        $this->editKey = htmlspecialchars($this->editKey, ENT_QUOTES);
     }
 }
 
