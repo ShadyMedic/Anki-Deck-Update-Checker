@@ -180,7 +180,7 @@ class Package implements DatabaseRecord, Sanitizable
         $this->name = htmlspecialchars($this->name, ENT_QUOTES);
         $this->author = htmlspecialchars($this->author, ENT_QUOTES);
         $this->downloadLink = htmlspecialchars($this->downloadLink, ENT_QUOTES);
-        $this->editKey = htmlspecialchars($this->editKey, ENT_QUOTES);
+        //$this->editKey = htmlspecialchars($this->editKey, ENT_QUOTES); # No, because it's only ever displayed to whoever set it
     }
 }
 
