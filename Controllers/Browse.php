@@ -19,7 +19,7 @@ class Browse extends Controller
         self::$data['layout']['title'] = 'Public Anki Decks';
 
         $manager = new PackageManager();
-        self::$data['browse']['packages'] = $manager->getPublicPackages();
+        self::$data['browse']['Packages'] = $manager->getPublicPackages();
 
         self::$views[] = 'browse';
         self::$cssFiles[] = 'browse';

@@ -27,6 +27,9 @@ window.addEventListener('load', function() {
 
         let key = document.getElementById("key-input").value;
         window.localStorage.setItem('key', key);
+
+        document.getElementById("result-box").innerText = "Credentials saved.";
+        setTimeout(function() {document.getElementById("result-box").innerText = "";}, 2000);
     })
 
     document.getElementById("key-input").value = window.localStorage.getItem('key')

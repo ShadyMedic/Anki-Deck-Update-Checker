@@ -21,7 +21,7 @@ class Manage extends Controller
         $key = $_POST['key'] ?? null;
         if (!is_null($key)) {
             $manager = new PackageManager();
-            self::$data['manage']['packages'] = $manager->getOwnedPackages($key);
+            self::$data['manage']['Packages'] = $manager->getOwnedPackages($key);
             self::$data['manage']['latestKey'] = $key;
         }
 

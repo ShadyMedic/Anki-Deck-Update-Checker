@@ -44,9 +44,9 @@ class Deck extends Controller
         $queryString = "/$packageId/<span style=\"color: gold;\">".$package->getVersion()."</span>".(empty($accessKey) ? '' : "&amp;key=$accessKey");
 
         self::$data['layout']['page_id'] = 'deck-info';
-        self::$data['layout']['title'] = $package->getName();
+        self::$data['layout']['Title'] = $package->getName();
 
-        self::$data['deck']['package'] = $package;
+        self::$data['deck']['Package'] = $package;
         self::$data['deck']['packageId'] = $packageId;
         self::$data['deck']['accessKey'] = $accessKey;
         self::$data['deck']['queryString'] = $queryString;

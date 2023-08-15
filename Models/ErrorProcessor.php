@@ -50,11 +50,11 @@ class ErrorProcessor
                         return true;
                     case 400001:
                         //No ID was specified for the update-status image generator (legacy requests only)
-                        $this->errorWebpageView = 'image-outputs/no-id';
+                        $this->errorWebpageView = 'file-outputs/no-id';
                         return true;
                     case 400002:
                         //No current version was specified for the update-status image generator (legacy requests only)
-                        $this->errorWebpageView = 'image-outputs/no-version';
+                        $this->errorWebpageView = 'file-outputs/no-version';
                         return true;
                     case 400003:
                         //No ID was specified when trying to get to the update page for a deck (legacy requests only)
@@ -96,7 +96,7 @@ class ErrorProcessor
                         return true;
                     case 401006:
                         //Access key for the given private deck isn't correct or is missing when generating the update-status image
-                        $this->errorWebpageView = 'image-outputs/restricted';
+                        $this->errorWebpageView = 'file-outputs/restricted';
                         return true;
                     case 401007:
                         //Access key for the given private deck isn't correct or is missing when trying to get to the update page for it
@@ -160,7 +160,7 @@ class ErrorProcessor
                         return true;
                     case 404007:
                         //Package with a given ID was not found when generating an update-status image
-                        $this->errorWebpageView = 'image-outputs/not-found';
+                        $this->errorWebpageView = 'file-outputs/not-found';
                         return true;
                     case 404008:
                         //Package with a given ID was not found when trying to get to the update page
@@ -215,7 +215,7 @@ class ErrorProcessor
                         return true;
                     case 410006:
                         //Package with the given ID is deleted and its update-status image can't be generated
-                        $this->errorWebpageView = "image-outputs/deleted";
+                        $this->errorWebpageView = "file-outputs/deleted";
                         return true;
                     case 410007:
                         //Package with the given ID is deleted and the user can't be forwarded to its download page

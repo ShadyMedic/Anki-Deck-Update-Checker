@@ -54,7 +54,8 @@ class Update extends Controller
 
         self::$data['layout']['page_id'] = 'update';
         self::$data['layout']['title'] = 'Your Anki Deck Is up-to-date';
-        self::$data['uptodate']['downloadLink'] =
+        //TODO this will need to be redone when remote file hosting is implemented
+        self::$data['uptodate']['DownloadLink'] =
         'http://'.$_SERVER['SERVER_NAME'].$package->getDownloadLink().(empty($accessCode) ? '' : '?key='.$accessCode);
         self::$views[] = 'up-to-date';
 
