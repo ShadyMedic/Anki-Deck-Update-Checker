@@ -55,10 +55,10 @@
                     <td class="txt-l"><?= $package['filename'] ?></td>
                     <td><?= $package['version'] ?></td>
                     <td><?= $package['updated_at'] ?></td>
-                    <td class="icon-wrapper"><img src="img/icons/download.png" alt="Download current version" class="clickable-icon icon shadow-green" data-href="/deck/<?= $package['package_id'].(($package['access_key']) ? '?key='.$package['access_key'] : '') ?>"/></td>
-                    <td class="icon-wrapper"><img src="img/icons/upload.png" alt="Upload new version" class="clickable-icon icon shadow-blue" data-href="/upload/<?= $package['package_id'] ?>"/></td>
-                    <td class="icon-wrapper"><img src="img/icons/edit.png" alt="Edit metadata" class="clickable-icon icon shadow-yellow" data-href="/edit/<?= $package['package_id'] ?>"/></td>
-                    <td class="icon-wrapper"><img src="img/icons/delete.png" alt="Delete" class="clickable-icon icon shadow-red" data-href="/delete/<?= $package['package_id'] ?>"/></td>
+                    <td class="icon-wrapper"><a href="/deck/<?= $package['package_id'].(($package['access_key']) ? '?key='.$package['access_key'] : '') ?>"><img src="img/icons/download.png" alt="Download current version" class="icon shadow-green"/></a></td>
+                    <td class="icon-wrapper"><a href="/upload/<?= $package['package_id'] ?>"><img src="img/icons/upload.png" alt="Upload new version" class="clickable-icon icon shadow-blue" data-href="/upload/<?= $package['package_id'] ?>"/></a></td>
+                    <td class="icon-wrapper"><a href="/edit/<?= $package['package_id'] ?>"><img src="img/icons/edit.png" alt="Edit metadata" class="clickable-icon icon shadow-yellow" data-href="/edit/<?= $package['package_id'] ?>"/></a></td>
+                    <td class="icon-wrapper"><a href="/delete/<?= $package['package_id'] ?>"><img src="img/icons/delete.png" alt="Delete" class="clickable-icon icon shadow-red" data-href="/delete/<?= $package['package_id'] ?>"/></a></td>
                 </tr>
             <?php endforeach ?>
         </table>
