@@ -38,6 +38,7 @@
     <?php else : ?>
         <table class="wide-table striped-table">
             <tr>
+                <th></th>
                 <th class="txt-l">Deck name</th>
                 <th>Version number</th>
                 <th>Last updated at</th>
@@ -45,6 +46,12 @@
             </tr>
             <?php foreach ($manage_packages as $package) : ?>
                 <tr>
+                    <td class="icon-wrapper">
+                        <?php if ($package['access_key']) : ?>
+                            <img src="img/icons/private.png" alt="Private package" title="This package is set as private." class="icon"/>
+                        <?php else : ?>
+                            <img src="img/icons/public.png" alt="Public package" title="This package was published for everyone." class="icon"/>
+                        <?php endif ?></td>
                     <td class="txt-l"><?= $package['filename'] ?></td>
                     <td><?= $package['version'] ?></td>
                     <td><?= $package['updated_at'] ?></td>
