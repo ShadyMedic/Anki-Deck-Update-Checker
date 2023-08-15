@@ -56,7 +56,7 @@ class Delete extends Controller
         self::$data['layout']['page_id'] = 'delete';
         self::$data['layout']['title'] = 'Delete Deck';
 
-        self::$data['delete']['deckName'] = $deckName ?? null;
+        self::$data['delete']['DeckName'] = $deckName ?? null;
         self::$data['delete']['key'] = $key ?? null;
         self::$data['delete']['error'] = $error;
 
