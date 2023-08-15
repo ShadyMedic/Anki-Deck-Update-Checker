@@ -92,7 +92,7 @@ class Package implements DatabaseRecord
         }
 
         return $this->update([
-            'version' => 0,
+            'version' => null,
             'access_key' => null,
             'download_link' => null,
             'filename' => null,
