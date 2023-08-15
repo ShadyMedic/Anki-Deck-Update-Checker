@@ -115,15 +115,16 @@ abstract class Controller
     /**
      * Method sanitizing the provided argument against XSS attack
      * @param mixed $data Variable to sanitize
-     * @return int|double|bool|string|array|Sanitizable The sanitized value
+     * @return int|double|bool|null|string|array|Sanitizable The sanitized value
      * @throws InvalidArgumentException If the provided value couldn't be sanitized
      */
-    private function antiXssSanitizazion(mixed $data): int|float|bool|string|array|Sanitizable
+    private function antiXssSanitizazion(mixed $data): int|float|bool|null|string|array|Sanitizable
     {
         switch (gettype($data)) {
             case 'integer':
             case 'double':
             case 'boolean':
+            case 'NULL':
                 return $data;
             case 'string':
                 return htmlspecialchars($data, ENT_QUOTES);
