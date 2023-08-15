@@ -115,10 +115,10 @@ abstract class Controller
     /**
      * Method sanitizing the provided argument against XSS attack
      * @param mixed $data Variable to sanitize
-     * @return int|double|bool|string|Sanitizable The sanitized value
+     * @return int|double|bool|string|array|Sanitizable The sanitized value
      * @throws InvalidArgumentException If the provided value couldn't be sanitized
      */
-    private function antiXssSanitizazion(mixed $data): float|Sanitizable|bool|int|string
+    private function antiXssSanitizazion(mixed $data): int|float|bool|string|array|Sanitizable
     {
         switch (gettype($data)) {
             case 'integer':
@@ -127,6 +127,12 @@ abstract class Controller
                 return $data;
             case 'string':
                 return htmlspecialchars($data, ENT_QUOTES);
+            case 'array':
+                $sanitized = [];
+                foreach ($data as $key => $value) {
+                    $sanitized[$this->antiXssSanitizazion($key)] = $this->antiXssSanitizazion($value);
+                }
+                return $sanitized;
             case 'object':
                 if ($data instanceof Sanitizable) {
                     $data->sanitize();
