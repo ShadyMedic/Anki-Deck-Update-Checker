@@ -50,9 +50,9 @@ class CheckUpdate extends Controller
         self::$views = []; //Don't output any HTML
 
         if ($currentVersion >= $package->getVersion()) {
-            self::$views[] = 'image-outputs/up-to-date';
+            self::$views[] = 'file-outputs/up-to-date';
         } else {
-            self::$views[] = 'image-outputs/outdated';
+            self::$views[] = 'file-outputs/outdated';
         }
 
         return 200;
