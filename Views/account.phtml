@@ -19,7 +19,7 @@
     <form method="POST">
         <p>
             <label for="author-input">Author name: </label><br>
-            <input type="text" id="author-input" name="author" value="<?= $account_author ?? '' ?>" maxlength="31" required/><br>
+            <input type="text" id="author-input" name="author" value="" maxlength="31" required/><br>
             <small>
                 The author name serves just to give you credit for your work and to make it easier for users of your
                 decks to find packages made by you. Multiple people can choose the same author name, but it is not
@@ -28,7 +28,7 @@
         </p>
         <p>
             <label for="key-input">Editing key: </label><br>
-            <input type="text" id="key-input" name="key" value="<?= $account_key ?? '' ?>" maxlength="31" required/>
+            <input type="text" id="key-input" name="key" value="" maxlength="31" required/>
             <button id="generate-key-button">Generate</button><br>
             <small>
                 Editing key is something like a password that is necessary to update, modify or delete packages created
@@ -47,6 +47,7 @@
             want to start publishing new packages under new identity of course).
         </p>
         <button id="submit-button">Save</button>
+        <span id="result-box" style="color:green"></span>
     </form>
 </details>
 
