@@ -15,6 +15,11 @@ class Deck extends Controller
     public function process(array $args = []): int
     {
         $packageId = array_shift($args) ?? null;
+
+        if (!is_numeric($packageId) && $packageId === 'legacy') {
+            $packageId = $_GET['id'];
+        }
+
         if (!empty($args)) {
             self::$data['deck']['uploadAction'] = array_shift($args);
         }
