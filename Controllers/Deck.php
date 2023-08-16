@@ -59,7 +59,7 @@ class Deck extends Controller
         self::$data['deck']['packageId'] = $packageId;
         self::$data['deck']['accessKey'] = $accessKey;
         self::$data['deck']['queryString'] = $queryString;
-        self::$data['deck']['downloadLink'] = 'http://'.$_SERVER['SERVER_NAME'].'/deck/'.$package->getId().(empty($accessKey) ? '' : "&amp;key=$accessKey");
+        self::$data['deck']['downloadLink'] = $package->getDownloadLink();
 
         self::$views[] = 'deck';
 
