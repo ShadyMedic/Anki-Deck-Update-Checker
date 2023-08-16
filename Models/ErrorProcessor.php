@@ -64,6 +64,10 @@ class ErrorProcessor
                         //No current version was specified when trying to get to the update page for a deck (legacy requests only)
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 400005:
+                        //No ID was specified when trying to get to the deck page (legacy requests only)
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 401:
