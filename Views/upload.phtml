@@ -39,19 +39,51 @@
         <label for="file-input">Package file:</label>
         <input type="hidden" name="MAX_FILE_SIZE" value="26214400"/>
         <input type="file" accept=".apkg" name="package" id="file-input" required/>
-        <small>
-            <strong>The file size mustn't exceed 20 MiB.</strong><br>
-            If your Anki package is larger, and you compressed your media,
-            contact me on Discord (<code>shady_medic</code>) or e-mail me at
-            <code>jan [dot] stech [at] posteo [dot] net</code>. You'll still be able to use this service to share
-            your package, you'll just need to upload the file elsewhere and your users will be redirected to such
-            external webpage from here, when they click the update notification.
-        </small>
+        <p>
+            <small>
+                <strong>The file size mustn't exceed 20 MiB.</strong><br>
+                If your Anki package is larger, and you compressed your media,
+                contact me on Discord (<code>shady_medic</code>) or e-mail me at
+                <code>jan [dot] stech [at] posteo [dot] net</code>. You'll still be able to use this service to share
+                your package, you'll just need to upload the file elsewhere and your users will be redirected to such
+                external webpage from here, when they click the update notification.
+            </small>
+        </p>
     </fieldset>
-    <fieldset>
-        <strong>Warning:</strong> Uploading a new version will permanently delete the previous version from our
-        servers.<br>
-        <p><input type="submit" value="Upload"/></p>
+    <fieldset style="background-color:<?= $upload_minor ? '#e2b1ff' : '#b1d4ff' ?>;">
+        <?php if ($upload_minor) : ?>
+            <p>
+                You are about to upload a <b>minor version</b> of this Anki package. That means that current users of
+                this deck <b>will not receive an update notification</b>.
+            </p>
+            <p>
+                <small>
+                    Keep in mind that minor updates (or patches) should be used only for things like typo or formatting
+                    fixes. Simply things that you want to be fixed for new users, but aren't critical enough to spend time
+                    updating the whole deck. To create an update-notification-trigerring update, go back to the "My Decks"
+                    page and click the blue icon instead of the purple one next to this deck.
+                </small>
+            </p>
+        <?php else : ?>
+            <p>
+                You are about to upload a <b>major version</b> of this Anki package. That means that all current users
+                of this deck <b>will receive an update notification</b>.
+            </p>
+            <p>
+                <small>
+                    If you're just uploading a fix of a typo or other non-critical changes, and you expect to upload
+                    more fixes soon, consider uploading a minor update instead. Just go back to the "My Decks" page and
+                    click the purple icon instead of the blue one next to this deck.
+                </small>
+            </p>
+        <?php endif ?>
+    </fieldset>
+    <fieldset style="text-align: center;">
+        <p>
+            <strong>Warning:</strong> Uploading a new version will permanently delete the previous version from our
+        servers.
+        </p>
+        <p><input type="submit" value="Upload" class="upload-btn"/></p>
         <small>
             By clicking the "Upload" button, you confirm that the uploaded Anki package doesn't contain copyrighted
             material.

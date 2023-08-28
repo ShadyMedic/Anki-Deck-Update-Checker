@@ -21,3 +21,8 @@ summary > * {
     margin: 0.5em 0;
     text-decoration: underline dotted 2px gray;
 }
+
+.upload-btn {
+    background-color:cornflowerblue;
+    font-size: x-large;
+}

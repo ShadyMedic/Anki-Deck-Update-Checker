@@ -76,6 +76,7 @@ class Upload extends Controller
         self::$data['upload']['accessKey'] = $package->getAccessKey();
         self::$data['upload']['key'] = $key;
         self::$data['upload']['error'] = $error ?? '';
+        self::$data['upload']['minor'] = $minor;
 
         self::$views[] = 'upload';
         self::$cssFiles[] = 'upload';
