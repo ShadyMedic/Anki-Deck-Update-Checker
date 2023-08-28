@@ -6,7 +6,7 @@
     <tr>
         <th class="txt-l">Deck name</th>
         <th class="txt-l">Author</th>
-        <th>Version number</th>
+        <th>Version</th>
         <th>Last updated at</th>
     </tr>
     <?php /** @var array $browse_packages Array of the Package objects, containing information about public decks */
@@ -18,7 +18,7 @@
                 </a>
             </td>
             <td class="txt-l"><?= $package['author'] ?></td>
-            <td><?= $package['version'] ?></td>
+            <td><?= $package['version'] ?>.<?= $package['minor_version'] ?></td>
             <td><?= $package['updated_at'] ?></td>
         </tr>
     <?php endforeach ?>

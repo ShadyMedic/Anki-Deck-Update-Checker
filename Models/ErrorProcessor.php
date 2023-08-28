@@ -68,6 +68,10 @@ class ErrorProcessor
                         //No ID was specified when trying to get to the deck page (legacy requests only)
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 400006:
+                        //User tried to mark the first upload of the package as minor
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 401:

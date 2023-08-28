@@ -7,6 +7,11 @@
                 All users that use the previous (or any older) version of your deck will now see an update notification
                 when they open it to study.
             </p>
+        <?php elseif ($deck_uploadAction === 'patched') : ?>
+        <p>
+            Users that use the previous version of your deck <b>will not see an update notification</b>,
+            because you marked this update as minor (patch).
+        </p>
         <?php endif ?>
         <?php if (!empty($deck_accessKey)) : ?>
             <p>
@@ -25,7 +30,7 @@
 <p>
     File name: <code><?= $deck_package->getName() ?>.apkg</code><br>
     File size: <code><?= number_format(filesize('decks/'.$deck_packageId.'.apkg') / 1000000, 2) ?> MB</code><br>
-    Version number: <code><?= $deck_package->getVersion() ?></code><br>
+    Version: <code><?= $deck_package->getFullVersion() ?></code><br>
     File updated at: <code><?= $deck_package->getUpdatedDate()->format('Y-m-d H:i:s'); ?></code>
 </p>
 <button style="display: block; background-color:limegreen; font-size: x-large;">
