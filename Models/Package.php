@@ -131,6 +131,11 @@ class Package implements DatabaseRecord, Sanitizable
         return $this->minorVersion;
     }
 
+    public function getFullVersion(): ?string
+    {
+        return $this->version.'.'.$this->minorVersion;
+    }
+
     public function newVersion(): void
     {
         $this->version++;

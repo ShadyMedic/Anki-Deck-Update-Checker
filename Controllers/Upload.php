@@ -29,6 +29,10 @@ class Upload extends Controller
             throw new UserException('This package was deleted.', 410003);
         }
 
+        if ($package->getVersion() === 0 && $minor) {
+            throw new UserException('The first upload of the package cannot be marked as minor.', 400006);
+        }
+
         //Do authentication
         if (is_null($key)) {
             throw new UserException('No editing key was provided.', 401004);
@@ -52,7 +56,7 @@ class Upload extends Controller
 
                 $authenticator->update($package, $minor);
 
-                if ($package->getVersion() === 1) {
+                if ($package->getFullVersion() === '1.0') {
                     $url = '/uploaded/'.$packageId.(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
                 } else if ($package->getMinorVersion() === 0) {
                     $url = '/updated/'.$packageId.(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));

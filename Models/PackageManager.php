@@ -121,7 +121,7 @@ class PackageManager
     public function getPublicPackages() : array
     {
         $query = '
-            SELECT package_id,filename,author,version,updated_at FROM package
+            SELECT package_id,filename,author,version,minor_version,updated_at FROM package
             WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL AND deleted = 0
             ORDER BY updated_at DESC;
         ';
@@ -135,7 +135,7 @@ class PackageManager
     public function getOwnedPackages(string $key) : array
     {
         $query = '
-            SELECT package_id,filename,access_key,version,updated_at FROM package
+            SELECT package_id,filename,access_key,version,minor_version,updated_at FROM package
             WHERE edit_key = ?
             ORDER BY updated_at DESC;
         ';
