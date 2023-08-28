@@ -153,7 +153,7 @@ class Package implements DatabaseRecord, Sanitizable
         }
 
         if (!empty($this->accessKey)) {
-            $downloadLink .= '&key='.$this->accessKey;
+            $downloadLink .= '?key='.$this->accessKey;
         }
 
         return $downloadLink;
