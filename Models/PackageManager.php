@@ -5,14 +5,20 @@ namespace AnkiDeckUpdateChecker\Models;
 class PackageManager
 {
 
-    public function update(Package $package, string $downloadLink = null) : bool
+    public function update(Package $package, bool $minor, string $downloadLink = null) : bool
     {
         $downloadLink = $downloadLink ?? '/deck/'.$package->getId(); //TODO allow other website hosting
 
-        $package->incrementVersion();
+        if ($minor) {
+            $package->minorVersion();
+        } else {
+            $package->newVersion();
+        }
+
         return $package->update(array(
             'download_link' => $downloadLink,
             'version' => $package->getVersion(),
+            'minor_version' => $package->getMinorVersion(),
             'updated_at' => date(DATE_W3C)
         ));
     }

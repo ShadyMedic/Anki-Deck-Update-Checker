@@ -45,6 +45,11 @@ input[type=password] {
     background-color: #b1d4ff;
 }
 
+.icon.shadow-purple:hover {
+    box-shadow: 0 0 8px #a34dff;
+    background-color: #e2b1ff;
+}
+
 .icon.shadow-yellow:hover {
     box-shadow: 0 0 8px #ffcc00;
     background-color: #ffe98f;

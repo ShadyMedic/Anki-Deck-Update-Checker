@@ -9,6 +9,7 @@ class Package implements DatabaseRecord, Sanitizable
 {
     private ?int $packageId = null;
     private ?int $version = 0;
+    private ?int $minorVersion = 0;
     private ?string $accessKey = null;
     private ?string $downloadLink = null;
     private ?string $name = null;
@@ -74,6 +75,7 @@ class Package implements DatabaseRecord, Sanitizable
 
         $this->packageId = $data['package_id'];
         $this->version = $data['version'];
+        $this->minorVersion = $data['minor_version'];
         $this->accessKey = $data['access_key'];
         $this->downloadLink = $data['download_link'];
         $this->name = $data['filename'];
@@ -93,6 +95,7 @@ class Package implements DatabaseRecord, Sanitizable
 
         return $this->update([
             'version' => null,
+            'minor_version' => null,
             'access_key' => null,
             'download_link' => null,
             'filename' => null,
@@ -123,9 +126,20 @@ class Package implements DatabaseRecord, Sanitizable
         return $this->version;
     }
 
-    public function incrementVersion()
+    public function getMinorVersion(): ?int
+    {
+        return $this->minorVersion;
+    }
+
+    public function newVersion(): void
     {
         $this->version++;
+        $this->minorVersion = 0;
+    }
+
+    public function minorVersion(): void
+    {
+        $this->minorVersion++;
     }
 
     public function isPublic(): bool
@@ -136,11 +150,6 @@ class Package implements DatabaseRecord, Sanitizable
     public function getAccessKey() : ?string
     {
         return $this->accessKey;
-    }
-
-    public function getEditKey() : ?string
-    {
-        return $this->editKey;
     }
 
     public function getDownloadLink() : ?string

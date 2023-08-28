@@ -7,6 +7,16 @@
                 All users that use the previous (or any older) version of your deck will now see an update notification
                 when they open it to study.
             </p>
+        <?php elseif ($deck_uploadAction === 'patched') : ?>
+        <p>
+            Users that use the previous version of your deck <b>will not see an update notification</b>,
+            because you marked this update as minor (patch).
+        </p>
+        <p>
+            Keep in mind that minor updates should be used only for fixes of things like typos or formatting – issues
+            that you don't want to appear in the collection of new users of this deck, but aren't worthwhile to
+            update a whole deck, if it was previously imported.
+        </p>
         <?php endif ?>
         <?php if (!empty($deck_accessKey)) : ?>
             <p>
