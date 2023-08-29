@@ -3,86 +3,65 @@ body {
 }
 
 nav {
-    border-top: 0;
-    border-bottom: 1px;
-    border-left: 0;
-    border-right: 0;
-    border-style: solid;
-    border-color: black;
-    width: 100%;
-}
-
-nav ul {
     list-style-type: none;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin: 0;
     padding: 0;
-    height: 32px;
+    border-bottom: 1px solid black;
 }
 
-nav li {
-    min-width: 200px;
+.nav-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-item {
     font-size: 20px;
     height: 32px;
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    overflow: hidden;
+
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 1px;
+    border-style: solid;
+    border-color: black;
 }
 
-nav li:hover {
+.nav-item:hover {
     background-color: #ddd;
 }
 
-nav li:not(:last-child) {
-    border-left: 1px;
-    border-right: 0;
-    border-top: 0;
-    border-bottom: 0;
-    border-style: outset;
-    border-color: black;
-}
-
-nav li:last-child {
-    border-left: 1px;
-    border-right: 1px;
-    border-top: 0;
-    border-bottom: 0;
-    border-style: outset;
-    border-color: black;
-}
-
-@media (max-width: 400px) {
-    nav ul {
-        flex-direction: column;
-        height: 128px;
+@media (min-width: 401px) {
+    nav {
+        flex-direction: row;
     }
-    nav li {
-        min-width: auto;
-        border: 1px solid black;
+    .nav-row:first-child > .nav-item {
+        border-left: 1px solid black;
+        border-right: 1px solid black;
     }
-    nav li:not(:last-child) {
-        border-left: 0;
-        border-right: 0;
-        border-top: 0;
-        border-bottom: 1px;
-        border-style: outset;
-        border-color: black;
+    .nav-row:last-child > .nav-item {
+        border-right: 1px solid black;
     }
-    nav li:last-child {
-        border: 0;
+    .nav-item {
+        width: 50vw;
     }
 }
 
-@media (min-width: 401px) and (max-width: 801px) {
-    nav ul {
-        flex-wrap: wrap;
-        height: auto;
+@media (min-width: 802px) {
+    .nav-row, .nav-row {
+        flex-direction: row;
     }
-    nav li {
-        min-width: auto;
-        flex-basis: calc(50% - 1px);
+    .nav-item {
+        width: 25vw;
     }
 }
 
@@ -100,7 +79,8 @@ main {
 @media (max-width: 620px) {
     main {
         margin: 0 10px;
-        width: calc(100vw - 20px);
+        width: unset;
+        min-width: unset;
     }
 }
 
