@@ -16,7 +16,7 @@ class StatsDownload extends Controller
     public function process(array $args = []): int
     {
         $packageId = array_shift($args) ?? null;
-        $key = $_POST['key'];
+        $key = $_POST['key'] ?? null;
 
         $package = new Package();
         $packageFound = $package->load($packageId);
