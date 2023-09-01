@@ -148,8 +148,16 @@ class PackageManager
 
     public function delete(Package $package)
     {
+        //Purge from database
         $package->delete();
+
+        //Delete package file
         unlink('decks/'.$package->getId().'.apkg');
+
+        //Delete aggregated and aggregated statistics
+        $manager = new StatisticsManager();
+        $manager->deleteStats($package->getId());
+
         unset($package);
     }
 }
