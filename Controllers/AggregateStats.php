@@ -3,16 +3,27 @@
 namespace AnkiDeckUpdateChecker\Controllers;
 
 use AnkiDeckUpdateChecker\Models\StatisticsManager;
+use AnkiDeckUpdateChecker\Models\UserException;
 
 class AggregateStats extends Controller
 {
+
+    private const ACCESS_KEY = 'secret';
 
     /**
      * @inheritDoc
      */
     public function process(array $args = []): int
     {
-        //TODO do authentication
+        //Check authorization
+        $key = $_POST['key'] ?? null;
+        if (is_null($key)) {
+            throw new UserException('No access key was provided.', 401010);
+        }
+
+        if ($key !== self::ACCESS_KEY) {
+            throw new UserException('The access key is not valid.', 403006);
+        }
 
         //Inspired by https://stackoverflow.com/a/15273676/14011077
         ignore_user_abort(true);

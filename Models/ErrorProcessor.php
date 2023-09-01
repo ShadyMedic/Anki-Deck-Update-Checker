@@ -118,6 +118,10 @@ class ErrorProcessor
                         //Editing key for the given deck is missing so its all-time statistics cannot be downloaded
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 401010:
+                        //Access key for the statistic aggregating procedure was not provided
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 403:
@@ -146,6 +150,10 @@ class ErrorProcessor
                         return true;
                     case 403005:
                         //Editing key for the given deck isn't valid when trying to download its all-time usage statistics
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 403006:
+                        //Access key for the statistics aggregating procedure is invalid
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                 }
