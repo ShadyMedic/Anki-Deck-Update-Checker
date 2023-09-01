@@ -108,9 +108,7 @@ class StatisticsManager
         $db = Db::connect();
 
         do {
-            echo 'Processing statistics from '.$until.':<br>';
             $files = glob('stats/'.$until.'*');
-            print_r($files);
             foreach ($files as $file) {
                 $packageId = explode('_', $file)[1];
                 $entries = file($file, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
@@ -125,5 +123,18 @@ class StatisticsManager
             $until = date('Y-m-d', strtotime($until) - 86400); //Move to the previous day
         } while (!empty($files) && $until !== $since);
     }
+
+    public function deleteStats(int $packageId) : void
+    {
+        //Aggregated statistics
+        $db = Db::connect();
+        $statement = $db->prepare('DELETE FROM stat WHERE package_id = ?;');
+        $statement->execute([$packageId]);
+
+        //Unaggregated statistics
+        $files = glob('stats/*'.'_'.$packageId);
+        array_map(function($file) { unlink($file); }, $files);
+    }
+
 }
 
