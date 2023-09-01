@@ -47,6 +47,7 @@ class Stats extends Controller
 
         $manager = new StatisticsManager();
         self::$data['stats']['packageId'] = $packageId;
+        self::$data['stats']['key'] = $key;
         self::$data['stats']['graphSvg'] = $manager->visualizeStats($packageId);
 
         self::$views[] = 'stats';

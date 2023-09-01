@@ -1,6 +1,6 @@
 <p>This is the graph of pseudo-unique users of this Anki deck in the last 30 days.</p>
 <details>
-    <summary>Learn how these stats are calculated.</summary>
+    <summary>Learn how these statistics are calculated.</summary>
     <p>
         Every time somebody opens any Anki deck with the updater code in its description, an HTTP request is sent to our
         servers to check whether an updated version of the deck is available or not. The result of this request is text
@@ -45,8 +45,8 @@
     Excel or <a href="https://www.libreoffice.org/download/download-libreoffice/" target="_blank">LibreOffice Calc</a>
     and let it generate a graph for you.
 </p>
-<button style="display: block; background-color:cornflowerblue; font-size: x-large;">
-    <a style="color: inherit; text-decoration: none;" href="/stats/<?= $stats_packageId ?>/full">
-        Download Statistics
-    </a>
-</button>
+<form action="/stats/<?= $stats_packageId ?>/full" method="post">
+    <input type="hidden" name="key" value="<?= $stats_key ?>" />
+    <input type="submit" style="display: block; background-color:cornflowerblue; font-size: x-large;" value="Download Statistics" />
+</form>
+
