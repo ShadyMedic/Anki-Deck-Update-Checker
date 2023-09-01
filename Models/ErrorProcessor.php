@@ -110,6 +110,14 @@ class ErrorProcessor
                         //Access key for the given private deck isn't correct or is missing when trying to get to the update page for it
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 401008:
+                        //Editing key for the given deck is missing on the stats page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 401009:
+                        //Editing key for the given deck is missing so its all-time statistics cannot be downloaded
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 403:
@@ -130,6 +138,14 @@ class ErrorProcessor
                         return true;
                     case 403003:
                         //Editing key for the given deck isn't valid on the delete page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 403004:
+                        //Editing key for the given deck isn't valid on the stats page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 403005:
+                        //Editing key for the given deck isn't valid when trying to download its all-time usage statistics
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                 }
@@ -174,6 +190,14 @@ class ErrorProcessor
                         //Package with a given ID was not found when trying to get to the update page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 404009:
+                        //Package with a given ID was not found when trying to get to the stats page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 404010:
+                        //Package with a given ID was not found when trying to download its all-time usage statistics
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 406:
@@ -192,7 +216,16 @@ class ErrorProcessor
                         //Package with the given ID has version equal to 0 and the request to download it cannot be fulfilled
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 406003:
+                        //Package with the given ID has version equal to 0 and its stats page can't be generated
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 406004:
+                        //Package with the given ID has version equal to 0 and its all-time usage statistics cannot be downloaded
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
+                break;
             case 410:
                 //Gone
                 $this->httpHeaderCode = 410;
@@ -229,7 +262,16 @@ class ErrorProcessor
                         //Package with the given ID is deleted and the user can't be forwarded to its download page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 410008:
+                        //Package with the given ID is deleted and its stats page can't be generated
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 410009:
+                        //Package with the given ID is deleted and its all-time statistics can't be downloaded
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
+                break;
             case 500:
                 //Internal server error
                 $this->httpHeaderCode = 500;
