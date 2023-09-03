@@ -16,6 +16,7 @@ class Upload extends Controller
     {
         $packageId = array_shift($args) ?? null;
         $key = $_POST['key'] ?? null;
+        $minor = (!empty($args) && array_shift($args) === 'minor');
 
         $package = new Package();
         $packageFound = $package->load($packageId);
@@ -28,6 +29,10 @@ class Upload extends Controller
             throw new UserException('This package was deleted.', 410003);
         }
 
+        if ($package->getVersion() === 0 && $minor) {
+            throw new UserException('The first upload of the package cannot be marked as minor.', 400006);
+        }
+
         //Do authentication
         if (is_null($key)) {
             throw new UserException('No editing key was provided.', 401004);
@@ -37,9 +42,9 @@ class Upload extends Controller
             throw new UserException('The editing key for this package is not valid.', 403001);
         }
 
-        $nextVersion = $package->getVersion() + 1;
+        $nextVersion = ($minor ? $package->getVersion() : $package->getVersion() + 1);
         $queryString = "/$packageId/$nextVersion".(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
-        if (isset($_FILES['package'])) { //Form was submitted, webpage loading is also POST because of "key" submission
+        if (isset($_FILES['package'])) { //Form was submitted, webpage loading is also POST because of "key" and "minor" submission
             try {
                 $authenticator->checkFileUpload($_FILES['package']);
             } catch (UserException $e) {
@@ -49,12 +54,14 @@ class Upload extends Controller
             if (!isset($error)) {
                 move_uploaded_file($_FILES['package']['tmp_name'], 'decks/'.$packageId.'.apkg');
 
-                $authenticator->update($package);
+                $authenticator->update($package, $minor);
 
-                if ($package->getVersion() === 1) {
+                if ($package->getFullVersion() === '1.0') {
                     $url = '/uploaded/'.$packageId.(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
-                } else {
+                } else if ($package->getMinorVersion() === 0) {
                     $url = '/updated/'.$packageId.(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
+                } else {
+                    $url = '/patched/'.$packageId.(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
                 }
 
                 $this->redirect($url);
@@ -69,6 +76,7 @@ class Upload extends Controller
         self::$data['upload']['accessKey'] = $package->getAccessKey();
         self::$data['upload']['key'] = $key;
         self::$data['upload']['error'] = $error ?? '';
+        self::$data['upload']['minor'] = $minor;
 
         self::$views[] = 'upload';
         self::$cssFiles[] = 'upload';

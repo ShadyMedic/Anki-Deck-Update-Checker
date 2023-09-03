@@ -5,9 +5,11 @@ namespace AnkiDeckUpdateChecker\Controllers;
 use AnkiDeckUpdateChecker\Models\Package;
 use AnkiDeckUpdateChecker\Models\PackageManager;
 use AnkiDeckUpdateChecker\Models\UserException;
+use AnkiDeckUpdateChecker\Models\StatisticsManager;
 
 class CheckUpdate extends Controller
 {
+    const PEPPER = 'secret'; //CHANGE THIS ON PRODUCTION TO SOMETHING LONG AND RANDOMLY GENERATED
 
     /**
      * @inheritDoc
@@ -48,6 +50,14 @@ class CheckUpdate extends Controller
         }
 
         self::$views = []; //Don't output any HTML
+
+        //Log usage
+        $logger = new StatisticsManager();
+        $id = self::PEPPER; //Add secret pepper
+        $id .= $_SERVER['REMOTE_ADDR']; //IP address
+        $id .= date('dDjlNSwzWFmMntLoXxYy'); //Add some day-specific salt
+        $id = sha1($id);
+        $logger->logUse($packageId, $id);
 
         if ($currentVersion >= $package->getVersion()) {
             self::$views[] = 'file-outputs/up-to-date';

@@ -13,16 +13,18 @@
     $layout_page_id
 ?>">
 <nav>
-    <ul>
-        <li id="home-link">Homepage</li>
-        <li id="browse-link">Public Decks</li>
-        <li id="manage-link">My Decks</li>
-        <li id="create-link">Upload a New Deck</li>
-    </ul>
-    <form id="manage-link-data-sender" action="/my-decks" method="POST">
-        <input type="hidden" id="manage-link-key-input" name="key" value=""> <!-- Value will be filled in by JavaScript -->
-    </form>
+    <span class="nav-row">
+        <span id="home-link" class="nav-item">Homepage</span>
+        <span id="browse-link" class="nav-item">Public&nbsp;Decks</span>
+    </span>
+    <span class="nav-row">
+        <span id="manage-link" class="nav-item">My&nbsp;Decks</span>
+        <span id="create-link" class="nav-item">Upload&nbsp;a&nbsp;New&nbsp;Deck</span>
+    </span>
 </nav>
+<form id="manage-link-data-sender" action="/my-decks" method="POST">
+    <input type="hidden" id="manage-link-key-input" name="key" value=""> <!-- Value will be filled in by JavaScript -->
+</form>
 <main>
     <header>
         <h1><?=

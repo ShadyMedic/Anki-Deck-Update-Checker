@@ -1,3 +1,4 @@
 local/*
-decks/*
+decks/*.apkg
+stats/*
 .idea/*

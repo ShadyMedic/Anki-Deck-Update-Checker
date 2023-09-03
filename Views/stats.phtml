@@ -1,0 +1,52 @@
+<p>This is the graph of pseudo-unique users of this Anki deck in the last 30 days.</p>
+<details>
+    <summary>Learn how these statistics are calculated.</summary>
+    <p>
+        Every time somebody opens any Anki deck with the updater code in its description, an HTTP request is sent to our
+        servers to check whether an updated version of the deck is available or not. The result of this request is text
+        like "You are using the most up-to-date version of this Anki deck."
+    </p>
+    <p>
+        Every request for checking an update also causes the user's IP address to be logged in a secured text file. The
+        IP address is stored in a hashed form, meaning that it cannot be transformed back into the IP address and its
+        stored hash is used just as a temporary unique identificator.
+    </p>
+    <p>
+        Every 24 hours, the logs from the previous day are aggregated into one number for each deck – the number of
+        unique IP hashes that were logged the day before. This number is stored in our database (and might be later used
+        to generate graphs like the one below) and the list of hashes is permanently deleted. That means that only
+        hashes logged on the current and previous day are stored and the user's IP address is never stored in plain
+        text.
+    </p>
+    <p>
+        The downside of this approach is the inability to distinguish users as humans and instead distinguish them based
+        on IP address. That means:
+    </p>
+    <ul>
+        <li>
+            If one user opens your Anki package twice during one day, once on their home Wi-Fi and once while using
+            their mobile data, they'll be logged as two unique users, instead of as one.
+        </li>
+        <li>
+            If multiple users open your Anki package while being connected to the same Wi-Fi, they'll be all logged as
+            one unique user, instead of multiple ones.
+        </li>
+    </ul>
+    <p>Because of this, keep in mind that the usage statistics are only approximate.</p>
+</details>
+
+<div style="border: 1px solid black; margin: 1em 0;" class="wide-table">
+    <?= $stats_graphSvg ?>
+</div>
+
+<h2>All-time statistics</h2>
+<p>
+    All-time usage statistics are available for download in CSV format. You can import these data into software like
+    Excel or <a href="https://www.libreoffice.org/download/download-libreoffice/" target="_blank">LibreOffice Calc</a>
+    and let it generate a graph for you.
+</p>
+<form action="/stats/<?= $stats_packageId ?>/full" method="post">
+    <input type="hidden" name="key" value="<?= $stats_key ?>" />
+    <input type="submit" style="display: block; background-color:cornflowerblue; font-size: x-large;" value="Download Statistics" />
+</form>
+

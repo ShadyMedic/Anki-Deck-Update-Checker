@@ -1,0 +1,25 @@
+<?php
+
+ob_start();
+
+$fp = fopen('php://output', 'wb');
+fputcsv($fp, ['date', 'users']);
+
+foreach ($statsdownload_data as $date => $value) {
+    fputcsv($fp, [$date, $value]);
+}
+
+fclose($fp);
+$output = ob_get_clean();
+$length = strlen($output);
+
+header('Content-Description: File Transfer');
+header('Content-Type: text/csv');
+header('Content-Disposition: attachment; filename="Statistics.csv"');
+header('Expires: 0');
+header('Cache-Control: must-revalidate');
+header('Pragma: public');
+header('Content-Length: ' . $length);
+
+echo $output;
+

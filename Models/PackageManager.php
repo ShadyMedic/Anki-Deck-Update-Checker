@@ -5,14 +5,20 @@ namespace AnkiDeckUpdateChecker\Models;
 class PackageManager
 {
 
-    public function update(Package $package, string $downloadLink = null) : bool
+    public function update(Package $package, bool $minor, string $downloadLink = null) : bool
     {
         $downloadLink = $downloadLink ?? '/deck/'.$package->getId(); //TODO allow other website hosting
 
-        $package->incrementVersion();
+        if ($minor) {
+            $package->minorVersion();
+        } else {
+            $package->newVersion();
+        }
+
         return $package->update(array(
             'download_link' => $downloadLink,
             'version' => $package->getVersion(),
+            'minor_version' => $package->getMinorVersion(),
             'updated_at' => date(DATE_W3C)
         ));
     }
@@ -115,7 +121,7 @@ class PackageManager
     public function getPublicPackages() : array
     {
         $query = '
-            SELECT package_id,filename,author,version,updated_at FROM package
+            SELECT package_id,filename,author,version,minor_version,updated_at FROM package
             WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL AND deleted = 0
             ORDER BY updated_at DESC;
         ';
@@ -129,7 +135,7 @@ class PackageManager
     public function getOwnedPackages(string $key) : array
     {
         $query = '
-            SELECT package_id,filename,access_key,version,updated_at FROM package
+            SELECT package_id,filename,access_key,version,minor_version,updated_at FROM package
             WHERE edit_key = ?
             ORDER BY updated_at DESC;
         ';
@@ -142,8 +148,16 @@ class PackageManager
 
     public function delete(Package $package)
     {
+        //Purge from database
         $package->delete();
+
+        //Delete package file
         unlink('decks/'.$package->getId().'.apkg');
+
+        //Delete aggregated and aggregated statistics
+        $manager = new StatisticsManager();
+        $manager->deleteStats($package->getId());
+
         unset($package);
     }
 }
