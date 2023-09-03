@@ -1,0 +1,6 @@
+This directory is where the temporary files with IP address of
+deck users are saved. Every day, a cron job clears the files created
+the previous day.
+
+This file serves as a source of information about this dir, but also
+as a means to force Git to include it.

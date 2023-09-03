@@ -33,6 +33,7 @@ input[type=password] {
 
 .clickable-icon {
     cursor: pointer;
+    margin: 0 1px;
 }
 
 .icon.shadow-green:hover {
@@ -48,6 +49,11 @@ input[type=password] {
 .icon.shadow-purple:hover {
     box-shadow: 0 0 8px #a34dff;
     background-color: #e2b1ff;
+}
+
+.icon.shadow-orange:hover {
+    box-shadow: 0 0 8px #ffaa00;
+    background-color: #ffe6b4;
 }
 
 .icon.shadow-yellow:hover {

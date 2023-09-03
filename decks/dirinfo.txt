@@ -1,0 +1,4 @@
+This directory is where the APKG files uploaded by users are saved.
+
+This file serves as a source of information about this dir, but also
+as a means to force Git to include it.
