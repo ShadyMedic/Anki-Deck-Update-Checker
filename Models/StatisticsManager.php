@@ -31,6 +31,9 @@ class StatisticsManager
             }
         }
         $yMax = ceil($maxValue / $rounding) * $rounding;
+        if ($yMax === 0.0) {
+            $yMax = 10.0; //No statistics exist – generate graph with max Y = 10
+        }
         $yStep = $yMax / 10;
 
         $width = 800;
@@ -87,6 +90,9 @@ class StatisticsManager
             $current = new DateTime();
             $current->modify('-'. $limit+1 .' days');
         } else {
+            if (empty($stats)) {
+                return [];
+            }
             $current = date_create_from_format('Y-m-d', array_key_first($stats));
         }
         $yesterday = new DateTime();
