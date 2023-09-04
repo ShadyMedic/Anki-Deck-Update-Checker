@@ -23,6 +23,12 @@ class PackageManager
         ));
     }
 
+    public function validateCategory(int $categoryId) : bool
+    {
+        //TODO
+        return true;
+    }
+
     /**
      * @throws UserException
      */
