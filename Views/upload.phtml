@@ -1,39 +1,42 @@
-<p>You now need to insert (or update) autoupdater code into the description of your Anki deck.</p>
-<p>This will allow users of your deck to receive update check and be notified when you upload a new version.</p>
-<p>Don't worry, it's not complicated, just follow the instruction below:</p>
-<details open class="instructions-spoiler">
-    <summary class="instructions-spoiler-header"><h3>Instruction to insert or update auto-updater code</h3></summary>
-    <ol>
-        <li>
-            Select your deck inside your desktop Anki client.<br>
-            <img src="/img/tutorial-1.jpg" alt="Tutorial screenshot n. 1"/>
-        </li>
-        <li>
-            Click the "Description" button.<br>
-            <img src="/img/tutorial-2.jpg" alt="Tutorial screenshot n. 2"/>
-        </li>
-        <li>
-            Paste the following text into the text field and make sure the checkbox is unchecked.<br>
-            <strong>You need to do this everytime you upload a new version, because the code changes slightly
-                between versions!</strong><br>
-            <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://<?= $_SERVER['SERVER_NAME'] ?>/update<?= $upload_queryString ?>"&gt;&lt;img src="http://<?= $_SERVER['SERVER_NAME'] ?>/check-update<?= $upload_queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
-        </li>
-        <li>
-            Press OK and exit the dialog box.<br>
-            <img src="/img/tutorial-3.jpg" alt="Tutorial screenshot n. 3"/>
-        </li>
-        <li>
-            You should now see something like this (the text will be green, if you're updating an existing package,
-            or
-            red, if you're uploading the first version of a new package).
-            Export the package as usual and upload it in the form below.<br>
-            <img src="/img/tutorial-4.jpg" alt="Tutorial screenshot n. 4"/>
-        </li>
-    </ol>
-</details>
+<?php if (!$upload_minor) : ?>
+    <p>You now need to insert (or update) autoupdater code into the description of your Anki deck.</p>
+    <p>This will allow users of your deck to receive update check and be notified when you upload a new version.</p>
+    <p>Don't worry, it's not complicated, just follow the instruction below:</p>
+    <details open class="instructions-spoiler">
+        <summary class="instructions-spoiler-header"><h3>Instruction to insert or update auto-updater code</h3></summary>
+        <ol>
+            <li>
+                Select your deck inside your desktop Anki client.<br>
+                <img src="/img/tutorial-1.jpg" alt="Tutorial screenshot n. 1"/>
+            </li>
+            <li>
+                Click the "Description" button.<br>
+                <img src="/img/tutorial-2.jpg" alt="Tutorial screenshot n. 2"/>
+            </li>
+            <li>
+                Paste the following text into the text field and make sure the checkbox is unchecked.<br>
+                <strong>You need to do this everytime you upload a new version, because the code changes slightly
+                    between versions!</strong><br>
+                <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://<?= $_SERVER['SERVER_NAME'] ?>/update<?= $upload_queryString ?>"&gt;&lt;img src="http://<?= $_SERVER['SERVER_NAME'] ?>/check-update<?= $upload_queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
+            </li>
+            <li>
+                Press OK and exit the dialog box.<br>
+                <img src="/img/tutorial-3.jpg" alt="Tutorial screenshot n. 3"/>
+            </li>
+            <li>
+                You should now see something like this (the text will be green, if you're updating an existing package,
+                or
+                red, if you're uploading the first version of a new package).
+                Export the package as usual and upload it in the form below.<br>
+                <img src="/img/tutorial-4.jpg" alt="Tutorial screenshot n. 4"/>
+            </li>
+        </ol>
+    </details>
+<?php endif ?>
 <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="package-id" value="<?= $upload_packageId ?>"/>
-    <input type="hidden" name="key" id="key-input" value="<?= $upload_key ?>"/> <!-- Value will be filled in by JavaScript -->
+    <input type="hidden" name="key" id="key-input" value="<?= $upload_key ?>"/>
+    <!-- Value will be filled in by JavaScript -->
     <input type="hidden" name="access-key" id="access-key-input" value="<?= $upload_accessKey ?>"/>
     <fieldset>
         <label for="file-input">Package file:</label>
@@ -50,7 +53,7 @@
             </small>
         </p>
     </fieldset>
-    <fieldset style="background-color:<?= $upload_minor ? '#e2b1ff' : '#b1d4ff' ?>;">
+    <fieldset style="background-color:<?= $upload_firstRelease ? '#ff9f39' : ($upload_minor ? '#e2b1ff' : '#b1d4ff') ?>;">
         <?php if ($upload_minor) : ?>
             <p>
                 You are about to upload a <b>minor version</b> of this Anki package. That means that current users of
@@ -59,10 +62,32 @@
             <p>
                 <small>
                     Keep in mind that minor updates (or patches) should be used only for things like typo or formatting
-                    fixes. Simply things that you want to be fixed for new users, but aren't critical enough to spend time
-                    updating the whole deck. To create an update-notification-trigerring update, go back to the "My Decks"
+                    fixes. Simply things that you want to be fixed for new users, but aren't critical enough to spend
+                    time
+                    updating the whole deck. To create an update-notification-triggering update, go back to the "My
+                    Decks"
                     page and click the blue icon instead of the purple one next to this deck.
                 </small>
+            </p>
+        <?php elseif ($upload_firstRelease) : ?>
+            <p>Before releasing this first version of your Anki deck, make sure to double-check the following:</p>
+            <ul>
+                <li>The deck has the correct name and location</li>
+                <ul>
+                    <li>It's a good practise to export the deck when it's in the top-most level or one parent deck at
+                        most.
+                    </li>
+                </ul>
+                <li>All the cards within your deck are of the correct note type.</li>
+                <ul>
+                    <li>It's a good idea to make your own note type and name it something like "Basic – Tom's
+                        Genetics".
+                    </li>
+                </ul>
+            </ul>
+            <p>
+                These things cannot be updated later and changing them on your side later will cause failure to update
+                any previous versions.
             </p>
         <?php else : ?>
             <p>
@@ -81,7 +106,7 @@
     <fieldset style="text-align: center;">
         <p>
             <strong>Warning:</strong> Uploading a new version will permanently delete the previous version from our
-        servers.
+            servers.
         </p>
         <p><input type="submit" value="Upload" class="upload-btn"/></p>
         <small>
