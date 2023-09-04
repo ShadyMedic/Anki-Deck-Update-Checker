@@ -41,6 +41,10 @@ class PackageManager
             throw new UserException('Deck name is too long.');
         }
 
+        if (mb_strlen($deckName) < 3) {
+        throw new UserException('Deck name is too short.');
+    }
+
         return true;
     }
 
