@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Anki Package Update Checker</title>
+    <style>
+        .win98popup {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: space-between;
+            align-items: center;
+            font-family: "Microsoft Sans Serif", sans-serif;
+            background: #c2c6ca;
+            font-size: 12px;
+            width: fit-content;
+            min-height: 118px;
+            height: fit-content;
+            box-shadow: 0.5px 0.5px 0 0.5px black, inset 1px 1px #C2C6CA, inset -1px -1px #85898d, inset 2px 2px white;
+        }
+
+        .win98popup button {
+            background: #c2c6ca;
+            border: none;
+            padding: 0;
+            border-radius: 0;
+            outline: none;
+        }
+
+        .win98popup .shadow {
+            box-shadow: 0.5px 0.5px 0 0.5px black, inset 1px 1px white, inset -1px -1px #85898d;
+        }
+
+        .win98popup .bar {
+            display: flex;
+            flex-flow: row nowrap;
+            font-weight: bold;
+            justify-content: space-between;
+            width: calc(100% - 11px);
+            height: 13px;
+            color: white;
+            background: #00a;
+            padding: 2px 3px 3px;
+            margin: 3px 2px 1px 3px;
+        }
+
+        .win98popup .bar p {
+            margin: 0;
+        }
+
+        .win98popup section {
+            display: flex;
+            width: 100%;
+        }
+
+        .win98popup .icon {
+            margin: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .win98popup .buttons {
+            display: flex;
+            flex-flow: row nowrap;
+            margin: 1px 15px 14px 14px;
+        }
+
+        .win98popup .buttons button {
+            width: 74px;
+            height: 22px;
+            display: grid;
+        }
+
+        .win98popup .buttons button p {
+            font-size: 12px;
+            margin: auto;
+        }
+
+        .win98popup .buttons button:focus {
+            outline: none;
+            box-shadow: 0.5px 0.5px 0 0.5px black, inset 1px 1px black, inset -1px -1px black, inset 2px 2px white, inset -2px -2px #85898d;
+        }
+
+        .win98popup .buttons button:focus img {
+            display: block;
+        }
+
+        .win98popup .buttons button:active {
+            box-shadow: 0.5px 0.5px 0 0.5px black, inset 1px 1px black, inset -1px -1px #85898d, inset 2px 2px #85898d;
+            outline: none;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .msg {
+            padding: 0 8px;
+        }
+
+        small {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            color: darkgrey;
+        }
+
+        small a {
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+<div class="win98popup shadow">
+    <div class="bar">
+        <p>Error <?= $headerCode ?> – <?= $headerMessage ?></p>
+    </div>
+    <section>
+        <div class="icon">
+            <svg width="50" height="50">
+                <circle cx="25" cy="25" r="20" fill="#ff0000"/>
+                <line x1="15" y1="15" x2="35" y2="35" stroke="#ffffff" stroke-width="5"/>
+                <line x1="35" y1="15" x2="15" y2="35" stroke="#ffffff" stroke-width="5"/>
+            </svg>
+        </div>
+        <div>
+            <p class="msg"><?= $errorMessage ?></p>
+        </div>
+    </section>
+    <div class="buttons">
+        <a href="javascript:history.back()"><button class="shadow"><p>Go Back</p></button></a>
+    </div>
+</div>
+<small>
+    This error webpage is built upon base made by:
+    <a href="https://codepen.io/mbled/pen/ExKZPKy" target="_blank">
+        Copyright (c) 2023 by Maciej Błędkowski
+    </a>
+</small>
+</body>
+</html>
+
