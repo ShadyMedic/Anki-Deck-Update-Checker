@@ -54,7 +54,7 @@ class Edit extends Controller
 
             try {
                 if ($tools->validateName($deckName)) {
-                    $edits['filename'] = $deckName;
+                    $edits['name'] = $deckName;
                     $saves[] = 'Deck name was saved';
                 }
             } catch (UserException $e) {

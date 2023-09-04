@@ -27,8 +27,8 @@ class Package implements DatabaseRecord, Sanitizable
 
         $db = Db::connect();
         $query = (empty($accessKey)) ?
-            'INSERT INTO package (filename, author, edit_key) VALUES (?,?,?)' :
-            'INSERT INTO package (access_key, filename, author, edit_key) VALUES (?,?,?,?)';
+            'INSERT INTO package (name, author, edit_key) VALUES (?,?,?)' :
+            'INSERT INTO package (access_key, name, author, edit_key) VALUES (?,?,?,?)';
         $parameters = (empty($accessKey)) ?
             array($name, $author, $editKey) :
             array($accessKey, $name, $author, $editKey);
@@ -78,7 +78,7 @@ class Package implements DatabaseRecord, Sanitizable
         $this->minorVersion = $data['minor_version'];
         $this->accessKey = $data['access_key'];
         $this->downloadLink = $data['download_link'];
-        $this->name = $data['filename'];
+        $this->name = $data['name'];
         $this->author = $data['author'];
         $this->editKey = $data['edit_key'];
         $this->updatedAt = new DateTime($data['updated_at']);
@@ -98,7 +98,7 @@ class Package implements DatabaseRecord, Sanitizable
             'minor_version' => null,
             'access_key' => null,
             'download_link' => null,
-            'filename' => null,
+            'name' => null,
             'author' => null,
             'edit_key' => null,
             'updated_at' => null,
