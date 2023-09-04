@@ -22,7 +22,7 @@ class ErrorProcessor
      * @var string $errorWebpageView View to display as an error webpage (defaults to an empty view containing nothing
      * but the error message specified in the $errorWebpageData attribute)
      */
-    public string $errorWebpageView = 'errors/empty';
+    public string $errorWebpageView = 'errors/popup';
 
     /**
      * @var array $errorWebpageData Data to fill in into the error views.
