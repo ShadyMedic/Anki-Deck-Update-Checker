@@ -12,6 +12,7 @@ class Package implements DatabaseRecord, Sanitizable
     private ?int $minorVersion = 0;
     private ?string $accessKey = null;
     private ?string $downloadLink = null;
+    private ?int $categoryId = 1;
     private ?string $name = null;
     private ?string $author = null;
     private ?string $editKey = null;
@@ -20,6 +21,7 @@ class Package implements DatabaseRecord, Sanitizable
 
     public function create(array $data) : bool
     {
+        $category = $data['category'];
         $author = $data['author'];
         $name = $data['name'];
         $editKey = $data['editKey'];
@@ -27,11 +29,11 @@ class Package implements DatabaseRecord, Sanitizable
 
         $db = Db::connect();
         $query = (empty($accessKey)) ?
-            'INSERT INTO package (name, author, edit_key) VALUES (?,?,?)' :
-            'INSERT INTO package (access_key, name, author, edit_key) VALUES (?,?,?,?)';
+            'INSERT INTO package (category_id, name, author, edit_key) VALUES (?,?,?,?)' :
+            'INSERT INTO package (access_key, category_id, name, author, edit_key) VALUES (?,?,?,?,?)';
         $parameters = (empty($accessKey)) ?
-            array($name, $author, $editKey) :
-            array($accessKey, $name, $author, $editKey);
+            array($category, $name, $author, $editKey) :
+            array($accessKey, $category, $name, $author, $editKey);
 
         try {
             $statement = $db->prepare($query);
