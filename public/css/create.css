@@ -17,6 +17,7 @@ input[type=password][maxlength="31"] {
 
 input[maxlength="122"] {
     width: -webkit-fill-available;
+    width: -moz-available;
 }
 
 small {
