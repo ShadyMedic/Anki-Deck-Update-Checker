@@ -151,7 +151,9 @@ class PackageManager
     public function getOwnedPackages(string $key) : array
     {
         $query = '
-            SELECT package_id,name,access_key,version,minor_version,updated_at FROM package
+            SELECT package_id,category.name AS `category`,package.name,access_key,version,minor_version,updated_at
+            FROM package
+            JOIN category ON package.category_id = category.category_id
             WHERE edit_key = ?
             ORDER BY updated_at DESC;
         ';
