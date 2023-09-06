@@ -7,3 +7,29 @@ th, td {
     text-align: left;
 }
 
+.categories-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.category-box {
+    border: 2px solid black;
+    border-radius: 8px;
+    display: inline-block;
+    width: max-content;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 8px;
+    background-repeat: no-repeat!important;
+    background-position: center!important;
+}
+
+.category-box>p {
+    margin: 24px;
+}
+
+.plain-link {
+    color: unset;
+    text-decoration: none;
+}

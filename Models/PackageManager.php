@@ -134,17 +134,17 @@ class PackageManager
         }
     }
 
-    public function getPublicPackages() : array
+    public function getPublicPackages(int $categoryId) : array
     {
         $query = '
             SELECT package_id,name,author,version,minor_version,updated_at FROM package
-            WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL AND deleted = 0
+            WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL AND category_id = ? AND deleted = 0
             ORDER BY updated_at DESC;
         ';
 
         $db = Db::connect();
         $statement = $db->prepare($query);
-        $statement->execute(array());
+        $statement->execute([$categoryId]);
         return $statement->fetchAll();
     }
 

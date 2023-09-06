@@ -1,0 +1,14 @@
+<p>Public Anki decks uploaded to this service are categorised by their subject.</p>
+<p>New categories are added whenever a new deck that can't fit into any existing category is uploaded.</p>
+<div class="categories-wrapper">
+    <?php foreach ($categories_categories as $category) : ?>
+        <a class="plain-link" href="/browse/<?= $category['category_id'] ?>">
+            <div class="category-box"
+                 style="background: linear-gradient( rgb(255 255 255 / 50%), rgb(255 255 255 / 49%) ), url('<?= $category['icon']; ?>')">
+                <p><strong><?= $category['name'] ?></strong></p>
+                <p><?= $category['package_count'] ?> public packages</p>
+            </div>
+        </a>
+    <?php endforeach ?>
+</div>
+

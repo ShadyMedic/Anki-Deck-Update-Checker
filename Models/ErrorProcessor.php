@@ -206,6 +206,10 @@ class ErrorProcessor
                         //Package with a given ID was not found when trying to download its all-time usage statistics
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 404011:
+                        //Category with a given ID was not found when trying to get to the browse page
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 406:
