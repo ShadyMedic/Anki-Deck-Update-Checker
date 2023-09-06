@@ -25,7 +25,10 @@ class PackageManager
 
     public function validateCategory(int $categoryId) : bool
     {
-        //TODO
+        $manager = new CategoryManager();
+        if (!$manager->categoryExists($categoryId)) {
+            throw new UserException('Category wasn\'t found');
+        }
         return true;
     }
 
