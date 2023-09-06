@@ -23,6 +23,9 @@ class PackageManager
         ));
     }
 
+    /**
+     * @throws UserException
+     */
     public function validateCategory(int $categoryId) : bool
     {
         $manager = new CategoryManager();

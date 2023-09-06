@@ -80,6 +80,7 @@ class Package implements DatabaseRecord, Sanitizable
         $this->minorVersion = $data['minor_version'];
         $this->accessKey = $data['access_key'];
         $this->downloadLink = $data['download_link'];
+        $this->categoryId = $data['category_id'];
         $this->name = $data['name'];
         $this->author = $data['author'];
         $this->editKey = $data['edit_key'];
@@ -111,6 +112,11 @@ class Package implements DatabaseRecord, Sanitizable
     public function getId() : ?int
     {
         return $this->packageId;
+    }
+
+    public function getCategory() : ?int
+    {
+        return $this->categoryId;
     }
 
     public function getName() : ?string
