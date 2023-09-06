@@ -25,6 +25,10 @@ th, td {
     background-position: center!important;
 }
 
+.category-box:hover {
+    background-color: #ccc!important;
+}
+
 .category-box>p {
     margin: 24px;
 }
