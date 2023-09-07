@@ -6,6 +6,9 @@
 </p>
 <div class="categories-wrapper">
     <?php foreach ($categories_categories as $category) : ?>
+        <?php if ($category['package_count'] === 0) {
+            continue;
+        } ?>
         <a class="plain-link" href="/browse/<?= $category['category_id'] ?>">
             <div class="category-box"
                  style="background: linear-gradient( rgb(255 255 255 / 62%), rgb(255 255 255 / 62%) ), url('<?= $category['icon']; ?>')">
@@ -15,6 +18,12 @@
         </a>
     <?php endforeach ?>
 </div>
+<p class="txt-c">
+    <small>
+        There might currently be more categories, but they're hidden from this view, because they contain no
+        public decks.
+    </small>
+</p>
 <p class="txt-c">
     All category icons designed by <a href="https://openmoji.org/">OpenMoji</a> – the open-source emoji and icon
     project.
