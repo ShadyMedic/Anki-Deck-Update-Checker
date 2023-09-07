@@ -1,4 +1,5 @@
+.idea/*
 local/*
 decks/*.apkg
 stats/*
-.idea/*
+public/img/categories/*.svg

@@ -2,6 +2,7 @@
 
 namespace AnkiDeckUpdateChecker\Controllers;
 
+use AnkiDeckUpdateChecker\Models\CategoryManager;
 use AnkiDeckUpdateChecker\Models\Package;
 use AnkiDeckUpdateChecker\Models\PackageManager;
 use AnkiDeckUpdateChecker\Models\UserException;
@@ -16,6 +17,7 @@ class Create extends Controller
     public function process(array $args = []): int
     {
         if (!empty($_POST)) {
+            $category = trim($_POST['category']);
             $deckName = trim($_POST['deck-name']);
             $author = trim($_POST['author']);
             $public = isset($_POST['public']);
@@ -24,6 +26,7 @@ class Create extends Controller
 
             $tools = new PackageManager();
             try {
+                $tools->validateCategory($category);
                 $tools->validateName($deckName);
                 $tools->validateAuthor($author);
                 $tools->validateEditKey($key);
@@ -46,6 +49,7 @@ class Create extends Controller
 
                 $package = new Package();
                 $package->create(array(
+                    'category' => $category,
                     'name' => $deckName,
                     'author' => $author,
                     'accessKey' => $accessKey,
@@ -60,10 +64,12 @@ class Create extends Controller
         self::$data['layout']['page_id'] = 'new-deck';
         self::$data['layout']['title'] = 'Upload New Deck';
 
+        self::$data['create']['category'] = $category ?? null;
         self::$data['create']['deckName'] = $deckName ?? null;
         self::$data['create']['author'] = $author ?? null;
         self::$data['create']['public'] = $public ?? null;
         self::$data['create']['key'] = $key ?? null;
+        self::$data['create']['categories'] = (new CategoryManager())->loadCategories() ?? null;
         self::$data['create']['error'] = $error ?? null;
 
         self::$views[] = 'create';

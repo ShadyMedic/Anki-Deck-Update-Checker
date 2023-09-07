@@ -46,6 +46,7 @@
         <table class="wide-table striped-table">
             <tr>
                 <th></th>
+                <th class="txt-r">Category</th>
                 <th class="txt-l">Deck name</th>
                 <th>Version</th>
                 <th>Last updated at</th>
@@ -59,7 +60,8 @@
                         <?php else : ?>
                             <img src="public/img/icons/public.png" alt="Public package" title="This package was published for everyone." class="icon"/>
                         <?php endif ?></td>
-                    <td class="txt-l"><?= $package['filename'] ?></td>
+                    <td class="txt-r"><?= $package['category'] ?></td>
+                    <td class="txt-l"><?= $package['name'] ?></td>
                     <td><?= $package['version'] ?>.<?= $package['minor_version'] ?></td>
                     <td><?= $package['updated_at'] ?></td>
                     <td class="icon-wrapper"><a href="/deck/<?= $package['package_id'].(($package['access_key']) ? '?key='.$package['access_key'] : '') ?>"><img src="public/img/icons/download.png" alt="Download current version" class="icon shadow-green"/></a></td>

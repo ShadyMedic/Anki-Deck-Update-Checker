@@ -2,6 +2,7 @@
 
 namespace AnkiDeckUpdateChecker\Controllers;
 
+use AnkiDeckUpdateChecker\Models\CategoryManager;
 use AnkiDeckUpdateChecker\Models\Package;
 use AnkiDeckUpdateChecker\Models\PackageManager;
 use AnkiDeckUpdateChecker\Models\UserException;
@@ -37,6 +38,7 @@ class Edit extends Controller
             throw new UserException('The editing key for this package is not valid.', 403002);
         }
 
+        $category = $package->getCategory();
         $deckName = $package->getName();
         $author = $package->getAuthor();
         $public = $package->isPublic();
@@ -44,6 +46,7 @@ class Edit extends Controller
         $saves = array();
 
         if (isset($_POST['deck-name'])) { //Form was submitted, webpage loading is also POST because of "key" submission
+            $category = trim($_POST['category']);
             $deckName = trim($_POST['deck-name']);
             $author = trim($_POST['author']);
             $justPublished = isset($_POST['public']) && $_POST['public'] === 'on';
@@ -53,8 +56,17 @@ class Edit extends Controller
             $edits = array();
 
             try {
+                if ($tools->validateCategory($category)) {
+                    $edits['category_id'] = $category;
+                    $saves[] = 'Category was saved';
+                }
+            } catch (UserException $e) {
+                $errors[] = $e->getMessage();
+            }
+
+            try {
                 if ($tools->validateName($deckName)) {
-                    $edits['filename'] = $deckName;
+                    $edits['name'] = $deckName;
                     $saves[] = 'Deck name was saved';
                 }
             } catch (UserException $e) {
@@ -84,8 +96,11 @@ class Edit extends Controller
                 $saves[] = 'Package was published';
             }
 
-            if (empty($errors)) {
+            if (!empty($edits)) {
                 $package->update($edits);
+                if (in_array('Category was saved', $saves)) {
+                    (new CategoryManager())->recalculateDeckCounts();
+                }
             }
         }
 
@@ -93,6 +108,8 @@ class Edit extends Controller
         self::$data['layout']['title'] = 'Edit Deck Details';
 
         self::$data['edit']['key'] = $originalKey;
+        self::$data['edit']['categories'] = (new CategoryManager())->loadCategories();
+        self::$data['edit']['category'] = $category ?? null;
         self::$data['edit']['deckName'] = $deckName ?? null;
         self::$data['edit']['author'] = $author ?? null;
         self::$data['edit']['public'] = $public ?? null;

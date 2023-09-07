@@ -26,6 +26,18 @@ class PackageManager
     /**
      * @throws UserException
      */
+    public function validateCategory(int $categoryId) : bool
+    {
+        $manager = new CategoryManager();
+        if (!$manager->categoryExists($categoryId)) {
+            throw new UserException('Category wasn\'t found');
+        }
+        return true;
+    }
+
+    /**
+     * @throws UserException
+     */
     public function validateName(string $deckName) : bool
     {
         if (empty($deckName)) {
@@ -40,6 +52,10 @@ class PackageManager
         if (mb_strlen($deckName) > 63) {
             throw new UserException('Deck name is too long.');
         }
+
+        if (mb_strlen($deckName) < 3) {
+        throw new UserException('Deck name is too short.');
+    }
 
         return true;
     }
@@ -118,24 +134,26 @@ class PackageManager
         }
     }
 
-    public function getPublicPackages() : array
+    public function getPublicPackages(int $categoryId) : array
     {
         $query = '
-            SELECT package_id,filename,author,version,minor_version,updated_at FROM package
-            WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL AND deleted = 0
+            SELECT package_id,name,author,version,minor_version,updated_at FROM package
+            WHERE access_key IS NULL AND version > 0 AND download_link IS NOT NULL AND category_id = ? AND deleted = 0
             ORDER BY updated_at DESC;
         ';
 
         $db = Db::connect();
         $statement = $db->prepare($query);
-        $statement->execute(array());
+        $statement->execute([$categoryId]);
         return $statement->fetchAll();
     }
 
     public function getOwnedPackages(string $key) : array
     {
         $query = '
-            SELECT package_id,filename,access_key,version,minor_version,updated_at FROM package
+            SELECT package_id,category.name AS `category`,package.name,access_key,version,minor_version,updated_at
+            FROM package
+            JOIN category ON package.category_id = category.category_id
             WHERE edit_key = ?
             ORDER BY updated_at DESC;
         ';

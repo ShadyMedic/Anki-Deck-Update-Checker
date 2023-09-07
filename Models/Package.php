@@ -12,6 +12,7 @@ class Package implements DatabaseRecord, Sanitizable
     private ?int $minorVersion = 0;
     private ?string $accessKey = null;
     private ?string $downloadLink = null;
+    private ?int $categoryId = 1;
     private ?string $name = null;
     private ?string $author = null;
     private ?string $editKey = null;
@@ -20,6 +21,7 @@ class Package implements DatabaseRecord, Sanitizable
 
     public function create(array $data) : bool
     {
+        $category = $data['category'];
         $author = $data['author'];
         $name = $data['name'];
         $editKey = $data['editKey'];
@@ -27,11 +29,11 @@ class Package implements DatabaseRecord, Sanitizable
 
         $db = Db::connect();
         $query = (empty($accessKey)) ?
-            'INSERT INTO package (filename, author, edit_key) VALUES (?,?,?)' :
-            'INSERT INTO package (access_key, filename, author, edit_key) VALUES (?,?,?,?)';
+            'INSERT INTO package (category_id, name, author, edit_key) VALUES (?,?,?,?)' :
+            'INSERT INTO package (access_key, category_id, name, author, edit_key) VALUES (?,?,?,?,?)';
         $parameters = (empty($accessKey)) ?
-            array($name, $author, $editKey) :
-            array($accessKey, $name, $author, $editKey);
+            array($category, $name, $author, $editKey) :
+            array($accessKey, $category, $name, $author, $editKey);
 
         try {
             $statement = $db->prepare($query);
@@ -78,7 +80,8 @@ class Package implements DatabaseRecord, Sanitizable
         $this->minorVersion = $data['minor_version'];
         $this->accessKey = $data['access_key'];
         $this->downloadLink = $data['download_link'];
-        $this->name = $data['filename'];
+        $this->categoryId = $data['category_id'];
+        $this->name = $data['name'];
         $this->author = $data['author'];
         $this->editKey = $data['edit_key'];
         $this->updatedAt = new DateTime($data['updated_at']);
@@ -98,7 +101,7 @@ class Package implements DatabaseRecord, Sanitizable
             'minor_version' => null,
             'access_key' => null,
             'download_link' => null,
-            'filename' => null,
+            'name' => null,
             'author' => null,
             'edit_key' => null,
             'updated_at' => null,
@@ -109,6 +112,11 @@ class Package implements DatabaseRecord, Sanitizable
     public function getId() : ?int
     {
         return $this->packageId;
+    }
+
+    public function getCategory() : ?int
+    {
+        return $this->categoryId;
     }
 
     public function getName() : ?string
