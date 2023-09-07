@@ -96,8 +96,11 @@ class Edit extends Controller
                 $saves[] = 'Package was published';
             }
 
-            if (empty($errors)) {
+            if (!empty($edits)) {
                 $package->update($edits);
+                if (in_array('Category was saved', $saves)) {
+                    (new CategoryManager())->recalculateDeckCounts();
+                }
             }
         }
 
