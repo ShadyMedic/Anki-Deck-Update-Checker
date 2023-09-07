@@ -15,7 +15,7 @@ class CategoryManager
         FROM category
         ORDER BY
             CASE
-                WHEN category_id = 1 THEN 0
+                WHEN category_id = 0 THEN 0
                 ELSE 1
             END,
             package_count DESC

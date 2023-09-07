@@ -22,7 +22,7 @@ class Browse extends Controller
 
         self::$data['layout']['page_id'] = 'browse';
 
-        if (empty($category)) {
+        if (is_null($category)) {
             self::$data['layout']['title'] = 'Public Anki Decks';
 
             $manager = new PackageManager();
