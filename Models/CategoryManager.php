@@ -48,7 +48,7 @@ class CategoryManager
         $db = Db::connect();
         $query = '
             UPDATE category
-            INNER JOIN (
+            LEFT JOIN (
                 SELECT category_id, COUNT(*) as package_count
                 FROM package
                 WHERE version > 0 AND download_link IS NOT NULL AND access_key IS NULL
