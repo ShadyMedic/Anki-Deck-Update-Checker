@@ -7,14 +7,6 @@ th, td {
     padding: 0;
 }
 
-.txt-l {
-    text-align: left;
-}
-
-.txt-r {
-    text-align: right;
-}
-
 .no-results {
     text-align: center;
     color: orangered;

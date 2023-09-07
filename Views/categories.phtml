@@ -1,5 +1,9 @@
 <p>Public Anki decks uploaded to this service are categorised by their subject.</p>
 <p>New categories are added whenever a new deck that can't fit into any existing category is uploaded.</p>
+<p>
+    Categories on this webpage are sorted by the number of public decks they contain (apart from the "Uncategorized"
+    category). You can use <kbd>Ctrl + F</kbd> to search for your desired category quickly.
+</p>
 <div class="categories-wrapper">
     <?php foreach ($categories_categories as $category) : ?>
         <a class="plain-link" href="/browse/<?= $category['category_id'] ?>">
@@ -11,4 +15,9 @@
         </a>
     <?php endforeach ?>
 </div>
+<p class="txt-c">
+    All category icons designed by <a href="https://openmoji.org/">OpenMoji</a> – the open-source emoji and icon
+    project.
+    License: <a href="https://creativecommons.org/licenses/by-sa/4.0/#">CC BY-SA 4.0</a>
+</p>
 

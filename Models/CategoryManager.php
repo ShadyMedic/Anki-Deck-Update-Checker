@@ -10,7 +10,16 @@ class CategoryManager
     public function loadCategories(bool $full = false) : array
     {
         $db = Db::connect();
-        $query = 'SELECT '.($full ? '*' : 'category_id,name').' FROM category ORDER BY category_id;';
+        $query = '
+        SELECT '.($full ? '*' : 'category_id,name').'
+        FROM category
+        ORDER BY
+            CASE
+                WHEN category_id = 1 THEN 0
+                ELSE 1
+            END,
+            package_count DESC
+        ;';
         $statement = $db->prepare($query);
         $statement->execute();
         return $statement->fetchAll($full ? PDO::FETCH_ASSOC : PDO::FETCH_KEY_PAIR);
