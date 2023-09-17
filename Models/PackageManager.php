@@ -44,8 +44,8 @@ class PackageManager
             throw new UserException('Deck name mustn\'t be empty');
         }
 
-        // Replace with "(substr($deckName, -5) === '.apkg')" in PHP version < 8
-        if (str_ends_with($deckName, '.apkg')) {
+        // Replace with "(str_ends_with($deckName, '.apkg'))" in PHP version 8 and newer
+        if (substr($deckName, -5) === '.apkg') {
             throw new UserException('Deck name should not contain the ".apkg" file extension.');
         }
 
