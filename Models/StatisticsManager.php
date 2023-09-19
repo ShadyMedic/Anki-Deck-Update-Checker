@@ -22,19 +22,20 @@ class StatisticsManager
         $maxValue = max($data);
         if ($maxValue <= 10) {
             $rounding = 1;
+            $maxValue = 10;
         } elseif ($maxValue <= 50) {
             $rounding = 5;
         } else {
-            $rounding = pow(10, floor(log10($maxValue)) - 1);
-            if ($rounding < 10) {
-                $rounding = 10;
+            $rounding = ceil($maxValue / 10);
+            if ($rounding % 10 !== 0) {
+                $rounding += 10 - ($rounding % 10);
             }
         }
         $yMax = ceil($maxValue / $rounding) * $rounding;
         if ($yMax === 0.0) {
             $yMax = 10.0; //No statistics exist – generate graph with max Y = 10
         }
-        $yStep = $yMax / 10;
+        $yStep = $rounding;
 
         $width = 800;
         $height = 600;

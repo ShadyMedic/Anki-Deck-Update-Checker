@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    overflow-x: hidden;
 }
 
 nav {
@@ -44,13 +45,16 @@ nav {
     nav {
         flex-direction: row;
     }
+
     .nav-row:first-child > .nav-item {
         border-left: 1px solid black;
         border-right: 1px solid black;
     }
+
     .nav-row:last-child > .nav-item {
         border-right: 1px solid black;
     }
+
     .nav-item {
         width: 50vw;
     }
@@ -60,6 +64,7 @@ nav {
     .nav-row, .nav-row {
         flex-direction: row;
     }
+
     .nav-item {
         width: 25vw;
     }
@@ -73,7 +78,7 @@ main {
     width: 50%;
     min-width: 600px;
     margin: auto;
-    position:relative;
+    position: relative;
 }
 
 @media (max-width: 620px) {
@@ -82,6 +87,18 @@ main {
         width: unset;
         min-width: unset;
     }
+}
+
+.txt-l {
+    text-align: left;
+}
+
+.txt-c {
+    text-align: center;
+}
+
+.txt-r {
+    text-align: right;
 }
 
 .wide-table {

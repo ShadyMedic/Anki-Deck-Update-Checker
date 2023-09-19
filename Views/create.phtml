@@ -8,9 +8,25 @@
 <?php else : ?>
 <form method="post" id="edit-form">
     <fieldset>
+        <label for="category-input">Category:</label>
+        <select name="category" id="category-input" required>
+            <?php foreach ($create_categories as $categoryId => $categoryName) : ?>
+                <option <?= ($create_category == $categoryId) ? 'selected ' : '' ?>value="<?= $categoryId ?>">
+                    <?= $categoryName ?>
+                </option>
+            <?php endforeach ?>
+        </select>
+        <small>
+            Please select one of the categories from the list that your deck fits within the most.
+            You can open the select box and start typing first letters to filter.
+            If your deck fits within none of the available categories, set this to "Uncategorized" and webmaster will
+            either create a new category for your deck, or assign it to one of the existing ones.
+        </small>
+    </fieldset>
+    <fieldset>
         <label for="deck-name-input">Deck name:</label>
         <input type="text" name="deck-name" id="deck-name-input" maxlength="122"
-               placeholder="Respiratory Physiology" value="<?= $create_deckName ?? '' ?>" required/>
+               placeholder="Clinical Microbiology" value="<?= $create_deckName ?? '' ?>" required/>
         <small>
             When your package is downloaded, the file will have this name.
             <strong>Do not include the <code>.apkg</code> extension in this field.</strong>

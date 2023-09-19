@@ -1,4 +1,10 @@
 <p>This is the graph of pseudo-unique users of this Anki deck in the last 30 days.</p>
+<p>
+    Please note that users using your deck from AnkiDroid (mobile client for Anki) or AnkiWeb are not included in these
+    statistics. The reason for this is the inability to check for update from these platforms. Hopefuly, this will be
+    fixed sooner or later for AnkiDroid (you can encourage the developers by commenting on
+    <a href="https://github.com/ankidroid/Anki-Android/issues/6669">this GitHub issue</a>).
+</p>
 <details>
     <summary>Learn how these statistics are calculated.</summary>
     <p>
@@ -46,7 +52,8 @@
     and let it generate a graph for you.
 </p>
 <form action="/stats/<?= $stats_packageId ?>/full" method="post">
-    <input type="hidden" name="key" value="<?= $stats_key ?>" />
-    <input type="submit" style="display: block; background-color:cornflowerblue; font-size: x-large;" value="Download Statistics" />
+    <input type="hidden" name="key" value="<?= $stats_key ?>"/>
+    <input type="submit" style="display: block; background-color:cornflowerblue; font-size: x-large;"
+           value="Download Statistics"/>
 </form>
 

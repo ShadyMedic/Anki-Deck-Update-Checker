@@ -1,0 +1,33 @@
+<p>Public Anki decks uploaded to this service are categorised by their subject.</p>
+<p>New categories are added whenever a new deck that can't fit into any existing category is uploaded.</p>
+<p>
+    Categories on this webpage are sorted by the number of public decks they contain (apart from the "Uncategorized"
+    category). You can use <kbd>Ctrl + F</kbd> to search for your desired category quickly.
+</p>
+<div class="categories-wrapper">
+    <?php foreach ($categories_categories as $category) : ?>
+        <?php if ($category['package_count'] === 0) {
+            continue;
+        } ?>
+        <a class="plain-link" href="/browse/<?= $category['category_id'] ?>">
+            <div class="category-box"
+                 style="background: linear-gradient( rgb(255 255 255 / 62%), rgb(255 255 255 / 62%) ), url('<?= $category['icon']; ?>')">
+                <p><strong><?= $category['name'] ?></strong></p>
+                <p><?= $category['package_count'] ?> public
+                    package<?= ($category['package_count'] > 1) ? 's' : '' ?></p>
+            </div>
+        </a>
+    <?php endforeach ?>
+</div>
+<p class="txt-c">
+    <small>
+        There might currently be more categories, but they're hidden from this view, because they contain no
+        public decks.
+    </small>
+</p>
+<p class="txt-c">
+    All category icons designed by <a href="https://openmoji.org/" target="_blank">OpenMoji</a> – the open-source emoji and icon
+    project.
+    License: <a href="https://creativecommons.org/licenses/by-sa/4.0/#">CC BY-SA 4.0</a>
+</p>
+

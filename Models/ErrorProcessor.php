@@ -22,7 +22,7 @@ class ErrorProcessor
      * @var string $errorWebpageView View to display as an error webpage (defaults to an empty view containing nothing
      * but the error message specified in the $errorWebpageData attribute)
      */
-    public string $errorWebpageView = 'errors/empty';
+    public string $errorWebpageView = 'errors/popup';
 
     /**
      * @var array $errorWebpageData Data to fill in into the error views.
@@ -204,6 +204,10 @@ class ErrorProcessor
                         return true;
                     case 404010:
                         //Package with a given ID was not found when trying to download its all-time usage statistics
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
+                    case 404011:
+                        //Category with a given ID was not found when trying to get to the browse page
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
                 }

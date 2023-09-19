@@ -2,6 +2,7 @@
 
 namespace AnkiDeckUpdateChecker\Controllers;
 
+use AnkiDeckUpdateChecker\Models\CategoryManager;
 use AnkiDeckUpdateChecker\Models\Package;
 use AnkiDeckUpdateChecker\Models\PackageManager;
 use AnkiDeckUpdateChecker\Models\UserException;
@@ -47,6 +48,7 @@ class Delete extends Controller
 
             if ($tools->checkWriteAccess($packageId, $confirmation)) {
                 $tools->delete($package);
+                (new CategoryManager())->recalculateDeckCounts();
                 $this->redirect('/deleted/'.$packageId);
             } else {
                 $error = 'Editing key is incorrect';

@@ -19,7 +19,7 @@ summary {
 summary > * {
     display: inline-block;
     margin: 0.5em 0;
-    text-decoration: underline dotted 2px gray;
+    text-decoration: underline dotted 2px grey;
 }
 
 .upload-btn {

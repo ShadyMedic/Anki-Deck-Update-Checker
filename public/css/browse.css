@@ -3,7 +3,40 @@ th, td {
     padding: 0 16px;
 }
 
-.txt-l {
-    text-align: left;
+.categories-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
+.category-box {
+    border: 2px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 10.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 8px;
+    background-repeat: no-repeat!important;
+    background-position: center!important;
+}
+
+.category-box:hover {
+    background-color: #ccc!important;
+}
+
+.category-box>p:first-child {
+    margin-top: 4px;
+}
+
+.category-box>p:last-child {
+    margin-bottom: 4px;
+    font-size: 1rem;
+}
+
+.plain-link {
+    color: unset;
+    text-decoration: none;
+}

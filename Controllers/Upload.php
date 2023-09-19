@@ -2,6 +2,7 @@
 
 namespace AnkiDeckUpdateChecker\Controllers;
 
+use AnkiDeckUpdateChecker\Models\CategoryManager;
 use AnkiDeckUpdateChecker\Models\Package;
 use AnkiDeckUpdateChecker\Models\PackageManager;
 use AnkiDeckUpdateChecker\Models\UserException;
@@ -57,6 +58,7 @@ class Upload extends Controller
                 $authenticator->update($package, $minor);
 
                 if ($package->getFullVersion() === '1.0') {
+                    (new CategoryManager())->recalculateDeckCounts(); //New package uploaded --> recalculate deck counts
                     $url = '/uploaded/'.$packageId.(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
                 } else if ($package->getMinorVersion() === 0) {
                     $url = '/updated/'.$packageId.(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
@@ -77,6 +79,7 @@ class Upload extends Controller
         self::$data['upload']['key'] = $key;
         self::$data['upload']['error'] = $error ?? '';
         self::$data['upload']['minor'] = $minor;
+        self::$data['upload']['firstRelease'] = $package->getVersion() === 0;
 
         self::$views[] = 'upload';
         self::$cssFiles[] = 'upload';

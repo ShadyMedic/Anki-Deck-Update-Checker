@@ -45,7 +45,8 @@ class Router extends Controller
                 $finalVariables[] = $argument; //Literal argument
             }
         }
-        $nextController = new ('AnkiDeckUpdateChecker\\'.self::CONTROLLERS_DIRECTORY.'\\'.$controllerName)();
+        $nextControllerName = 'AnkiDeckUpdateChecker\\'.self::CONTROLLERS_DIRECTORY.'\\'.$controllerName;
+        $nextController = new $nextControllerName();
         return $nextController->process($finalVariables);
     }
 
