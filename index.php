@@ -24,7 +24,7 @@ function autoloader(string $name): void
     //Replace backslashes (used in namespace path) with forward slashes (used in directory path)
     $name = str_replace('\\', '/', $name);
     //Remove root directory (in which this file is located)
-    if (str_contains($name, '/')) {
+    if (strpos($name, '/') !== false) {
         $folders = explode('/', $name);
         unset($folders[0]);
         $name = implode('/', $folders);

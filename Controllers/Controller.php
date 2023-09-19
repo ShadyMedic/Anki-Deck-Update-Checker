@@ -118,7 +118,7 @@ abstract class Controller
      * @return int|double|bool|null|string|array|Sanitizable The sanitized value
      * @throws InvalidArgumentException If the provided value couldn't be sanitized
      */
-    private function antiXssSanitizazion(mixed $data): int|float|bool|null|string|array|Sanitizable
+    private function antiXssSanitizazion($data)
     {
         switch (gettype($data)) {
             case 'integer':
@@ -152,7 +152,7 @@ abstract class Controller
      * @param string $location Location to redirect to
      * @return never
      */
-    protected function redirect(string $location): never
+    protected function redirect(string $location)
     {
         header('Location: '.$location);
         exit();
