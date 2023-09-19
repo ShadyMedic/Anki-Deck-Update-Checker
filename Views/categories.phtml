@@ -13,7 +13,8 @@
             <div class="category-box"
                  style="background: linear-gradient( rgb(255 255 255 / 62%), rgb(255 255 255 / 62%) ), url('<?= $category['icon']; ?>')">
                 <p><strong><?= $category['name'] ?></strong></p>
-                <p><?= $category['package_count'] ?> public packages</p>
+                <p><?= $category['package_count'] ?> public
+                    package<?= ($category['package_count'] > 1) ? 's' : '' ?></p>
             </div>
         </a>
     <?php endforeach ?>
@@ -25,7 +26,7 @@
     </small>
 </p>
 <p class="txt-c">
-    All category icons designed by <a href="https://openmoji.org/">OpenMoji</a> – the open-source emoji and icon
+    All category icons designed by <a href="https://openmoji.org/" target="_blank">OpenMoji</a> – the open-source emoji and icon
     project.
     License: <a href="https://creativecommons.org/licenses/by-sa/4.0/#">CC BY-SA 4.0</a>
 </p>
