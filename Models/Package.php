@@ -167,15 +167,14 @@ class Package implements DatabaseRecord, Sanitizable
 
     public function getDownloadLink() : ?string
     {
-        $isHostedLocally = (strpos($this->downloadLink, '/deck/') === 0); //Always TRUE for now
+        $isHostedLocally = $this->downloadLink === 'LOCAL';
         if ($isHostedLocally) {
-            $downloadLink = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].$this->downloadLink;
+            $downloadLink = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].'/deck/'.$this->packageId.'/download';
+            if (!empty($this->accessKey)) {
+                $downloadLink .= '?key='.$this->accessKey;
+            }
         } else {
             $downloadLink = $this->downloadLink;
-        }
-
-        if (!empty($this->accessKey)) {
-            $downloadLink .= '?key='.$this->accessKey;
         }
 
         return $downloadLink;

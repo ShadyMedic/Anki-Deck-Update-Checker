@@ -7,7 +7,7 @@ class PackageManager
 
     public function update(Package $package, bool $minor, string $downloadLink = null) : bool
     {
-        $downloadLink = $downloadLink ?? '/deck/'.$package->getId(); //TODO allow other website hosting
+        $downloadLink = $downloadLink ?? 'LOCAL'; //TODO allow other website hosting
 
         if ($minor) {
             $package->minorVersion();

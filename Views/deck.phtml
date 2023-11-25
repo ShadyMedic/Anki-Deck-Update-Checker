@@ -1,7 +1,7 @@
 <?php if (isset($deck_uploadAction)) : ?>
     <div style="border: 1px solid black; background-color:lightskyblue; padding: 8px;">
         <p><strong>Package has successfully been <?= $deck_uploadAction ?>.</strong></p>
-        <p>Time to share it with others, just send them the following link:<br><code style="white-space: normal; background-color: #ddd; color: #222; padding: 4px;"><?= $deck_downloadLink ?></code></p>
+        <p>Time to share it with others, just send them the following link:<br><code style="white-space: normal; background-color: #ddd; color: #222; padding: 4px;"><?= $deck_shareLink ?></code></p>
         <?php if ($deck_uploadAction === 'updated') : ?>
             <p>
                 All users that use the previous (or any older) version of your deck will now see an update notification
@@ -29,13 +29,15 @@
     content.</p>
 <p>
     File name: <code><?= $deck_package->getName() ?>.apkg</code><br>
-    File size: <code><?= number_format(filesize('decks/'.$deck_packageId.'.apkg') / 1000000, 2) ?> MB</code><br>
+    <?php if (file_exists('decks/'.$deck_packageId.'.apkg')) : ?>
+        File size: <code><?= number_format(filesize('decks/'.$deck_packageId.'.apkg') / 1000000, 2) ?> MB</code><br>
+    <?php endif ?>
     Version: <code><?= $deck_package->getFullVersion() ?></code><br>
     File updated at: <code><?= $deck_package->getUpdatedDate()->format('Y-m-d H:i:s'); ?></code>
 </p>
 <button style="display: block; background-color:limegreen; font-size: x-large;">
     <a style="color: inherit; text-decoration: none;"
-       href="/deck/<?= $deck_packageId ?>/download<?php if (!empty($deck_accessKey)) : ?>?key=<?= $deck_accessKey ?><?php endif ?>">
+       href="<?= $deck_downloadLink ?>">
         Download the file
     </a>
 </button>
