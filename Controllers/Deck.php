@@ -59,7 +59,7 @@ class Deck extends Controller
         self::$data['deck']['packageId'] = $packageId;
         self::$data['deck']['accessKey'] = $accessKey;
         self::$data['deck']['queryString'] = $queryString;
-        self::$data['deck']['shareLink'] = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].'/'.$packageId.(empty($accessKey) ? '' : "&amp;key=$accessKey");
+        self::$data['deck']['shareLink'] = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].'/deck/'.$packageId.(empty($accessKey) ? '' : "&amp;key=$accessKey");
         self::$data['deck']['downloadLink'] = $package->getDownloadLink();
 
         self::$views[] = 'deck';
