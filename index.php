@@ -4,6 +4,7 @@ namespace AnkiDeckUpdateChecker;
 use AnkiDeckUpdateChecker\Controllers\Controller;
 use AnkiDeckUpdateChecker\Controllers\Router;
 use AnkiDeckUpdateChecker\Models\ErrorProcessor;
+use AnkiDeckUpdateChecker\Models\UserException;
 use Throwable;
 
 //Renew session and set encoding

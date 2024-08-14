@@ -51,7 +51,7 @@ class Package implements DatabaseRecord, Sanitizable
             throw new \BadMethodCallException('The package cannot be updated, because its ID wasn\'t specified');
         }
 
-	unset($date['updated_at']);
+	unset($data['updated_at']);
         $columns = array_keys($data);
 
         $columnString = '';
