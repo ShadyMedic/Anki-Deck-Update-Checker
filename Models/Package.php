@@ -11,6 +11,7 @@ class Package implements DatabaseRecord, Sanitizable
     private ?int $version = 0;
     private ?int $minorVersion = 0;
     private ?string $accessKey = null;
+    private ?string $detailsLink = null;
     private ?string $downloadLink = null;
     private ?int $categoryId = 1;
     private ?string $name = null;
@@ -80,6 +81,7 @@ class Package implements DatabaseRecord, Sanitizable
         $this->version = $data['version'];
         $this->minorVersion = $data['minor_version'];
         $this->accessKey = $data['access_key'];
+        $this->detailsLink = $data['details_link'];
         $this->downloadLink = $data['download_link'];
         $this->categoryId = $data['category_id'];
         $this->name = $data['name'];
@@ -102,6 +104,7 @@ class Package implements DatabaseRecord, Sanitizable
             'minor_version' => null,
             'access_key' => null,
             'download_link' => null,
+            'details_link' => null,
             'name' => null,
             'author' => null,
             'edit_key' => null,
@@ -166,6 +169,21 @@ class Package implements DatabaseRecord, Sanitizable
         return $this->accessKey;
     }
 
+    public function getDetailsLink() : ?string
+    {
+        $wasCreatedLocally = $this->detailsLink === 'LOCAL';
+        if ($wasCreatedLocally) {
+            $detailsLink = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].'/deck/'.$this->packageId;
+            if (!empty($this->accessKey)) {
+                $detailsLink .= '?key='.$this->accessKey;
+            }
+        } else {
+            $detailsLink = $this->downloadLink;
+        }
+
+        return $detailsLink;
+    }
+
     public function getDownloadLink() : ?string
     {
         $isHostedLocally = $this->downloadLink === 'LOCAL';
@@ -201,6 +219,7 @@ class Package implements DatabaseRecord, Sanitizable
     {
         $this->name = htmlspecialchars($this->name, ENT_QUOTES);
         $this->author = htmlspecialchars($this->author, ENT_QUOTES);
+        $this->detailsLink = htmlspecialchars($this->detailsLink, ENT_QUOTES);
         $this->downloadLink = htmlspecialchars($this->downloadLink, ENT_QUOTES);
         //$this->editKey = htmlspecialchars($this->editKey, ENT_QUOTES); # No, because it's only ever displayed to whoever set it
     }
