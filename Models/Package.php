@@ -20,7 +20,7 @@ class Package implements DatabaseRecord, Sanitizable
     private DateTime $updatedAt;
     private bool $deleted = false;
 
-    public function create(array $data) : bool
+    public function create(array $data): bool
     {
         $category = $data['category'];
         $author = $data['author'];
@@ -46,28 +46,28 @@ class Package implements DatabaseRecord, Sanitizable
         return true;
     }
 
-    public function update(array $data) : bool
+    public function update(array $data): bool
     {
         if (is_null($this->packageId)) {
             throw new \BadMethodCallException('The package cannot be updated, because its ID wasn\'t specified');
         }
 
-	unset($data['updated_at']);
+        unset($data['updated_at']);
         $columns = array_keys($data);
 
         $columnString = '';
         foreach ($columns as $column) {
-            $columnString .= $column.' = :'.$column.', ';
+            $columnString .= $column . ' = :' . $column . ', ';
         }
         $columnString = rtrim($columnString, ', ');
 
         $db = Db::connect();
-        $query = 'UPDATE package SET '.$columnString.' WHERE package_id = :package_id';
+        $query = 'UPDATE package SET ' . $columnString . ' WHERE package_id = :package_id';
         $statement = $db->prepare($query);
         return $statement->execute(array_merge($data, ['package_id' => $this->getId()]));
     }
 
-    public function load(int $id) : bool
+    public function load(int $id): bool
     {
         $db = Db::connect();
         $statement = $db->prepare('SELECT * FROM package WHERE package_id = ? LIMIT 1');
@@ -93,7 +93,7 @@ class Package implements DatabaseRecord, Sanitizable
         return true;
     }
 
-    public function delete() : bool
+    public function delete(): bool
     {
         if (is_null($this->packageId)) {
             throw new \BadMethodCallException('The package cannot be deleted, because its ID wasn\'t specified');
@@ -113,17 +113,17 @@ class Package implements DatabaseRecord, Sanitizable
         ]);
     }
 
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->packageId;
     }
 
-    public function getCategory() : ?int
+    public function getCategory(): ?int
     {
         return $this->categoryId;
     }
 
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -145,7 +145,7 @@ class Package implements DatabaseRecord, Sanitizable
 
     public function getFullVersion(): ?string
     {
-        return $this->version.'.'.$this->minorVersion;
+        return $this->version . '.' . $this->minorVersion;
     }
 
     public function newVersion(): void
@@ -164,9 +164,14 @@ class Package implements DatabaseRecord, Sanitizable
         return $this->accessKey === null;
     }
 
-    public function getAccessKey() : ?string
+    public function getAccessKey(): ?string
     {
         return $this->accessKey;
+    }
+
+    public function hasLocalDetailsPage(): bool
+    {
+        return $this->detailsLink === 'LOCAL';
     }
 
     public function getDetailsLink() : ?string
@@ -178,7 +183,7 @@ class Package implements DatabaseRecord, Sanitizable
                 $detailsLink .= '?key='.$this->accessKey;
             }
         } else {
-            $detailsLink = $this->downloadLink;
+            $detailsLink = $this->detailsLink;
         }
 
         return $detailsLink;

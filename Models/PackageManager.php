@@ -5,10 +5,8 @@ namespace AnkiDeckUpdateChecker\Models;
 class PackageManager
 {
 
-    public function update(Package $package, bool $minor, string $downloadLink = null) : bool
+    public function update(Package $package, bool $minor, string $detailsLink = 'LOCAL', string $downloadLink = 'LOCAL') : bool
     {
-        $downloadLink = $downloadLink ?? 'LOCAL'; //TODO allow other website hosting
-
         if ($minor) {
             $package->minorVersion();
         } else {
@@ -17,6 +15,7 @@ class PackageManager
 
         return $package->update(array(
             'download_link' => $downloadLink,
+            'details_link' => $detailsLink,
             'version' => $package->getVersion(),
             'minor_version' => $package->getMinorVersion(),
             'updated_at' => date(DATE_W3C)
@@ -132,6 +131,56 @@ class PackageManager
         } else if (!empty($uploadError)) {
             throw new UserException("An error occurred while uploading the file. Please try again later.");
         }
+    }
+
+    /**
+     * @param $url
+     * @return void
+     * @throws UserException
+     */
+    public function checkRemoteDownloadLink($url)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $headerSize);
+        $headers = explode("\r\n", $header);
+        $contentDisposition = array_filter($headers, function($element)
+            {return (stripos($element, 'Content-Disposition:') === 0); })[0];
+        curl_close($ch);
+        if ($httpCode >= 300 || (
+            strpos($contentType, 'application/octet-stream') === false &&
+            strpos($contentDisposition, 'attachment') === false)
+        ) {
+            throw new UserException("The provided link does not seem to lead to a direct download of an APKG file.");
+        }
+        //TODO test this
+    }
+
+    /**
+     * @param $url
+     * @return void
+     * @throws UserException
+     */
+    public function checkRemoteInfoLink($url)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if ($httpCode >= 300) {
+            throw new UserException("The provided link does not seem to lead to an existing webpage.");
+        }
+        //TODO test this
     }
 
     public function getPublicPackages(int $categoryId) : array

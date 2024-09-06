@@ -50,6 +50,10 @@ class Deck extends Controller
             throw new UserException('This package hasn\'t been uploaded yet.', 406001);
         }
 
+        if (!$package->hasLocalDetailsPage()) {
+            $this->redirect($package->getDetailsLink());
+        }
+
         $queryString = "/$packageId/<span style=\"color: gold;\">".$package->getVersion()."</span>".(empty($accessKey) ? '' : "&amp;key=$accessKey");
 
         self::$data['layout']['page_id'] = 'deck-info';
@@ -60,6 +64,7 @@ class Deck extends Controller
         self::$data['deck']['accessKey'] = $accessKey;
         self::$data['deck']['queryString'] = $queryString;
         self::$data['deck']['shareLink'] = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].'/deck/'.$packageId.(empty($accessKey) ? '' : "&amp;key=$accessKey");
+        self::$data['deck']['detailsLink'] = $package->getDetailsLink();
         self::$data['deck']['downloadLink'] = $package->getDownloadLink();
 
         self::$views[] = 'deck';

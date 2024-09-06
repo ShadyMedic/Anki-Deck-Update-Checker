@@ -80,7 +80,7 @@
     <fieldset id="file-input-fieldset" style="display:none;">
         <label for="file-input">Package file:</label>
         <input type="hidden" name="MAX_FILE_SIZE" value="26214400"/>
-        <input type="file" accept=".apkg" name="package-file" id="file-input" required/>
+        <input type="file" accept=".apkg" name="package-file" id="file-input"/>
         <p>
             <small><strong>The file size mustn't exceed 20 MiB.</strong></small>
         </p>
@@ -88,7 +88,7 @@
     <fieldset id="link-input-fieldset" style="display:none;">
         <label for="link-input">Direct download URL:</label>
         <input type="url" id="link-input" style="width: -webkit-fill-available; width: -moz-available;" name="package-link"
-               placeholder="https://owncloud.example.com/index.php/s/123456789ABCDEF/download" required/>
+               placeholder="https://owncloud.example.com/index.php/s/123456789ABCDEF/download"/>
         <p>
             <small>
                 <strong>Upload the APKG file to a 3rd party service, such as Google Drive, ownCloud etc.</strong><br>
@@ -104,7 +104,7 @@
     <fieldset id="remote-input-fieldset" style="display:none;">
         <label for="url-input">Download page of your deck:</label>
         <input type="url" id="url-input" style="width: -webkit-fill-available; width: -moz-available;" name="package-info"
-               placeholder="https://ankiweb.net/shared/info/1234567890" required/>
+               placeholder="https://ankiweb.net/shared/info/1234567890"/>
         <p>
             <small>
                 Make sure that anyone can access the webpage on the provided
