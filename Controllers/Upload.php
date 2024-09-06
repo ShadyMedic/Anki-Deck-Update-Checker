@@ -45,7 +45,8 @@ class Upload extends Controller
 
         $nextVersion = ($minor ? $package->getVersion() : $package->getVersion() + 1);
         $queryString = "/$packageId/$nextVersion".(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
-        if (isset($_FILES['package'])) { //Form was submitted, webpage loading is also POST because of "key" and "minor" submission
+        if (isset($_FILES['package-file']) || isset($_POST['package-link']) || isset($_FILES['package-info'])) {
+            //Form was submitted, webpage loading is also POST because of "key" and "minor" submission
             try {
                 $authenticator->checkFileUpload($_FILES['package']);
             } catch (UserException $e) {

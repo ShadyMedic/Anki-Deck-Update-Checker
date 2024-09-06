@@ -1,81 +1,122 @@
-<p>There are multiple ways to upload your Anki deck to this service.</p>
-<p>To help you choose the best one, please reply to two questions:</p>
-<form>
+<form id="guide">
+    <p>There are multiple ways to upload your Anki deck to this service.</p>
+    <p>To help you choose the best one, please reply to two questions:</p>
     <fieldset id="q1">
         <p>Have you already released the deck elsewhere (usually on AnkiWeb)?</p>
-        <p><button id="q1y">Yes</button><button id="q1n">No</button></p>
+        <p class="txt-c">
+            <button id="q1y" class="guide-btn">Yes</button>
+            <button id="q1n" class="guide-btn">No</button>
+        </p>
     </fieldset>
     <fieldset id="qy2" style="display: none;">
         <p>
             Do you wish everyone to download your deck from the other service, or are you willing to upload and
             maintain another copy here?
         </p>
-        <p><button id="qy2y">Leave just one copy</button><button id="qy2n">Upload and maintain here as well</button></p>
+        <p class="txt-c">
+            <button id="qy2y" class="guide-btn">Leave just one copy</button>
+            <button id="qy2n" class="guide-btn">Upload here as well</button>
+        </p>
     </fieldset>
     <fieldset id="qn2" style="display: none;">
         <p>
             If you export the deck, what is the size of the APKG file?
         </p>
-        <p><button id="qn2y">Over 20 MiB</button><button id="qn2n">Below 20 MiB</button></p>
+        <p class="txt-c">
+            <button id="qn2y" class="guide-btn">Over 20 MiB</button>
+            <button id="qn2n" class="guide-btn">Below 20 MiB</button>
+        </p>
         <p>Note: if there are no or few images, your deck is almost definitely smaller than 20 MiB.</p>
     </fieldset>
+    <small>
+        Used to legacy upload form? Click
+        <input type="button" id="legacy-guide-button" style="font-size: 0.8em;" value="this"/>.
+    </small>
 </form>
-<?php if (!$upload_minor) : ?>
-    <p>You now need to insert (or update) autoupdater code into the description of your Anki deck.</p>
-    <p>This will allow users of your deck to receive update check and be notified when you upload a new version.</p>
-    <p>Don't worry, it's not complicated, just follow the instruction below:</p>
-    <details open class="instructions-spoiler">
-        <summary class="instructions-spoiler-header"><h3>Instruction to insert or update auto-updater code</h3></summary>
-        <ol>
-            <li>
-                Select your deck inside your desktop Anki client.<br>
-                <img src="/public/img/tutorial-1.jpg" alt="Tutorial screenshot n. 1"/>
-            </li>
-            <li>
-                Click the "Description" button.<br>
-                <img src="/public/img/tutorial-2.jpg" alt="Tutorial screenshot n. 2"/>
-            </li>
-            <li>
-                Paste the following text into the text field and make sure the checkbox is unchecked.<br>
-                <strong>You need to do this everytime you upload a new version, because the code changes slightly
-                    between versions!</strong><br>
-                <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://<?= $_SERVER['SERVER_NAME'] ?>/update<?= $upload_queryString ?>"&gt;&lt;img src="http://<?= $_SERVER['SERVER_NAME'] ?>/check-update<?= $upload_queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
-            </li>
-            <li>
-                Press OK and exit the dialog box.<br>
-                <img src="/public/img/tutorial-3.jpg" alt="Tutorial screenshot n. 3"/>
-            </li>
-            <li>
-                You should now see something like this (the text will be green, if you're updating an existing package,
-                or
-                red, if you're uploading the first version of a new package).
-                Export the package as usual and upload it in the form below.<br>
-                <img src="/public/img/tutorial-4.jpg" alt="Tutorial screenshot n. 4"/>
-            </li>
-        </ol>
-    </details>
-<?php endif ?>
-<form method="post" enctype="multipart/form-data">
+
+<form id="main-form" method="post" enctype="multipart/form-data">
     <input type="hidden" name="package-id" value="<?= $upload_packageId ?>"/>
     <input type="hidden" name="key" id="key-input" value="<?= $upload_key ?>"/>
-    <!-- Value will be filled in by JavaScript -->
     <input type="hidden" name="access-key" id="access-key-input" value="<?= $upload_accessKey ?>"/>
-    <fieldset>
+    <input type="hidden" name="type" id="type-input" value="" /><!-- Value is filled in by JavaScript -->
+    <div id="code-insert-tutorial" style="display: none;">
+        <?php if (!$upload_minor) : ?>
+            <p>You now need to insert (or update) autoupdater code into the description of your Anki deck.</p>
+            <p>This will allow users of your deck to receive update check and be notified when you upload a new version.</p>
+            <p>Don't worry, it's not complicated, just follow the instruction below:</p>
+            <details open class="instructions-spoiler">
+                <summary class="instructions-spoiler-header"><h3>Instruction to insert or update auto-updater code</h3></summary>
+                <ol>
+                    <li>
+                        Select your deck inside your desktop Anki client.<br>
+                        <img src="/public/img/tutorial-1.jpg" alt="Tutorial screenshot n. 1"/>
+                    </li>
+                    <li>
+                        Click the "Description" button.<br>
+                        <img src="/public/img/tutorial-2.jpg" alt="Tutorial screenshot n. 2"/>
+                    </li>
+                    <li>
+                        Paste the following text into the text field and make sure the checkbox is unchecked.<br>
+                        <strong>You need to do this everytime you upload a new version, because the code changes slightly
+                            between versions!</strong><br>
+                        <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://<?= $_SERVER['SERVER_NAME'] ?>/update<?= $upload_queryString ?>"&gt;&lt;img src="http://<?= $_SERVER['SERVER_NAME'] ?>/check-update<?= $upload_queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
+                    </li>
+                    <li>
+                        Press OK and exit the dialog box.<br>
+                        <img src="/public/img/tutorial-3.jpg" alt="Tutorial screenshot n. 3"/>
+                    </li>
+                    <li>
+                        You should now see something like this (the text will be green, if you're updating an existing package,
+                        or
+                        red, if you're uploading the first version of a new package).
+                        Export the package as usual and upload it in the form below.<br>
+                        <img src="/public/img/tutorial-4.jpg" alt="Tutorial screenshot n. 4"/>
+                    </li>
+                </ol>
+            </details>
+        <?php endif ?>
+    </div>
+
+    <fieldset id="file-input-fieldset" style="display:none;">
         <label for="file-input">Package file:</label>
         <input type="hidden" name="MAX_FILE_SIZE" value="26214400"/>
-        <input type="file" accept=".apkg" name="package" id="file-input" required/>
+        <input type="file" accept=".apkg" name="package-file" id="file-input" required/>
+        <p>
+            <small><strong>The file size mustn't exceed 20 MiB.</strong></small>
+        </p>
+    </fieldset>
+    <fieldset id="link-input-fieldset" style="display:none;">
+        <label for="link-input">Direct download URL:</label>
+        <input type="url" id="link-input" style="width: -webkit-fill-available; width: -moz-available;" name="package-link"
+               placeholder="https://owncloud.example.com/index.php/s/123456789ABCDEF/download" required/>
         <p>
             <small>
-                <strong>The file size mustn't exceed 20 MiB.</strong><br>
-                If your Anki package is larger, and you compressed your media,
-                contact me on Discord (<code>shady_medic</code>) or e-mail me at
-                <code>jan [dot] stech [at] posteo [dot] net</code>. You'll still be able to use this service to share
-                your package, you'll just need to upload the file elsewhere and your users will be redirected to such
-                external webpage from here, when they click the update notification.
+                <strong>Upload the APKG file to a 3rd party service, such as Google Drive, ownCloud etc.</strong><br>
+                It is important for the service to not autodelete the file after some time and for it to
+                allow direct downloading.<br>
+                After uploading and sharing, try to download the file, open the downloads window of your browser,
+                right-click the file and select "Copy download link".
+                Verify that this direct download link will work for anyone by pasting it into anonymous
+                window and checking that it will also trigger the download.
             </small>
         </p>
     </fieldset>
-    <fieldset style="background-color:<?= $upload_firstRelease ? '#ff9f39' : ($upload_minor ? '#e2b1ff' : '#b1d4ff') ?>;">
+    <fieldset id="remote-input-fieldset" style="display:none;">
+        <label for="url-input">Download page of your deck:</label>
+        <input type="url" id="url-input" style="width: -webkit-fill-available; width: -moz-available;" name="package-info"
+               placeholder="https://ankiweb.net/shared/info/1234567890" required/>
+        <p>
+            <small>
+                Make sure that anyone can access the webpage on the provided
+                URL by trying to open it in an incognito browser window.<br>
+                That will make sure that the target URL is accessible without
+                any login sessions and cookies.
+            </small>
+        </p>
+    </fieldset>
+
+    <div id="local-footer" style="display:none;">
+        <fieldset style="background-color:<?= $upload_firstRelease ? '#ff9f39' : ($upload_minor ? '#e2b1ff' : '#b1d4ff') ?>;">
         <?php if ($upload_minor) : ?>
             <p>
                 You are about to upload a <b>minor version</b> of this Anki package. That means that current users of
@@ -136,6 +177,17 @@
             <a href="/terms-of-service">terms of service</a>, for example by containing copyrighted material.
         </small>
     </fieldset>
+    </div>
+    <div id="remote-footer" style="display:none;">
+        <fieldset style="text-align: center;">
+            <p><input type="submit" value="Add Linked Deck" class="upload-btn"/></p>
+            <small>
+                By clicking the "Add Linked Deck" button, you confirm that your Anki package doesn't violate our
+                <a href="/terms-of-service">terms of service</a>, for example by containing copyrighted material.
+            </small>
+        </fieldset>
+    </div>
+
     <div style="color: red">
         <?= $upload_error ?? '' ?>
     </div>
