@@ -84,6 +84,7 @@ class Upload extends Controller
         self::$views[] = 'upload';
         self::$cssFiles[] = 'upload';
         self::$jsFiles[] = 'auth-fill';
+        self::$jsFiles[] = 'upload';
 
         return 200;
     }

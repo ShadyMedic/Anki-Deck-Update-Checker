@@ -1,3 +1,25 @@
+<p>There are multiple ways to upload your Anki deck to this service.</p>
+<p>To help you choose the best one, please reply to two questions:</p>
+<form>
+    <fieldset id="q1">
+        <p>Have you already released the deck elsewhere (usually on AnkiWeb)?</p>
+        <p><button id="q1y">Yes</button><button id="q1n">No</button></p>
+    </fieldset>
+    <fieldset id="qy2" style="display: none;">
+        <p>
+            Do you wish everyone to download your deck from the other service, or are you willing to upload and
+            maintain another copy here?
+        </p>
+        <p><button id="qy2y">Leave just one copy</button><button id="qy2n">Upload and maintain here as well</button></p>
+    </fieldset>
+    <fieldset id="qn2" style="display: none;">
+        <p>
+            If you export the deck, what is the size of the APKG file?
+        </p>
+        <p><button id="qn2y">Over 20 MiB</button><button id="qn2n">Below 20 MiB</button></p>
+        <p>Note: if there are no or few images, your deck is almost definitely smaller than 20 MiB.</p>
+    </fieldset>
+</form>
 <?php if (!$upload_minor) : ?>
     <p>You now need to insert (or update) autoupdater code into the description of your Anki deck.</p>
     <p>This will allow users of your deck to receive update check and be notified when you upload a new version.</p>
