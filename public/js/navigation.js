@@ -14,7 +14,7 @@ window.addEventListener('load', function() {
     })
 
     document.getElementById("create-link").addEventListener('click', function (event) {
-        window.location = '/new-deck';
+        window.location = '/create';
     })
 })
 
