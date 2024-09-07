@@ -4,6 +4,7 @@ namespace AnkiDeckUpdateChecker;
 use AnkiDeckUpdateChecker\Controllers\Controller;
 use AnkiDeckUpdateChecker\Controllers\Router;
 use AnkiDeckUpdateChecker\Models\ErrorProcessor;
+use AnkiDeckUpdateChecker\Models\UserException;
 use Throwable;
 
 //Renew session and set encoding
@@ -37,13 +38,16 @@ spl_autoload_register('AnkiDeckUpdateChecker\\autoloader');
 //Define and set uncaught exceptions handler
 function fatalExceptionHandler(Throwable $e) : void
 {
-    $errorCode = $e->getCode();
-    $errorMsg = $e->getMessage();
-    $errProc = new ErrorProcessor();
-    $errorFound = $errProc->processError($errorCode, $errorMsg);
-
+    if ($e instanceof UserException) {
+        $errorCode = $e->getCode();
+        $errorMsg = $e->getMessage();
+        $errProc = new ErrorProcessor();
+        $errorFound = $errProc->processError($errorCode, $errorMsg);
+    } else {
+        $errorFound = false;
+    }
     if (!$errorFound) {
-        //Unknown error – just display it hard TURN THIS OFF ON PRODUCTION
+        //Unknown error – just display it hard TURN THIS OFF ON PRODUCTION IF ERROR OUTPUT IS ON
         throw $e;
     }
 

@@ -14,6 +14,9 @@
             <td class="txt-l">
                 <a href="/deck/<?= $package['package_id'] ?>">
                     <?= $package['name'] ?>
+                    <?php if ($package['details_link'] !== 'LOCAL') : ?>
+                         <img class="icon" src="/public/img/icons/ext-link.svg" alt="(external link)">
+                    <?php endif ?>
                 </a>
             </td>
             <td class="txt-l"><?= $package['author'] ?></td>

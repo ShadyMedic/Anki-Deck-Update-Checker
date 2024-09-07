@@ -45,19 +45,56 @@ class Upload extends Controller
 
         $nextVersion = ($minor ? $package->getVersion() : $package->getVersion() + 1);
         $queryString = "/$packageId/$nextVersion".(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
-        if (isset($_FILES['package'])) { //Form was submitted, webpage loading is also POST because of "key" and "minor" submission
-            try {
-                $authenticator->checkFileUpload($_FILES['package']);
-            } catch (UserException $e) {
-                $error = $e->getMessage();
+        if (isset($_POST['type'])) { //Form submitted, webpage loading is POST too because of key and minor submissions
+            $detailsLink = 'LOCAL';
+            $downloadLink = 'LOCAL';
+            switch ($_POST['type']) {
+                case 'file':
+                    try {
+                        $authenticator->checkFileUpload($_FILES['package-file']);
+                    } catch (UserException $e) {
+                        $error = $e->getMessage();
+                    }
+                    if (empty($error)) {
+                        move_uploaded_file($_FILES['package-file']['tmp_name'], 'decks/'.$packageId.'.apkg');
+                    }
+                    break;
+                case 'link':
+                    try {
+                        $authenticator->checkRemoteDownloadLink($_POST['package-link']);
+                        $downloadLink = $_POST['package-link'];
+                        if (file_exists('decks/'.$packageId.'.apkg')) {
+                            unlink('decks/'.$packageId.'.apkg');
+                        }
+                    } catch (UserException $e) {
+                        $error = $e->getMessage();
+                    }
+                    break;
+                case 'remote':
+                    try {
+                        $authenticator->checkRemoteInfoLink($_POST['package-info']);
+                        $downloadLink = 'REMOTE';
+                        $detailsLink = $_POST['package-info'];
+                        if (file_exists('decks/'.$packageId.'.apkg')) {
+                            unlink('decks/'.$packageId.'.apkg');
+                        }
+                    } catch (UserException $e) {
+                        $error = $e->getMessage();
+                    }
+                    break;
+                default:
+                    throw new UserException("The specified package type is invalid.", 400007);
             }
 
             if (!isset($error)) {
-                move_uploaded_file($_FILES['package']['tmp_name'], 'decks/'.$packageId.'.apkg');
+                $authenticator->update($package, $minor, $detailsLink, $downloadLink);
 
-                $authenticator->update($package, $minor);
-
-                if ($package->getFullVersion() === '1.0') {
+                if ($detailsLink !== 'LOCAL') {
+                    if ($package->getFullVersion() === '1.0') {
+                        (new CategoryManager())->recalculateDeckCounts();
+                    }
+                    $url = '/linked/'.$packageId.(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
+                } else if ($package->getFullVersion() === '1.0') {
                     (new CategoryManager())->recalculateDeckCounts(); //New package uploaded --> recalculate deck counts
                     $url = '/uploaded/'.$packageId.(($package->isPublic()) ? '' : ('?key='.$package->getAccessKey()));
                 } else if ($package->getMinorVersion() === 0) {
@@ -77,6 +114,7 @@ class Upload extends Controller
         self::$data['upload']['packageId'] = $packageId;
         self::$data['upload']['accessKey'] = $package->getAccessKey();
         self::$data['upload']['key'] = $key;
+        self::$data['upload']['activeForm'] = $_POST['type'] ?? null;
         self::$data['upload']['error'] = $error ?? '';
         self::$data['upload']['minor'] = $minor;
         self::$data['upload']['firstRelease'] = $package->getVersion() === 0;
@@ -84,6 +122,7 @@ class Upload extends Controller
         self::$views[] = 'upload';
         self::$cssFiles[] = 'upload';
         self::$jsFiles[] = 'auth-fill';
+        self::$jsFiles[] = 'upload';
 
         return 200;
     }
