@@ -119,3 +119,13 @@ main {
     background-color: #eee;
 }
 
+.icon {
+    height: 1em;
+    display: inline;
+}
+
+.clickable-icon {
+    cursor: pointer;
+    margin: 0 1px;
+}
+

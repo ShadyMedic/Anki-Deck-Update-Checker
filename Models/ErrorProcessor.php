@@ -72,6 +72,10 @@ class ErrorProcessor
                         //User tried to mark the first upload of the package as minor
                         $this->errorWebpageData['errorMessage'] = $errorMessage;
                         return true;
+                    case 400007:
+                        //Invalid upload type when uploading or linking a package
+                        $this->errorWebpageData['errorMessage'] = $errorMessage;
+                        return true;
                 }
                 break;
             case 401:

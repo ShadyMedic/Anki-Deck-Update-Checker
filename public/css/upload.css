@@ -22,6 +22,11 @@ summary > * {
     text-decoration: underline dotted 2px grey;
 }
 
+.guide-btn {
+    font-size: larger;
+    width: 40%;
+}
+
 .upload-btn {
     background-color:cornflowerblue;
     font-size: x-large;

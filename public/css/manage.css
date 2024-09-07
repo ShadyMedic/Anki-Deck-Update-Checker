@@ -22,16 +22,6 @@ input[type=password] {
     color: unset;
 }
 
-.icon {
-    height: 1em;
-    display: inline;
-}
-
-.clickable-icon {
-    cursor: pointer;
-    margin: 0 1px;
-}
-
 .icon.shadow-green:hover {
     box-shadow: 0 0 8px #8eff4d;
     background-color: #c2ffb1;

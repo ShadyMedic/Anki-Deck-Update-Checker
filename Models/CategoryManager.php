@@ -54,7 +54,7 @@ class CategoryManager
                 WHERE deleted = 0 AND version > 0 AND download_link IS NOT NULL AND access_key IS NULL
                 GROUP BY category_id
             ) as package_counts ON category.category_id = package_counts.category_id
-            SET category.package_count = package_counts.package_count;
+            SET category.package_count = COALESCE(package_counts.package_count, 0);
         ';
         $statement = $db->prepare($query);
         return $statement->execute([]);

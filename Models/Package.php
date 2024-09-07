@@ -11,6 +11,7 @@ class Package implements DatabaseRecord, Sanitizable
     private ?int $version = 0;
     private ?int $minorVersion = 0;
     private ?string $accessKey = null;
+    private ?string $detailsLink = null;
     private ?string $downloadLink = null;
     private ?int $categoryId = 1;
     private ?string $name = null;
@@ -19,7 +20,7 @@ class Package implements DatabaseRecord, Sanitizable
     private DateTime $updatedAt;
     private bool $deleted = false;
 
-    public function create(array $data) : bool
+    public function create(array $data): bool
     {
         $category = $data['category'];
         $author = $data['author'];
@@ -45,27 +46,28 @@ class Package implements DatabaseRecord, Sanitizable
         return true;
     }
 
-    public function update(array $data) : bool
+    public function update(array $data): bool
     {
         if (is_null($this->packageId)) {
             throw new \BadMethodCallException('The package cannot be updated, because its ID wasn\'t specified');
         }
 
+        unset($data['updated_at']);
         $columns = array_keys($data);
 
         $columnString = '';
         foreach ($columns as $column) {
-            $columnString .= $column.' = :'.$column.', ';
+            $columnString .= $column . ' = :' . $column . ', ';
         }
         $columnString = rtrim($columnString, ', ');
 
         $db = Db::connect();
-        $query = 'UPDATE package SET '.$columnString.' WHERE package_id = :package_id';
+        $query = 'UPDATE package SET ' . $columnString . ' WHERE package_id = :package_id';
         $statement = $db->prepare($query);
         return $statement->execute(array_merge($data, ['package_id' => $this->getId()]));
     }
 
-    public function load(int $id) : bool
+    public function load(int $id): bool
     {
         $db = Db::connect();
         $statement = $db->prepare('SELECT * FROM package WHERE package_id = ? LIMIT 1');
@@ -79,6 +81,7 @@ class Package implements DatabaseRecord, Sanitizable
         $this->version = $data['version'];
         $this->minorVersion = $data['minor_version'];
         $this->accessKey = $data['access_key'];
+        $this->detailsLink = $data['details_link'];
         $this->downloadLink = $data['download_link'];
         $this->categoryId = $data['category_id'];
         $this->name = $data['name'];
@@ -90,7 +93,7 @@ class Package implements DatabaseRecord, Sanitizable
         return true;
     }
 
-    public function delete() : bool
+    public function delete(): bool
     {
         if (is_null($this->packageId)) {
             throw new \BadMethodCallException('The package cannot be deleted, because its ID wasn\'t specified');
@@ -101,6 +104,7 @@ class Package implements DatabaseRecord, Sanitizable
             'minor_version' => null,
             'access_key' => null,
             'download_link' => null,
+            'details_link' => null,
             'name' => null,
             'author' => null,
             'edit_key' => null,
@@ -109,17 +113,17 @@ class Package implements DatabaseRecord, Sanitizable
         ]);
     }
 
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->packageId;
     }
 
-    public function getCategory() : ?int
+    public function getCategory(): ?int
     {
         return $this->categoryId;
     }
 
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -141,7 +145,7 @@ class Package implements DatabaseRecord, Sanitizable
 
     public function getFullVersion(): ?string
     {
-        return $this->version.'.'.$this->minorVersion;
+        return $this->version . '.' . $this->minorVersion;
     }
 
     public function newVersion(): void
@@ -160,22 +164,46 @@ class Package implements DatabaseRecord, Sanitizable
         return $this->accessKey === null;
     }
 
-    public function getAccessKey() : ?string
+    public function getAccessKey(): ?string
     {
         return $this->accessKey;
     }
 
-    public function getDownloadLink() : ?string
+    public function hasLocalDetailsPage(): bool
     {
-        $isHostedLocally = (strpos($this->downloadLink, '/deck/') === 0); //Always TRUE for now
-        if ($isHostedLocally) {
-            $downloadLink = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].$this->downloadLink;
+        return $this->detailsLink === 'LOCAL';
+    }
+
+    public function isHostedLocally(): bool
+    {
+        return $this->downloadLink === 'LOCAL';
+    }
+
+    public function getDetailsLink() : ?string
+    {
+        $wasCreatedLocally = $this->detailsLink === 'LOCAL';
+        if ($wasCreatedLocally) {
+            $detailsLink = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].'/deck/'.$this->packageId;
+            if (!empty($this->accessKey)) {
+                $detailsLink .= '?key='.$this->accessKey;
+            }
         } else {
-            $downloadLink = $this->downloadLink;
+            $detailsLink = $this->detailsLink;
         }
 
-        if (!empty($this->accessKey)) {
-            $downloadLink .= '?key='.$this->accessKey;
+        return $detailsLink;
+    }
+
+    public function getDownloadLink() : ?string
+    {
+        $isHostedLocally = $this->downloadLink === 'LOCAL';
+        if ($isHostedLocally) {
+            $downloadLink = (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://').$_SERVER['SERVER_NAME'].'/deck/'.$this->packageId.'/download';
+            if (!empty($this->accessKey)) {
+                $downloadLink .= '?key='.$this->accessKey;
+            }
+        } else {
+            $downloadLink = $this->downloadLink;
         }
 
         return $downloadLink;
@@ -201,6 +229,7 @@ class Package implements DatabaseRecord, Sanitizable
     {
         $this->name = htmlspecialchars($this->name, ENT_QUOTES);
         $this->author = htmlspecialchars($this->author, ENT_QUOTES);
+        $this->detailsLink = htmlspecialchars($this->detailsLink, ENT_QUOTES);
         $this->downloadLink = htmlspecialchars($this->downloadLink, ENT_QUOTES);
         //$this->editKey = htmlspecialchars($this->editKey, ENT_QUOTES); # No, because it's only ever displayed to whoever set it
     }
