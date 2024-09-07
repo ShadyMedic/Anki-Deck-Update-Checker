@@ -174,6 +174,11 @@ class Package implements DatabaseRecord, Sanitizable
         return $this->detailsLink === 'LOCAL';
     }
 
+    public function isHostedLocally(): bool
+    {
+        return $this->downloadLink === 'LOCAL';
+    }
+
     public function getDetailsLink() : ?string
     {
         $wasCreatedLocally = $this->detailsLink === 'LOCAL';
