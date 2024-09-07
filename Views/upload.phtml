@@ -1,4 +1,4 @@
-<form id="guide">
+<form id="guide"<?php if (!empty($upload_activeForm)): ?> style="display: none;"<?php endif ?>>
     <p>There are multiple ways to upload your Anki deck to this service.</p>
     <p>To help you choose the best one, please reply to two questions:</p>
     <fieldset id="q1">
@@ -34,17 +34,18 @@
     </small>
 </form>
 
-<form id="main-form" method="post" enctype="multipart/form-data">
+<form id="main-form" method="post" enctype="multipart/form-data"<?php if (empty($upload_activeForm)): ?> style="display: none;"<?php endif ?>>
+    <p><small><button style="width: 100%" id="reopen-guide-button">Restart upload type questionnaire</button></small></p>
     <input type="hidden" name="package-id" value="<?= $upload_packageId ?>"/>
     <input type="hidden" name="key" id="key-input" value="<?= $upload_key ?>"/>
     <input type="hidden" name="access-key" id="access-key-input" value="<?= $upload_accessKey ?>"/>
-    <input type="hidden" name="type" id="type-input" value="" /><!-- Value is filled in by JavaScript -->
-    <div id="code-insert-tutorial" style="display: none;">
+    <input type="hidden" name="type" id="type-input" value="<?= $upload_activeForm ?>"/><!-- Value is filled in by JavaScript -->
+    <div id="code-insert-tutorial"<?php if (!in_array($upload_activeForm, ['file', 'link'])): ?> style="display: none;"<?php endif ?>>
         <?php if (!$upload_minor) : ?>
             <p>You now need to insert (or update) autoupdater code into the description of your Anki deck.</p>
             <p>This will allow users of your deck to receive update check and be notified when you upload a new version.</p>
             <p>Don't worry, it's not complicated, just follow the instruction below:</p>
-            <details open class="instructions-spoiler">
+            <details<?php if (empty($upload_activeForm)): ?> open<?php endif ?> class="instructions-spoiler">
                 <summary class="instructions-spoiler-header"><h3>Instruction to insert or update auto-updater code</h3></summary>
                 <ol>
                     <li>
@@ -77,15 +78,18 @@
         <?php endif ?>
     </div>
 
-    <fieldset id="file-input-fieldset" style="display:none;">
+    <fieldset id="file-input-fieldset"<?php if ($upload_activeForm !== 'file'): ?> style="display: none;"<?php endif ?>>
         <label for="file-input">Package file:</label>
         <input type="hidden" name="MAX_FILE_SIZE" value="26214400"/>
         <input type="file" accept=".apkg" name="package-file" id="file-input"/>
         <p>
-            <small><strong>The file size mustn't exceed 20 MiB.</strong></small>
+            <small>
+                <strong>The file size mustn't exceed 20 MiB.</strong><br>
+                Is your file larger? Restart the upload type questionnaire and answer the questions accordingly.
+            </small>
         </p>
     </fieldset>
-    <fieldset id="link-input-fieldset" style="display:none;">
+    <fieldset id="link-input-fieldset"<?php if ($upload_activeForm !== 'link'): ?> style="display: none;"<?php endif ?>>
         <label for="link-input">Direct download URL:</label>
         <input type="url" id="link-input" style="width: -webkit-fill-available; width: -moz-available;" name="package-link"
                placeholder="https://owncloud.example.com/index.php/s/123456789ABCDEF/download"/>
@@ -101,7 +105,7 @@
             </small>
         </p>
     </fieldset>
-    <fieldset id="remote-input-fieldset" style="display:none;">
+    <fieldset id="remote-input-fieldset"<?php if ($upload_activeForm !== 'remote'): ?> style="display: none;"<?php endif ?>>
         <label for="url-input">Download page of your deck:</label>
         <input type="url" id="url-input" style="width: -webkit-fill-available; width: -moz-available;" name="package-info"
                placeholder="https://ankiweb.net/shared/info/1234567890"/>
@@ -115,7 +119,7 @@
         </p>
     </fieldset>
 
-    <div id="local-footer" style="display:none;">
+    <div id="local-footer"<?php if (!in_array($upload_activeForm, ['file', 'link'])): ?> style="display: none;"<?php endif ?>>
         <fieldset style="background-color:<?= $upload_firstRelease ? '#ff9f39' : ($upload_minor ? '#e2b1ff' : '#b1d4ff') ?>;">
         <?php if ($upload_minor) : ?>
             <p>
@@ -178,7 +182,7 @@
         </small>
     </fieldset>
     </div>
-    <div id="remote-footer" style="display:none;">
+    <div id="remote-footer"<?php if ($upload_activeForm !== 'remote'): ?> style="display: none;"<?php endif ?>>
         <fieldset style="text-align: center;">
             <p><input type="submit" value="Add Linked Deck" class="upload-btn"/></p>
             <small>

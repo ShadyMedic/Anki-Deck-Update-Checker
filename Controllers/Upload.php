@@ -114,6 +114,7 @@ class Upload extends Controller
         self::$data['upload']['packageId'] = $packageId;
         self::$data['upload']['accessKey'] = $package->getAccessKey();
         self::$data['upload']['key'] = $key;
+        self::$data['upload']['activeForm'] = $_POST['type'] ?? null;
         self::$data['upload']['error'] = $error ?? '';
         self::$data['upload']['minor'] = $minor;
         self::$data['upload']['firstRelease'] = $package->getVersion() === 0;

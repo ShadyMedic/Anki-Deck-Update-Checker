@@ -151,7 +151,7 @@ class PackageManager
         $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $header = substr($response, 0, $headerSize);
         $headers = explode("\r\n", $header);
-        $contentDisposition = array_filter($headers, function($element)
+        $contentDisposition = @array_filter($headers, function($element)
             {return (stripos($element, 'Content-Disposition:') === 0); })[0];
         curl_close($ch);
         if ($httpCode >= 300 || (
@@ -160,7 +160,6 @@ class PackageManager
         ) {
             throw new UserException("The provided link does not seem to lead to a direct download of an APKG file.");
         }
-        //TODO test this
     }
 
     /**

@@ -50,7 +50,7 @@ class Deck extends Controller
             throw new UserException('This package hasn\'t been uploaded yet.', 406001);
         }
 
-        if (!$package->hasLocalDetailsPage()) {
+        if (!$package->hasLocalDetailsPage() && self::$data['deck']['uploadAction'] !== 'linked') {
             $this->redirect($package->getDetailsLink());
         }
 
