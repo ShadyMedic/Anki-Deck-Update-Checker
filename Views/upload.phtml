@@ -1,76 +1,73 @@
 <form id="guide"<?php if (!empty($upload_activeForm)): ?> style="display: none;"<?php endif ?>>
-    <p>There are multiple ways to upload your Anki deck to this service.</p>
-    <p>To help you choose the best one, please reply to two questions:</p>
+    <p>Existuje vícero způsobů, jak dostat tvůj Anki balíček na tento web.</p>
+    <p>Zodpověz prosím dvě otázky, aby ti systém nabídl tu nejlepší možnost:</p>
     <fieldset id="q1">
-        <p>Have you already released the deck elsewhere (usually on AnkiWeb)?</p>
+        <p>Už jsi tento balíček zveřejnil/a někde jinde (obvykle na AnkiWeb)?</p>
         <p class="txt-c">
-            <button id="q1y" class="guide-btn">Yes</button>
-            <button id="q1n" class="guide-btn">No</button>
+            <button id="q1y" class="guide-btn">Ano</button>
+            <button id="q1n" class="guide-btn">Ne</button>
         </p>
     </fieldset>
     <fieldset id="qy2" style="display: none;">
         <p>
-            Do you wish everyone to download your deck from the other service, or are you willing to upload and
-            maintain another copy here?
+            Přeješ si, aby všichni stahovali tvůj balíček z toho druhého umístnění, nebo jsi ochoten/ochotna
+            nahrát a udržovat v aktuálnosti další kopii zde?
         </p>
         <p class="txt-c">
-            <button id="qy2y" class="guide-btn">Leave just one copy</button>
-            <button id="qy2n" class="guide-btn">Upload here as well</button>
+            <button id="qy2y" class="guide-btn">Ponechat pouze jednu kopii</button>
+            <button id="qy2n" class="guide-btn">Nahrát balíček i sem</button>
         </p>
     </fieldset>
     <fieldset id="qn2" style="display: none;">
         <p>
-            If you export the deck, what is the size of the APKG file?
+            Když Anki balíček exportuješ, jakou má výsledný APKG soubor velikost?
         </p>
         <p class="txt-c">
-            <button id="qn2y" class="guide-btn">Over 20 MiB</button>
-            <button id="qn2n" class="guide-btn">Below 20 MiB</button>
+            <button id="qn2y" class="guide-btn">Přes 20 MiB</button>
+            <button id="qn2n" class="guide-btn">Pod 20 MiB</button>
         </p>
-        <p>Note: if there are no or few images, your deck is almost definitely smaller than 20 MiB.</p>
+        <p>Poznámka: pokud v balíčku nejsou žádné nebo jenom málo obrázků, je tvůj balíček téměř určitě menší než 20 MiB.</p>
     </fieldset>
     <small>
-        Used to legacy upload form? Click
-        <input type="button" id="legacy-guide-button" style="font-size: 0.8em;" value="this"/>.
+        Zvyklý/á na původní nahrávací formulář? Klikni
+        <input type="button" id="legacy-guide-button" style="font-size: 0.8em;" value="sem"/>.
     </small>
 </form>
 
 <form id="main-form" method="post" enctype="multipart/form-data"<?php if (empty($upload_activeForm)): ?> style="display: none;"<?php endif ?>>
-    <p><small><button style="width: 100%" id="reopen-guide-button">Restart upload type questionnaire</button></small></p>
+    <p><small><button style="width: 100%" id="reopen-guide-button">Restartovat dotazník</button></small></p>
     <input type="hidden" name="package-id" value="<?= $upload_packageId ?>"/>
     <input type="hidden" name="key" id="key-input" value="<?= $upload_key ?>"/>
     <input type="hidden" name="access-key" id="access-key-input" value="<?= $upload_accessKey ?>"/>
     <input type="hidden" name="type" id="type-input" value="<?= $upload_activeForm ?>"/><!-- Value is filled in by JavaScript -->
     <div id="code-insert-tutorial"<?php if (!in_array($upload_activeForm, ['file', 'link'])): ?> style="display: none;"<?php endif ?>>
         <?php if (!$upload_minor) : ?>
-            <p>You now need to insert (or update) autoupdater code into the description of your Anki deck.</p>
-            <p>This will allow users of your deck to receive update check and be notified when you upload a new version.</p>
-            <p>Don't worry, it's not complicated, just follow the instruction below:</p>
+            <p>Nyní musíš vloži (nebo aktualizovat) kód autoupdateru do popisku svého Anki balíčku.</p>
+            <p>Tohle umožní uživatelům tvého balíčku dostávat upozornění, kdykoli nahraješ novou verzi svého balíčku.</p>
+            <p>Neboj, není to složité. Jenom následuj instrukce níže:</p>
             <details<?php if (empty($upload_activeForm)): ?> open<?php endif ?> class="instructions-spoiler">
-                <summary class="instructions-spoiler-header"><h3>Instruction to insert or update auto-updater code</h3></summary>
+                <summary class="instructions-spoiler-header"><h3>Instrukce pro vložení nebo aktualizaci autoupdater kódu</h3></summary>
                 <ol>
                     <li>
-                        Select your deck inside your desktop Anki client.<br>
+                        Vyber svůj balíček ve svém Anki klientovi.
                         <img src="/public/img/tutorial-1.jpg" alt="Tutorial screenshot n. 1"/>
                     </li>
                     <li>
-                        Click the "Description" button.<br>
+                        Klikni na tlačítko „Popis“.<br>
                         <img src="/public/img/tutorial-2.jpg" alt="Tutorial screenshot n. 2"/>
                     </li>
                     <li>
-                        Paste the following text into the text field and make sure the checkbox is unchecked.<br>
-                        <strong>You need to do this everytime you upload a new version, because the code changes slightly
-                            between versions!</strong><br>
-                        <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://<?= $_SERVER['SERVER_NAME'] ?>/update<?= $upload_queryString ?>"&gt;&lt;img src="http://<?= $_SERVER['SERVER_NAME'] ?>/check-update<?= $upload_queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
+                        Vlož následující text do textového pole a ujisti se, že je zaškrtávací políčko odškrtnuto.<br>
+                        <strong>Toto musíš udělat pokaždé, když nahráváš novou verzi balíčku, protože kód se mezi verzemi mírně mění.</strong><br>
+                        <pre style="white-space: normal; margin:0; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; text-align: center; width: fit-content; padding: 15px; color: black; background-color: white;"&gt;&lt;h2&gt;Kontrola aktualizací&lt&lt;/h2&gt;&lt;h6&gt;Toto nemusí fungovat na jiných, než desktopových verzích Anki.&lt&lt;/h6&gt;&lt;a href="http://<?= $_SERVER['SERVER_NAME'] ?>/update<?= $upload_queryString ?>"&gt;&lt;img src="http://<?= $_SERVER['SERVER_NAME'] ?>/check-update<?= $upload_queryString ?>" alt="Kontrola aktualizací selhala. Zkontroluj své internetové připojení a zkus to znovu později." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
                     </li>
                     <li>
-                        Press OK and exit the dialog box.<br>
+                        Klikni na OK a opusť dialogové okno.<br>
                         <img src="/public/img/tutorial-3.jpg" alt="Tutorial screenshot n. 3"/>
                     </li>
                     <li>
-                        You should now see something like this (the text will be green, if you're updating an existing package,
-                        or
-                        red, if you're uploading the first version of a new package).
-                        Export the package as usual and upload it in the form below.<br>
+                        Nyní by jsi měl/a vidět něco takového (text bude zelený, pokud aktualizuješ existující balíček, nebo červený,
+                        pokud nahráváš první verzi nového balíčku). Exportuj balíček jako obvykle a nahraj jej do formuláře níže.<br>
                         <img src="/public/img/tutorial-4.jpg" alt="Tutorial screenshot n. 4"/>
                     </li>
                 </ol>
@@ -79,42 +76,38 @@
     </div>
 
     <fieldset id="file-input-fieldset"<?php if ($upload_activeForm !== 'file'): ?> style="display: none;"<?php endif ?>>
-        <label for="file-input">Package file:</label>
+        <label for="file-input">Soubor balíčku:</label>
         <input type="hidden" name="MAX_FILE_SIZE" value="26214400"/>
         <input type="file" accept=".apkg" name="package-file" id="file-input"/>
         <p>
             <small>
-                <strong>The file size mustn't exceed 20 MiB.</strong><br>
-                Is your file larger? Restart the upload type questionnaire and answer the questions accordingly.
+                <strong>Velikost souboru nesmí přesáhnout 20 MiB.</strong><br>
+                Je tvůj balíček větší? Restartuj formulář na začátku stránky a zodpověz otázky v něm správně.
             </small>
         </p>
     </fieldset>
     <fieldset id="link-input-fieldset"<?php if ($upload_activeForm !== 'link'): ?> style="display: none;"<?php endif ?>>
-        <label for="link-input">Direct download URL:</label>
+        <label for="link-input">URL pro přímé stažení:</label>
         <input type="url" id="link-input" style="width: -webkit-fill-available; width: -moz-available;" name="package-link"
                placeholder="https://owncloud.example.com/index.php/s/123456789ABCDEF/download"/>
         <p>
             <small>
-                <strong>Upload the APKG file to a 3rd party service, such as Google Drive, ownCloud etc.</strong><br>
-                It is important for the service to not autodelete the file after some time and for it to
-                allow direct downloading.<br>
-                After uploading and sharing, try to download the file, open the downloads window of your browser,
-                right-click the file and select "Copy download link".
-                Verify that this direct download link will work for anyone by pasting it into anonymous
-                window and checking that it will also trigger the download.
+                <strong>Nahraj APKG soubor do cloudového úložiště třetí strany, například OwnCloud, NextCloud, Google Drive, OneDrive, Dropbox.</strong><br>
+                Je důležité, aby tebou vybraná cloudová služba neodstraňovala nahrané soubory po nějaké době a aby umožňovala zisk odkazu pro přímé stahování.<br>
+                Po nahrání souboru a nastavení sdílení, pokus se stáhnout soubor pomocí sdílecího odkazu, otevři seznam nedávno stažených souborů, klikni
+                pravým tlačítkem na stažený balíček a vyber „Kopírovat odkaz ke stažení“. Ověř, že tento odkaz bude fungovat komukoli tím, že jej vložíš
+                do anonymního okna prohlížeče a přesvědčíš se, že i v takovém případě se spustí stahování.
             </small>
         </p>
     </fieldset>
     <fieldset id="remote-input-fieldset"<?php if ($upload_activeForm !== 'remote'): ?> style="display: none;"<?php endif ?>>
-        <label for="url-input">Download page of your deck:</label>
+        <label for="url-input">Stahovací stránka tvého balíčku:</label>
         <input type="url" id="url-input" style="width: -webkit-fill-available; width: -moz-available;" name="package-info"
                placeholder="https://ankiweb.net/shared/info/1234567890"/>
         <p>
             <small>
-                Make sure that anyone can access the webpage on the provided
-                URL by trying to open it in an incognito browser window.<br>
-                That will make sure that the target URL is accessible without
-                any login sessions and cookies.
+                Ujisti se, že kdokoli může na stránku na poskytnutém odkazu přistupovat tím, že se jí pokusíš otevřít v anonymním okně prohlížeče.<br>
+                To ověří, že cílová URL je přístupná i bez jakýchkoli přihlášení a cookies.
             </small>
         </p>
     </fieldset>
@@ -123,71 +116,70 @@
         <fieldset style="background-color:<?= $upload_firstRelease ? '#ff9f39' : ($upload_minor ? '#e2b1ff' : '#b1d4ff') ?>;">
         <?php if ($upload_minor) : ?>
             <p>
-                You are about to upload a <b>minor version</b> of this Anki package. That means that current users of
-                this deck <b>will not receive an update notification</b>.
+                Chystáš se nahrát <b>malou aktualizaci</b> tohoto Anki balíčku. To znamená, že současní uživatelé
+                <b>neobdrží výzvu k aktualizaci</b>.
             </p>
             <p>
                 <small>
-                    Keep in mind that minor updates (or patches) should be used only for things like typo or formatting
-                    fixes. Simply things that you want to be fixed for new users, but aren't critical enough to spend
-                    time
-                    updating the whole deck. To create an update-notification-triggering update, go back to the "My
-                    Decks"
-                    page and click the blue icon instead of the purple one next to this deck.
+                    Uvědom si, že malé aktualizace (neboli <i>patche</i>/záplaty) by měly být používány pouze pro opravy
+                    věcí jako jsou překlepy nebo formátování. Zkrátka věci, které chceš opravit pro nové uživatele, ale
+                    které nejsou kritické natolik, aby jsi nutil současné uživatele trávit čas stahováním a importováním
+                    aktualizace. Pro vytvoření aktualizace která upozorní i současné uživatele běž zpět na stránku „Mé balíčky“
+                    a klikni na modrou ikonu namísto fialové vedle názvu tohoto balíčku.
                 </small>
             </p>
         <?php elseif ($upload_firstRelease) : ?>
-            <p>Before releasing this first version of your Anki deck, make sure to double-check the following:</p>
+            <p>Před uložením první verze tvého Anki balíčku si ještě jednou zkontroluj následujcí:</p>
             <ul>
-                <li>The deck has the correct name and location</li>
+                <li>Balíček má správný název a umístnění.</li>
                 <ul>
-                    <li>It's a good practise to export the deck when it's in the top-most level or has one parent deck
-                        at most.
+                    <li>Je dobrou praxi exportovat balíček když je na nejvyšší úrovni v hierarchii balíčků, nebo je zanořen maxiálně
+                        do jednoho nadřazeného balíčku, který jménem odpovídá zvolené kategorii.
                     </li>
                 </ul>
-                <li>All the cards within your deck are of the correct note type.</li>
+                <li>Všechny poznámky ve tvém balíčku mají nastavený správný typ poznámky.</li>
                 <ul>
-                    <li>It's a good idea to make your own note type and name it something like "Basic – Tom's
-                        Genetics".
+                    <li>Ideálně bys měl/a vytvořit vlastní typ poznámky a pojmenovat jej ve stylu „Základní – Shadyho interna“.
                     </li>
                 </ul>
             </ul>
             <p>
-                These things cannot be updated later and changing them on your side later will cause failure to update
-                any previous versions.
+                Tyto věci nemohou být později aktualizovány a jejich změna na tvé straně způsobý nemožnost aktualizovat
+                ovlivněné poznámky u všech uživatelů dřívějších verzí.
             </p>
         <?php else : ?>
             <p>
-                You are about to upload a <b>major version</b> of this Anki package. That means that all current users
-                of this deck <b>will receive an update notification</b>.
+                Chystáš se nahrát <b>velkou aktualizaci</b> tohoto Anki balíčku. To znamená že všichni současní uživatelé
+                <b>obdrží výzvu k aktualizaci</b>.
             </p>
             <p>
                 <small>
-                    If you're just uploading a fix of a typo or other non-critical changes, and you expect to upload
-                    more fixes soon, consider uploading a minor update instead. Just go back to the "My Decks" page and
-                    click the purple icon instead of the blue one next to this deck.
+                    Pokud nahráváš jenom opravu překlepů nebo jiné nekritické změny a předpokládáš, že jich v blízké
+                    budoucnosti nahraješ ještě více, zvaž namísto velké aktualizace nahrání malé aktualizace (<i>patche</i>).
+                    Stačí se vrátit na stránku „Mé balíčky“ a kliknout na fialovou ikonu namísto modré vedle názvu tohoto balíčku.
                 </small>
             </p>
         <?php endif ?>
     </fieldset>
     <fieldset style="text-align: center;">
         <p>
-            <strong>Warning:</strong> Uploading a new version will permanently delete the previous version from our
-            servers.
+            <strong>Varování:</strong> Nahrání nové verze trvale odstraní předchozí verzi balíčku z našich serverů.
         </p>
-        <p><input type="submit" value="Upload" class="upload-btn"/></p>
+        <p><input type="submit" value="Nahrát" class="upload-btn"/></p>
         <small>
-            By clicking the "Upload" button, you confirm that your Anki package doesn't violate our
-            <a href="/terms-of-service">terms of service</a>, for example by containing copyrighted material.
+            Kliknutím na tlačítko „Nahrát“ potvrzuješ, že tvůj Anki balíček neporušuje naše
+            <a href="/terms-of-service">podmínky služby</a>, například obsahem materiálu zatíženého autorskými právy,
+            k jejichž šíření nemáš licenci.
         </small>
     </fieldset>
     </div>
     <div id="remote-footer"<?php if ($upload_activeForm !== 'remote'): ?> style="display: none;"<?php endif ?>>
         <fieldset style="text-align: center;">
-            <p><input type="submit" value="Add Linked Deck" class="upload-btn"/></p>
+            <p><input type="submit" value="Přidat prolinkovaný balíček" class="upload-btn"/></p>
             <small>
-                By clicking the "Add Linked Deck" button, you confirm that your Anki package doesn't violate our
-                <a href="/terms-of-service">terms of service</a>, for example by containing copyrighted material.
+                Kliknutím na „Přidat prolinkovaný balíček“ potvrzuješ, že tvůj Anki balíček neporušuje naše
+                <a href="/terms-of-service">podmínky služby</a>, například obsahem materiálu zatíženého autorskými právy,
+                k jejichž šíření nemáš licenci.
             </small>
         </fieldset>
     </div>
