@@ -1,70 +1,71 @@
 <?php if (isset($deck_uploadAction)) : ?>
     <div style="border: 1px solid black; background-color:lightskyblue; padding: 8px;">
-        <p><strong>Package has successfully been <?= $deck_uploadAction ?>.</strong></p>
-        <p>Time to share it with others, just send them the following link:<br><code style="white-space: normal; background-color: #ddd; color: #222; padding: 4px;"><?= $deck_shareLink ?></code></p>
-        <?php if ($deck_uploadAction === 'linked') : ?>
+        <p><strong>Balíček byl úspěšně <?= $deck_uploadAction ?>.</strong></p>
+        <p>Je načase sdílet jej s ostatními, stačí jím poslat následující odkaz:<br><code style="white-space: normal; background-color: #ddd; color: #222; padding: 4px;"><?= $deck_shareLink ?></code></p>
+        <?php if ($deck_uploadAction === 'prolinkován') : ?>
             <p>
-                To bypass redirection, you can also share the link you entered the previous step. That will also bypass
-                private deck protection, if you didn't set this deck as public.
+                Pokud chceš obejít přesměrování, můžeš také prostě sdílet odkaz, který jsi zadával/a v předchozím kroku.
+                Takový postup ale obejde i nutnost znalosti přístupového kódu, pokudj is balíček nenastavil/a jako veřejný.
             </p>
-        <?php elseif ($deck_uploadAction === 'updated') : ?>
+        <?php elseif ($deck_uploadAction === 'aktualizován') : ?>
             <p>
-                All users that use the previous (or any older) version of your deck will now see an update notification
-                when they open it to study.
+                Všichni uživatelé předchozí (nebo jakékoli starší) verze tvého balíčku nyní uvidí výzvu k aktualizaci,
+                až balíček otevřou.
             </p>
-        <?php elseif ($deck_uploadAction === 'patched') : ?>
+        <?php elseif ($deck_uploadAction === 'upraven') : ?>
         <p>
-            Users that use the previous version of your deck <b>will not see an update notification</b>,
-            because you marked this update as minor (patch).
+            Uživatelé předchozí verze <b>neuvidí výzvu k aktualizaci</b>, protože jsi označil tuto aktualizaci jako malou (<i>patch</i>).
         </p>
         <?php endif ?>
         <?php if (!empty($deck_accessKey)) : ?>
             <p>
-                Your Anki package is set as private. This means that it won't be listed on the
-                <a href="/browse">Deck List webpage</a> and only users using a link with the access code will be able
-                to download the package.
+                Tvůj Anki balíček je nastaven jako soukromý. To znamená, že nebude uveden
+                na <a href="/browse">stránce se seznamem balíčků</a> a pouze uživatelé s odkazem obsahujíím
+                přístupový kód jej budou moci stáhnout.
             </p>
-            <p>The access code is contained in the link above, so be careful with whom you share it.</p>
+            <p>Přístupový kód je obsažen v odkazu výše, proto buď opatrný/á, s kým jej budeš sdílet.</p>
         <?php endif ?>
     </div>
 <?php endif ?>
 
-<?php if ($deck_uploadAction === 'linked') : ?>
-    <p>Upon choosing this deck from the list, users will be redirected to:</p>
+<?php if ($deck_uploadAction === 'prolinkován') : ?>
+    <p>Po kliknutí na název tohoto balíčku v seznamu balíčků budou uživatelé předměrování na:</p>
     <a href="<?= $deck_detailsLink ?>"><?= $deck_detailsLink ?></a>
 <?php else : ?>
-    <p>To download new version of this Anki deck, click the button below.</p>
-    <p>After downloading, just import the new package to your Anki client. None of your cards or planning will be
-        overwritten. Anki will simply check which of your cards were changed in this version and updates their
-        content.</p>
+    <p>Pro stažení nejnovější verze tohoto Anki balíčku klikni na tlačítko níže.</p>
     <p>
-        File name: <code><?= $deck_package->getName() ?>.apkg</code><br>
+        Po dokončení stahování stačí naimportovat stažený soubor do tvého Anki klienta.
+        Žádné tvé poznámky nebo pokrok nebude přepsán, Anki jednoduše porovná, které poznámky
+        byly v této verzi změněny a aktualizuje jejich obsah.
+    </p>
+    <p>
+        Název souboru: <code><?= $deck_package->getName() ?>.apkg</code><br>
         <?php if (file_exists('decks/'.$deck_packageId.'.apkg')) : ?>
-            File size: <code><?= number_format(filesize('decks/'.$deck_packageId.'.apkg') / 1000000, 2) ?> MB</code><br>
+            Velikost souboru: <code><?= number_format(filesize('decks/'.$deck_packageId.'.apkg') / 1000000, 2) ?> MB</code><br>
         <?php endif ?>
-        Version: <code><?= $deck_package->getFullVersion() ?></code><br>
-        File updated at: <code><?= $deck_package->getUpdatedDate()->format('Y-m-d H:i:s'); ?></code>
+        Verze: <code><?= $deck_package->getFullVersion() ?></code><br>
+        Soubor aktualizován: <code><?= $deck_package->getUpdatedDate()->format('Y-m-d H:i:s'); ?></code>
     </p>
     <?php if ($deck_hostedLocally): ?>
         <button style="display: block; background-color:limegreen; font-size: x-large;">
             <a style="color: inherit; text-decoration: none;"
                href="<?= $deck_downloadLink ?>">
-                Download the Deck
+                Stáhnout balíček
             </a>
         </button>
     <?php else: ?>
         <button style="display: block; background-color:dodgerblue; font-size: x-large;">
             <a style="color: inherit; text-decoration: none;"
                href="<?= $deck_downloadLink ?>">
-                Download the Deck
+                Stáhnout balíček
             </a>
         </button>
-        <small>(from 3rd party service)</small><br>
+        <small>(ze serveru třetí strany)</small><br>
     <?php endif ?>
-    <small>By downloading this Anki package, you agree to our simple <a href="/terms-of-service">terms of service</a>.</small>
-    <h2>If you're updating an existing deck and not importing this one for the first time:</h2>
-    <p>After importing the new file, replace the description of the deck with the following code to reset the update status for the new version.</p>
-    <pre style="white-space: normal; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; border-radius: 5px; text-align: center; width: fit-content; padding: 15px;"&gt;&lt;h2&gt;Update check&lt;/h2&gt;&lt;h6&gt;This might not work on other than desktop versions of Anki.&lt;/h6&gt;&lt;a href="http://<?= $_SERVER['SERVER_NAME'] ?>/update<?= $deck_queryString ?>"&gt;&lt;img src="http://<?= $_SERVER['SERVER_NAME'] ?>/check-update<?= $deck_queryString ?>" alt="Update check failed. Check your internet connection or try again later." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
-    <p>You need to do this, because updating your current deck will not overwrite the deck description, which holds the current version of your deck (the yellow numbers in the code above). Without updating the description, your Anki will still think you're using the outdated version.</p>
+    <small>Stažením tohoto Anki balíčku souhlasíš s našimi jednoduchými <a href="/terms-of-service">podmínkami služby</a>.</small>
+    <h2>Pokud svůj balíček aktualizuješ a neimportuješ jej porpvé:</h2>
+    <p>Po importu staženého souboru nahraď popisek balíčku kódem níže pro aktualizaci čísla nainstalované verze.</p>
+    <pre style="white-space: normal; padding: 4px; background-color: black; color: white;"><code>&lt;div style="margin: 30px auto; left: 0; right: 0; border: 3px solid black; text-align: center; width: fit-content; padding: 15px; color: black; background-color: white;"&gt;&lt;h2&gt;Kontrola aktualizací&lt;/h2&gt;&lt;h6&gt;Toto nemusí fungovat na jiných, než desktopových verzích Anki.&lt;/h6&gt;&lt;a href="http://<?= $_SERVER['SERVER_NAME'] ?>/update<?= $deck_queryString ?>"&gt;&lt;img src="http://<?= $_SERVER['SERVER_NAME'] ?>/check-update<?= $deck_queryString ?>" alt="Kontrola aktualizací selhala. Zkontroluj své internetové připojení a zkus to znovu později." /&gt;&lt;/a&gt;&lt;/div&gt;</code></pre>
+    <p>Toto musíš udělat, protože aktualizace existujícího balíčku někdy nepřepíše jeho popisek, který obsahuje informaci o nainstalované verze (žluté číslo v kódu výše). Bez aktualizace popisku si tvůj Anki klient bude stále myslet, že používáš zastaralou verzi balíčku.</p>
 <?php endif ?>
 
