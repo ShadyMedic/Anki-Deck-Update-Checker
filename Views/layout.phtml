@@ -6,7 +6,7 @@
     <?php foreach (self::$cssFiles as $cssFile) : ?>
         <link rel="stylesheet" href="/public/css/<?= $cssFile ?>.css">
     <?php endforeach ?>
-    <title>Anki Package Update Checker</title>
+    <title>Medické Anki Balíčky</title>
 </head>
 <body data-page-id="<?=
     /** @var string $layout_page_id ID of the generated webpage, initialized in the specific controller */
@@ -14,12 +14,12 @@
 ?>">
 <nav>
     <span class="nav-row">
-        <span id="home-link" class="nav-item">Homepage</span>
-        <span id="browse-link" class="nav-item">Public&nbsp;Decks</span>
+        <span id="home-link" class="nav-item">Domovská stránka</span>
+        <span id="browse-link" class="nav-item">Veřejné&nbsp;balíčky</span>
     </span>
     <span class="nav-row">
-        <span id="manage-link" class="nav-item">My&nbsp;Decks</span>
-        <span id="create-link" class="nav-item">Upload&nbsp;a&nbsp;New&nbsp;Deck</span>
+        <span id="manage-link" class="nav-item">Mé&nbsp;balíčky</span>
+        <span id="create-link" class="nav-item">Nahrát&nbsp;nový&nbsp;balíček</span>
     </span>
 </nav>
 <form id="manage-link-data-sender" action="/my-decks" method="POST">
