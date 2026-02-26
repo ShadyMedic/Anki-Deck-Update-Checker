@@ -11,7 +11,7 @@ class Account extends Controller
     public function process(array $args = []): int
     {
         self::$data['layout']['page_id'] = 'account';
-        self::$data['layout']['title'] = 'Account Setup';
+        self::$data['layout']['title'] = 'Nastavení účtu';
 
         self::$views[] = 'account';
         self::$cssFiles[] = 'upload';
