@@ -13,7 +13,7 @@ class Deleted extends Controller
     public function process(array $args = []): int
     {
         self::$data['layout']['page_id'] = 'deleted';
-        self::$data['layout']['title'] = 'Package Successfully Deleted';
+        self::$data['layout']['title'] = 'Balíček úspěšně smazán';
 
         $packageId = array_shift($args);
         self::$data['deleted']['packageId'] = $packageId;
