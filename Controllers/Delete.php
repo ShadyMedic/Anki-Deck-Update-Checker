@@ -22,20 +22,20 @@ class Delete extends Controller
         $packageFound = $package->load($packageId);
 
         if (!$packageFound) {
-            throw new UserException('No package with this ID was found.', 404005);
+            throw new UserException('Balíček s tímto ID nebyl nalezen.', 404005);
         }
 
         if ($package->isDeleted()) {
-            throw new UserException('This package was deleted.', 410005);
+            throw new UserException('Tento balíček byl smazán.', 410005);
         }
 
         //Do authentication
         if (is_null($key)) {
-            throw new UserException('No editing key was provided.', 401005);
+            throw new UserException('Nebyl poskytnut editační klíč.', 401005);
         }
         $tools = new PackageManager();
         if (!$tools->checkWriteAccess($packageId, $key)) {
-            throw new UserException('The editing key for this package is not valid.', 403003);
+            throw new UserException('Editační klíč pro tento balíček není platný.', 403003);
         }
 
         $deckName = $package->getName();
@@ -51,12 +51,12 @@ class Delete extends Controller
                 (new CategoryManager())->recalculateDeckCounts();
                 $this->redirect('/deleted/'.$packageId);
             } else {
-                $error = 'Editing key is incorrect';
+                $error = 'Editační klíč je nesprávný.';
             }
         }
 
         self::$data['layout']['page_id'] = 'delete';
-        self::$data['layout']['title'] = 'Delete Deck';
+        self::$data['layout']['title'] = 'Smazat balíček';
 
         self::$data['delete']['DeckName'] = $deckName ?? null;
         self::$data['delete']['key'] = $key ?? null;
