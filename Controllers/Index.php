@@ -14,7 +14,7 @@ class Index extends Controller
     public function process(array $args = []): int
     {
         self::$data['layout']['page_id'] = 'index';
-        self::$data['layout']['title'] = 'Anki Deck Update Checker';
+        self::$data['layout']['title'] = 'Medické Anki s autoupdaterem';
 
         self::$views[] = 'index';
 
