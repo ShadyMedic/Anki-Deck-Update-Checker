@@ -39,8 +39,8 @@ class Create extends Controller
                     try {
                         $accessKey = $tools->generateAccessKey();
                     } catch (Exception $e) {
-                        $error = 'Something went wrong while creating an access key for your private deck. '.
-                            'Either make the deck public, or try again later please.';
+                        $error = 'Něco se pokazilo během generování přístupového klíče pro tvůj soukromý balíček. '.
+                            'Buďto učiňte balíček veřejným, nebo to znovu zkuste později.';
                         $accessKey = null;
                     }
                 } else {
@@ -62,7 +62,7 @@ class Create extends Controller
         }
 
         self::$data['layout']['page_id'] = 'new-deck';
-        self::$data['layout']['title'] = 'Upload New Deck';
+        self::$data['layout']['title'] = 'Přidat nový balíček';
 
         self::$data['create']['category'] = $category ?? null;
         self::$data['create']['deckName'] = $deckName ?? null;
