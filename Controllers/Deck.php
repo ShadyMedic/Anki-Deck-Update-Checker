@@ -20,7 +20,7 @@ class Deck extends Controller
             $packageId = $_GET['id'] ?? null;
             
             if (is_null($packageId)) {
-                throw new UserException('No package ID was specified', 400005);
+                throw new UserException('Nebylo specifikováno žádné ID balíčku.', 400005);
             }
         }
         
@@ -34,20 +34,20 @@ class Deck extends Controller
         $packageFound = $package->load($packageId);
 
         if (!$packageFound) {
-            throw new UserException('No package with this ID was found.', 404001);
+            throw new UserException('Balíček s tímto ID nebyl nalezen.', 404001);
         }
 
         if ($package->isDeleted()) {
-            throw new UserException('This package was deleted.', 410001);
+            throw new UserException('Tento balíček byl smazán.', 410001);
         }
 
         $authenticator = new PackageManager();
         if (!$authenticator->checkReadAccess($packageId, $accessKey)) {
-            throw new UserException('This package is private and the access key is either wrong or missing.', 401001);
+            throw new UserException('Tento balíček je soukromý a přístupový klíč buďto chybí nebo je nesprávný.', 401001);
         }
 
         if ($package->getVersion() === 0) {
-            throw new UserException('This package hasn\'t been uploaded yet.', 406001);
+            throw new UserException('Tento balíček zatím nebyl nahrán.', 406001);
         }
 
         if (!$package->hasLocalDetailsPage() && self::$data['deck']['uploadAction'] !== 'linked') {
