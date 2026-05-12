@@ -13,7 +13,8 @@ class Terms extends Controller
     public function process(array $args = []): int
     {
         self::$data['layout']['page_id'] = 'terms';
-        self::$data['layout']['title'] = 'Terms of Service';
+        self::$data['layout']['title'] = 'Podmínky služby';
+        
 
         self::$views[] = 'terms';
 
