@@ -22,20 +22,20 @@ class Edit extends Controller
         $packageFound = $package->load($packageId);
 
         if (!$packageFound) {
-            throw new UserException('No package with this ID was found.', 404004);
+            throw new UserException('Balíček s tímto ID nebyl nalezen.', 404004);
         }
 
         if ($package->isDeleted()) {
-            throw new UserException('This package was deleted.', 410004);
+            throw new UserException('Tento baliček byl smazán.', 410004);
         }
 
         //Do authentication
         if (is_null($originalKey)) {
-            throw new UserException('No editing key was provided.', 401003);
+            throw new UserException('Nebyl poskytnut žádný editační klíč.', 401003);
         }
         $tools = new PackageManager();
         if (!$tools->checkWriteAccess($packageId, $originalKey)) {
-            throw new UserException('The editing key for this package is not valid.', 403002);
+            throw new UserException('Editační klíč pro tento balíček není platný.', 403002);
         }
 
         $category = $package->getCategory();
@@ -58,7 +58,7 @@ class Edit extends Controller
             try {
                 if ($tools->validateCategory($category)) {
                     $edits['category_id'] = $category;
-                    $saves[] = 'Category was saved';
+                    $saves[] = 'Kategorie uložena';
                 }
             } catch (UserException $e) {
                 $errors[] = $e->getMessage();
@@ -67,7 +67,7 @@ class Edit extends Controller
             try {
                 if ($tools->validateName($deckName)) {
                     $edits['name'] = $deckName;
-                    $saves[] = 'Deck name was saved';
+                    $saves[] = 'Název balíčku uložen';
                 }
             } catch (UserException $e) {
                 $errors[] = $e->getMessage();
@@ -76,7 +76,7 @@ class Edit extends Controller
             try {
                 if ($tools->validateAuthor($author)) {
                     $edits['author'] = $author;
-                    $saves[] = 'Author was saved';
+                    $saves[] = 'Autor uložen';
                 }
             } catch (UserException $e) {
                 $errors[] = $e->getMessage();
@@ -85,7 +85,7 @@ class Edit extends Controller
             try {
                 if ($tools->validateEditKey($key)) {
                     $edits['edit_key'] = $key;
-                    $saves[] = 'Edit key was saved';
+                    $saves[] = 'Editační klíč uložen';
                 }
             } catch (UserException $e) {
                 $errors[] = $e->getMessage();
@@ -93,19 +93,19 @@ class Edit extends Controller
 
             if ($justPublished) {
                 $edits['access_key'] = null;
-                $saves[] = 'Package was published';
+                $saves[] = 'Balíček publikován';
             }
 
             if (!empty($edits)) {
                 $package->update($edits);
-                if (in_array('Category was saved', $saves)) {
+                if (in_array('Kategorie uložena', $saves)) {
                     (new CategoryManager())->recalculateDeckCounts();
                 }
             }
         }
 
         self::$data['layout']['page_id'] = 'new-deck';
-        self::$data['layout']['title'] = 'Edit Deck Details';
+        self::$data['layout']['title'] = 'Upravit detaily balíčku';
 
         self::$data['edit']['key'] = $originalKey;
         self::$data['edit']['categories'] = (new CategoryManager())->loadCategories();
