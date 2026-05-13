@@ -23,10 +23,10 @@ class Update extends Controller
             $currentVersion = $_GET['current'] ?? null;
 
             if (is_null($packageId)) {
-                throw new UserException('No package ID was specified', 400003);
+                throw new UserException('Nebylo specifikováno ID balíčku.', 400003);
             }
             if (is_null($currentVersion)) {
-                throw new UserException('No package ID was specified', 400004);
+                throw new UserException('Nebyla specifikována aktuální verze balíčku.', 400004);
             }
         }
 
@@ -34,17 +34,17 @@ class Update extends Controller
         $packageFound = $package->load($packageId);
 
         if (!$packageFound) {
-            throw new UserException('No package with this ID was found.', 404008);
+            throw new UserException('Balíček s tímto ID nebyl nalezen.', 404008);
         }
 
         if ($package->isDeleted()) {
-            throw new UserException('This package was deleted.', 410007);
+            throw new UserException('Tento balíček byl smazán.', 410007);
         }
 
         //Do authentication
         $authenticator = new PackageManager();
         if (!$authenticator->checkReadAccess($packageId, $accessCode)) {
-            throw new UserException('This package is private and the access key is either wrong or missing.', 401007);
+            throw new UserException('Tento balíček je soukromý a přístupový klíč buďto chybí, nebo je nesprávný.', 401007);
         }
 
         if ($currentVersion < $package->getVersion()) {
@@ -53,7 +53,7 @@ class Update extends Controller
         }
 
         self::$data['layout']['page_id'] = 'update';
-        self::$data['layout']['title'] = 'Your Anki Deck Is up-to-date';
+        self::$data['layout']['title'] = 'Tvůj Anki balíček je aktuální.';
         //TODO this will need to be redone when remote file hosting is implemented
         self::$data['uptodate']['DownloadLink'] = $package->getDownloadLink();
         self::$views[] = 'up-to-date';

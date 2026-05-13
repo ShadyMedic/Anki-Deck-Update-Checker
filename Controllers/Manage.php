@@ -13,7 +13,7 @@ class Manage extends Controller
     public function process(array $args = []): int
     {
         self::$data['layout']['page_id'] = 'manage';
-        self::$data['layout']['title'] = 'My Published Anki Decks';
+        self::$data['layout']['title'] = 'Mnou publikované Anki balíčky';
 
         self::$data['manage']['packages'] = [];
         self::$data['manage']['latestKey'] = '';

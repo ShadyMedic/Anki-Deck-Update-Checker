@@ -20,7 +20,7 @@ class Router extends Controller
     public function process(array $args = []): int
     {
         if (empty($args) || empty($args[0])) {
-            throw new BadMethodCallException("No URL to process was provided", 500003);
+            throw new BadMethodCallException("Nebylo poskytnuté žádné URL ke zpracování.", 500003);
         }
 
         $url = array_shift($args);
@@ -90,7 +90,7 @@ class Router extends Controller
     {
         $routes = parse_ini_file('routes.ini', true);
         if (!isset($routes["Routes"][$path])) {
-            throw new UnexpectedValueException("The given URL wasn't found in the configuration.", 404000);
+            throw new UnexpectedValueException("Daná URL nebyla nalezena v konfiguraci.", 404000);
         }
         return $routes["Routes"][$path];
     }

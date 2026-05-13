@@ -1,12 +1,12 @@
-<p>This is the list of all public Anki decks uploaded to this webserver under this category.</p>
-<p>To view more information about any file or to download it, simply click its name.</p>
-<p>You can quickly find the deck you need by opening the search tool (<kbd>Ctrl + F</kbd>).</p>
+<p>Toto je seznam všech veřejných Anki balíčků nahraných na tento web v této kategorii.</p>
+<p>Pro zobrazení více informací o jakémkoli balíčku nebo pro jeho stažení jednoduše klikni na jeho název.</p>
+<p>Můžeš rychle vyhledávat mezi balíčky pomocí funkce „Najít“ (<kbd>Ctrl + F</kbd>).</p>
 <table class="wide-table striped-table">
     <tr>
-        <th class="txt-l">Deck name</th>
-        <th class="txt-l">Author</th>
-        <th>Version</th>
-        <th>Last updated at</th>
+        <th class="txt-l">Název balíčku</th>
+        <th class="txt-l">Autor</th>
+        <th>Verze</th>
+        <th>Naposledy aktualizováno</th>
     </tr>
     <?php /** @var array $browse_packages Array of the Package objects, containing information about public decks */
     foreach ($browse_packages as $package) : ?>
@@ -15,7 +15,7 @@
                 <a href="/deck/<?= $package['package_id'] ?>">
                     <?= $package['name'] ?>
                     <?php if ($package['details_link'] !== 'LOCAL') : ?>
-                         <img class="icon" src="/public/img/icons/ext-link.svg" alt="(external link)">
+                         <img class="icon" src="/public/img/icons/ext-link.svg" alt="(externí odkaz)">
                     <?php endif ?>
                 </a>
             </td>

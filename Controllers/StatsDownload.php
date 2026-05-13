@@ -22,26 +22,26 @@ class StatsDownload extends Controller
         $packageFound = $package->load($packageId);
 
         if (!$packageFound) {
-            throw new UserException('No package with this ID was found.', 404010);
+            throw new UserException('Balíček s tímto ID nebyl nalezen.', 404010);
         }
 
         if ($package->isDeleted()) {
-            throw new UserException('This package was deleted.', 410009);
+            throw new UserException('Tento balíček byl smazán.', 410009);
         }
 
 
         //Do authentication
         if (is_null($key)) {
-            throw new UserException('No editing key was provided.', 401009);
+            throw new UserException('Nebyl poskytnut žádný editační klíč.', 401009);
         }
         $tools = new PackageManager();
         if (!$tools->checkWriteAccess($packageId, $key)) {
-            throw new UserException('The editing key for this package is not valid.', 403005);
+            throw new UserException('Editační klíč pro tento balíček není platný.', 403005);
         }
 
 
         if ($package->getVersion() === 0) {
-            throw new UserException('This package hasn\'t been uploaded yet.', 406004);
+            throw new UserException('Tento balíček nebyl zatím nahrán.', 406004);
         }
 
         $manager = new StatisticsManager();

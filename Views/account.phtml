@@ -1,52 +1,52 @@
 <p>
-    Whenever you upload a new Anki package, it is saved along with your author name and an "editing key"
+    Kdykoli nahraješ nový Anki balíček, je uložen pod tvým autorským jménem a „editačním klíčem“.
 </p>
 <p>
-    In order to make the work with our system easier, you can pre-fill these two pieces of information here. Whenever
-    you create a new package, the author name and editing key that you set up here will be automatically used. And
-    whenever you manage an existing deck, these pieces of information will be automatically used to authenticate you.
+    Aby se ti s tímto systémem pracovalo jednodušeji, můžeš předvyplnit tyto dvě informace na této stránce. Kdykoli
+    v budoucnu budeš vytvářet nový balíček, jméno autora a editační klíč budou automaticky nastaveny jako výchozí
+    hodnoty. A kdykoli půjdeš na stránku pro správu nahraných balíčků, předvyplněný editační klíč bude automaticky
+    použit k přihlášení.
 </p>
 <p>
-    Please note, that after filling and submitting the form below, <strong>no data will be sent to our servers</strong>.
-    This form only creates a <strong>local "account" at your machine</strong> by saving the name and the key in your
-    browser's local storage (something like a cookie). If you clear cookies or reinstall your browser, the name and key
-    will be lost. So make sure you remember these details (especially the key) in case you need to input them manually
-    in the future again.
+    Měj prosím na paměti, že po odeslání formuláře níže <strong>nedojde k odeslání žádných dat na naše servery</strong>.
+    Formulář vytvoří pouze <strong>místní „účet“ na tvém zařízení</strong> uložením zvoleného hesla a klíče do lokálního
+    úložiště tvého prohlížeče (do něčeho jako cookie). Pokud vymažeš cookies nebo přeinstaluješ svůj prohlížeč, jméno a klíč
+    budou ztraceny. Proto si v každém případě své údaje zapamatuj (především klíč) pro případ, že je budeš muset v budoucnosti
+    opět muset manuálně zadat.
 </p>
 
 <details>
-    <summary><h3>Display the form (it contains your current editing key in plain text!)</h3></summary>
+    <summary><h3>Zobrazit formulář (obsahuje tvůj aktuální editační klíč ve viditelné formě!)</h3></summary>
     <form method="POST">
         <p>
-            <label for="author-input">Author name: </label><br>
+            <label for="author-input">Jméno autora: </label><br>
             <input type="text" id="author-input" name="author" value="" maxlength="31" required/><br>
             <small>
-                The author name serves just to give you credit for your work and to make it easier for users of your
-                decks to find packages made by you. Multiple people can choose the same author name, but it is not
-                recommended.
+                Jméno autora slouží pouze jako důkaz tvých zásluh a umožňuje ostatním jednodušší vyhledávání tvých
+                balíčů. Více uživatelů si může zvolit stejné jméno autora, ale není to doporučováno.
             </small>
         </p>
         <p>
-            <label for="key-input">Editing key: </label><br>
+            <label for="key-input">Editační klíč: </label><br>
             <input type="text" id="key-input" name="key" value="" maxlength="31" required/>
-            <button id="generate-key-button">Generate</button><br>
+            <button id="generate-key-button">Vygenerovat</button><br>
             <small>
-                Editing key is something like a password that is necessary to update, modify or delete packages created
-                with it in the future. Take care of the key and keep it private, as anyone with access to it can modify
-                your packages and push destructive updates to your users. Also note, that the key cannot be recovered,
-                if forgotten, unless you personally know the webmaster of this website.<br>
-                <strong>Do not set the editing key to the same value as any of your passwords to other services!</strong>
-                The editing key is not protected by encryption for technical reasons and while we do our best to keep
-                the information private, we can never completely prevent data theft.
+                Editační klíč je něco jako heslo, které je nutné pro budoucí aktualizování, upravování nebo odstraňování
+                balíčků vytvořených pomocí něj. Udržuj svůj editační klíč v tajnosti, kdokoli s přístupem k němu může
+                modifikovat tvé balíčky a rozeslat mezi jejich uživatele destruktivní aktualizace. Uvědom si, že klíč
+                nemůže být obnoven, pokud je zapomenut, s výjimkou případu kdy se osobně znáš se správcem tohoto webu.<br>
+                <strong>Nevol jako editační klíč nic, co už používáš jako heslo někde jinde!</strong>
+                Z technických důvodů není editační klíč chráněn šifrováním a ačkoli se snažíme držet ukládaná data v bezpečí,
+                nikdy nemůžeme vyloučit hackerský útok a jejich krádež.
             </small>
         </p>
         <p>
-            Resetting the author name and editing key here will <strong>not</strong> change it for the packages you
-            created in the past. It is recommended to edit the details of your past decks to the new author name and
-            editing key on the <a href="/my-decks" id="manage-link-account">my decks page</a> before changing the values in this form (unless you
-            want to start publishing new packages under new identity of course).
+            Změna jména autora a editačního klíče zde jej <strong>nezmění</strong> pro balíčky, které jsi v minulosti pomocí
+            těchto údajů vytvořil/a. Doporučujeme nejprve aktualizovat tyto údaje u tvých dříve nahraných balíčků
+            na stránce <a href="/my-decks" id="manage-link-account">Mé balíčky</a> předtím, než změníš údaje v tomto formuláři
+            (pokud tedy nechceš začít budoucí balíčky vydávat pod novou identitou).
         </p>
-        <button id="submit-button">Save</button>
+        <button id="submit-button">Uložit</button>
         <span id="result-box" style="color:green"></span>
     </form>
 </details>

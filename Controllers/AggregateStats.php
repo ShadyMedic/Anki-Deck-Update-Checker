@@ -18,11 +18,11 @@ class AggregateStats extends Controller
         //Check authorization
         $key = $_POST['key'] ?? null;
         if (is_null($key)) {
-            throw new UserException('No access key was provided.', 401010);
+            throw new UserException('Žádný přístupový klíč neposkytnut.', 401010);
         }
 
         if ($key !== self::ACCESS_KEY) {
-            throw new UserException('The access key is not valid.', 403006);
+            throw new UserException('Neplatný přístupový klíč.', 403006);
         }
 
         //Inspired by https://stackoverflow.com/a/15273676/14011077

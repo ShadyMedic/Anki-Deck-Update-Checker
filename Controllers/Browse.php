@@ -23,7 +23,7 @@ class Browse extends Controller
         self::$data['layout']['page_id'] = 'browse';
 
         if (is_null($category)) {
-            self::$data['layout']['title'] = 'Public Anki Decks';
+            self::$data['layout']['title'] = 'Veřejné Anki balíčky';
 
             $manager = new PackageManager();
             self::$data['categories']['categories'] = $tools->loadCategories(true);
@@ -32,10 +32,10 @@ class Browse extends Controller
             self::$cssFiles[] = 'browse';
         } else {
             if (!$tools->categoryExists($category)) {
-                throw new UserException('Category with the given ID wasn\'t found.', 404011);
+                throw new UserException('Kategorie s daným ID nebyla nalezena.', 404011);
             }
 
-            self::$data['layout']['title'] = $tools->getCategoryName($category).' Decks';
+            self::$data['layout']['title'] = 'Balíčky z '.$tools->getCategoryName($category);
 
             $manager = new PackageManager();
             self::$data['browse']['Packages'] = $manager->getPublicPackages($category);

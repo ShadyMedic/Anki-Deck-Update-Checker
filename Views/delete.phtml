@@ -1,43 +1,43 @@
-<p>Are you sure you want to delete <strong><?= $delete_deckName ?></strong>?</p>
-<p>Just so you know the consequences:</p>
+<p>Jsi si jistý, že chceš odstranit <strong><?= $delete_deckName ?></strong>?</p>
+<p>Ujisti se, že jsi si vědom/a následků:</p>
 <ul>
     <li>
-        All of the users of this deck will see a notification when they open this deck, saying that their deck wasn't
-        found in our database and it was most likely deleted by the author.
+		Všichni uživatelé tohoto balíčku uvidí v jeho popisku oznámení, že jejich balíček nebyl v naší databázi nalezen
+		a že byl nejspíše odstraněn svým autorem.
     </li>
     <li>
-        Going to update page for this deck will return a "410 – Gone" error. All links to the deck's page on our website
-        will be removed from public view as well.
+		Stránka pro aktualizaci balíčku bude nahrazena chybovou stránkou "410 – Zaniklo". Všechny odkazy na stránku balíčku
+		na našem webu budou rovněž odebrány.
     </li>
     <li>
-        If you choose to reupload/relink this package, it will have a different ID and users of the deck you're going
-        to delete will not start seeing potential update notifications again.
+		Pokud se rozhodneš tento balíček v budoucnost opět nahrát, bude mít jiné ID než původní balíček
+		a uživatelé původního balíčku nezačnou potenciální výzvy k aktualizaci znovu dostávat.
     </li>
     <li>
-        The Anki package will be permanently deleted from our servers (if you uploaded it to our service)
-        and we won't be able to recover it, if you lose your copy.
+		Anki balíček bude trvale odstraněn z našich serverů (pokud jsi ho na naše servery nahrál) a ani my jej
+		nebudeme schopni obnovit, pokud ztratíš svojí zálohu.
     </li>
     <li>
-        This package's metadata (name, author, version, download link, editing key
-        and access key for private decks) will be purged from our database as well.
+		Metadata tohoto balíčku (název, autor, verze, odkaz ke stažení, editační klíč, u neveřejných balíčků ještě přístupový klíč)
+		budou rovněž z naší databáze vymazány.
     </li>
     <li>
-        All usage statistics for this package are going to be purged too.
+		Veškeré statistiky o míře používání tohoto balíčku budou také vymazány.
     </li>
     <li>
-	    The only information left of this package on our servers will be its ID, a note that it was deleted and a date when
-        the deletion happened.
+		Jediná informace, která zůstane o tomto balíčku na našich serverech zachována bude jeho ID, poznámka že byl smazán
+		a časové razítko, kdy k jeho smazání došlo.
     </li>
 </ul>
 <form method="POST">
     <fieldset>
         <p>
-            If you are certain that you understand the consequences, please, fill in the editing key for this deck
-            to confirm and press the button.
+			Pokud jsi si jistý/á že rozumíš důsledkům, vyplň prosím editační klíč pro tento balíček pro potvrzení
+			a klikni na tlačítko.
         </p>
         <input type="hidden" name="key" value="<?= $delete_key ?>" required/>
         <input type="password" name="confirm-key" maxlength="31" required/>
-        <input type="submit" value="Permanently Delete This Deck"/>
+        <input type="submit" value="Trvale odstranit tento balíček"/>
         <div style="color: red">
             <?= $delete_error ?? '' ?>
         </div>

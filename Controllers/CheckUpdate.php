@@ -25,10 +25,10 @@ class CheckUpdate extends Controller
             $currentVersion = $_GET['current'] ?? null;
 
             if (is_null($packageId)) {
-                throw new UserException('No package ID was specified', 400001);
+                throw new UserException('Nebylo specifikováno žádné ID balíčku.', 400001);
             }
             if (is_null($currentVersion)) {
-                throw new UserException('No package ID was specified', 400002);
+                throw new UserException('Nebylo specifikováno žádné číslo verze balíčku.', 400002);
             }
         }
 
@@ -36,17 +36,17 @@ class CheckUpdate extends Controller
         $packageFound = $package->load($packageId);
 
         if (!$packageFound) {
-            throw new UserException('No package with this ID was found.', 404007);
+            throw new UserException('Balíček s tímto ID nebyl nalezen.', 404007);
         }
 
         if ($package->isDeleted()) {
-            throw new UserException('This package was deleted.', 410006);
+            throw new UserException('Tento balíček byl smazán.', 410006);
         }
 
         //Do authentication
         $authenticator = new PackageManager();
         if (!$authenticator->checkReadAccess($packageId, $accessCode)) {
-            throw new UserException('This package is private and the access key is either wrong or missing.', 401006);
+            throw new UserException('Tento balíček je soukromý a přístupový klíč chybí nebo je nesprávný.', 401006);
         }
 
         self::$views = []; //Don't output any HTML

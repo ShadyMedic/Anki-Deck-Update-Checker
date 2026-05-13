@@ -1,75 +1,75 @@
 <section>
     <p>
-        This is a list of Anki packages registered in our database, that were created with the editing key saved in your
-        <a href="/account">account setting</a> or that you entered in the form below.
+        Toto je seznam Anki balíčků registrovaných v naší databázi, které byly vytvořeny s editačním klíčem uloženým ve tvém
+        <a href="/account">nastavení účtu</a>, nebo klíčem, který jsi vyplnil ve formuláři níže.
     </p>
 </section>
 <section>
     <p>
-        Are you looking for a package created with a different editing key? Enter the key in the form below:
+        Hledáš balíček vytvořený s jiným editačním klíčem? Zadej daný klíč do formuláře níže:
     </p>
     <form id="manage-form" method="post">
-        <input type="password" name="key" id="key-input" maxlength="31" placeholder="Enter your unsaved editing key" required/>
-        <input id="submit-button" type="submit" value="Enter"/>
-        <button id="reset-button">Reload Saved Key</button>
+        <input type="password" name="key" id="key-input" maxlength="31" placeholder="Zadej svůj neuložený editační klíč" required/>
+        <input id="submit-button" type="submit" value="Načíst balíčky"/>
+        <button id="reset-button">Znovu načíst uložený klíč</button>
     </form>
 </section>
 <hr />
 <section>
-    <p>Use the icons to modify any of the deck:</p>
+    <p>Pro provedení akce s jakýmkoli balíčkem použij následující ikony:</p>
     <ul>
         <li>
-            <img src="public/img/icons/download.png" alt="Download current version" class="icon" /> &minus; View the download page for the Anki deck.
+            <img src="public/img/icons/download.png" alt="Download current version" class="icon" /> &minus; Zobrazit stahovací stránku Anki balíčku.
         </li>
         <li>
-            <img src="public/img/icons/upload.png" alt="Upload new version" class="icon" /> &minus; Upload an update of the Anki deck.
+            <img src="public/img/icons/upload.png" alt="Upload new version" class="icon" /> &minus; Nahrát aktualizaci Anki balíčku.
         </li>
         <li>
-            <img src="public/img/icons/patch.png" alt="Upload minor version" class="icon" /> &minus; Upload a minor update of the Anki deck, that will not trigger an update notification for your current users.
+            <img src="public/img/icons/patch.png" alt="Upload minor version" class="icon" /> &minus; Nahrát malou aktualizaci Anki balíčku (<i>patch</i>), který nespustí výzvu k aktualizaci pro současné uživatele.
         </li>
         <li>
-            <img src="public/img/icons/stats.png" alt="View usage statistics" class="icon" /> &minus; View the graph of usage statistics of the Anki deck.
+            <img src="public/img/icons/stats.png" alt="View usage statistics" class="icon" /> &minus; Zobrazit statostiku využívanosti Anki balíčku.
         </li>
         <li>
-            <img src="public/img/icons/edit.png" alt="Edit metadata" class="icon" /> &minus; Edit name, author, description, editing key or protection of the Anki deck.
+            <img src="public/img/icons/edit.png" alt="Edit metadata" class="icon" /> &minus; Upravit název, autora, editační klíč nebo ochranu Anki balíčku.
         </li>
         <li>
-            <img src="public/img/icons/delete.png" alt="Delete" class="icon" /> &minus; Permanently delete the Anki deck from this service.
+            <img src="public/img/icons/delete.png" alt="Delete" class="icon" /> &minus; Trvale odstranit Anki balíček z této služby.
         </li>
     </ul>
-    <p>You can quickly find the deck you need by opening the search tool (<kbd>Ctrl + F</kbd>).</p>
+    <p>Požadovaný balíček můžeš rychle nalézt pomocí nástroje „Najít“ (<kbd>Ctrl + F</kbd>).</p>
 </section>
 <section>
     <?php if (empty($manage_packages)) : ?>
-        <p class="no-results"><strong>No packages created with the editing key you provided found.</strong></p>
+        <p class="no-results"><strong>Nebyly nalezeny žádné balíčky vytvořené pomocí zadaného editačního klíče.</strong></p>
     <?php else : ?>
         <table class="wide-table striped-table">
             <tr>
                 <th></th>
-                <th class="txt-r">Category</th>
-                <th class="txt-l">Deck name</th>
-                <th>Version</th>
-                <th>Last updated at</th>
-                <th colspan="6">Action</th>
+                <th class="txt-r">Kategorie</th>
+                <th class="txt-l">Název balíčku</th>
+                <th>Verze</th>
+                <th>Naposledy aktualizováno</th>
+                <th colspan="6">Akce</th>
             </tr>
             <?php foreach ($manage_packages as $package) : ?>
                 <tr>
                     <td class="icon-wrapper">
                         <?php if ($package['access_key']) : ?>
-                            <img src="public/img/icons/private.png" alt="Private package" title="This package is set as private." class="icon"/>
+                            <img src="public/img/icons/private.png" alt="Soukromý balíček" title="Tento balíček je soukromý." class="icon"/>
                         <?php else : ?>
-                            <img src="public/img/icons/public.png" alt="Public package" title="This package was published for everyone." class="icon"/>
+                            <img src="public/img/icons/public.png" alt="Veřejný balíček" title="Tento balíček byl zveřejněn pro všechny." class="icon"/>
                         <?php endif ?></td>
                     <td class="txt-r"><?= $package['category'] ?></td>
                     <td class="txt-l"><?= $package['name'] ?></td>
                     <td><?= $package['version'] ?>.<?= $package['minor_version'] ?></td>
                     <td><?= $package['updated_at'] ?></td>
-                    <td class="icon-wrapper"><a href="/deck/<?= $package['package_id'].(($package['access_key']) ? '?key='.$package['access_key'] : '') ?>"><img src="public/img/icons/download.png" alt="Download current version" class="icon shadow-green"/></a></td>
-                    <td class="icon-wrapper"><a href="/upload/<?= $package['package_id'] ?>"><img src="public/img/icons/upload.png" alt="Upload new version" class="clickable-icon icon shadow-blue" data-href="/upload/<?= $package['package_id'] ?>"/></a></td>
-                    <td class="icon-wrapper"><a href="/patch/<?= $package['package_id'] ?>"><img src="public/img/icons/patch.png" alt="Upload minor version" class="clickable-icon icon shadow-purple" data-href="/patch/<?= $package['package_id'] ?>"/></a></td>
-                    <td class="icon-wrapper"><a href="/stats/<?= $package['package_id'] ?>"><img src="public/img/icons/stats.png" alt="View usage statistics" class="clickable-icon icon shadow-orange" data-href="/stats/<?= $package['package_id'] ?>"/></a></td>
-                    <td class="icon-wrapper"><a href="/edit/<?= $package['package_id'] ?>"><img src="public/img/icons/edit.png" alt="Edit metadata" class="clickable-icon icon shadow-yellow" data-href="/edit/<?= $package['package_id'] ?>"/></a></td>
-                    <td class="icon-wrapper"><a href="/delete/<?= $package['package_id'] ?>"><img src="public/img/icons/delete.png" alt="Delete" class="clickable-icon icon shadow-red" data-href="/delete/<?= $package['package_id'] ?>"/></a></td>
+                    <td class="icon-wrapper"><a href="/deck/<?= $package['package_id'].(($package['access_key']) ? '?key='.$package['access_key'] : '') ?>"><img src="public/img/icons/download.png" alt="Stáhnout aktuální verzi" class="icon shadow-green"/></a></td>
+                    <td class="icon-wrapper"><a href="/upload/<?= $package['package_id'] ?>"><img src="public/img/icons/upload.png" alt="Nahrát novou verzi" class="clickable-icon icon shadow-blue" data-href="/upload/<?= $package['package_id'] ?>"/></a></td>
+                    <td class="icon-wrapper"><a href="/patch/<?= $package['package_id'] ?>"><img src="public/img/icons/patch.png" alt="Nahrát novou malou verzi" class="clickable-icon icon shadow-purple" data-href="/patch/<?= $package['package_id'] ?>"/></a></td>
+                    <td class="icon-wrapper"><a href="/stats/<?= $package['package_id'] ?>"><img src="public/img/icons/stats.png" alt="Zobrazit statistiky využívanosti" class="clickable-icon icon shadow-orange" data-href="/stats/<?= $package['package_id'] ?>"/></a></td>
+                    <td class="icon-wrapper"><a href="/edit/<?= $package['package_id'] ?>"><img src="public/img/icons/edit.png" alt="Upravit metadata" class="clickable-icon icon shadow-yellow" data-href="/edit/<?= $package['package_id'] ?>"/></a></td>
+                    <td class="icon-wrapper"><a href="/delete/<?= $package['package_id'] ?>"><img src="public/img/icons/delete.png" alt="Odstranit" class="clickable-icon icon shadow-red" data-href="/delete/<?= $package['package_id'] ?>"/></a></td>
                 </tr>
             <?php endforeach ?>
         </table>

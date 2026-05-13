@@ -1,5 +1,5 @@
-<p>Package with ID <?= $deleted_packageId ?> was successfully deleted from our service.</p>
-<p>The following URLs will now return the 410 (Gone) response code:</p>
+<p>Balíček s  ID <?= $deleted_packageId ?> byl úspěšně odstraněn z naší služby.</p>
+<p>Následující URL adresy budou nyní navracet chybový kód 410 (Zaniklo):</p>
 <ul>
     <li><a style="color: #d33;" href="/deck/<?= $deleted_packageId ?>">http(s)://<?= $_SERVER['SERVER_NAME'] ?>/deck/<?= $deleted_packageId ?></a></li>
     <li><a style="color: #d33;" href="/deck/<?= $deleted_packageId ?>/download">http(s)://<?= $_SERVER['SERVER_NAME'] ?>/deck/<?= $deleted_packageId ?>/download</a></li>
@@ -14,6 +14,6 @@
     <li><a style="color: #d33;" href="/check-update/<?= $deleted_packageId ?>/0">http(s)://<?= $_SERVER['SERVER_NAME'] ?>/check-update/<?= $deleted_packageId ?>/*</a></li>
     <li><a style="color: #d33;" href="/update/<?= $deleted_packageId ?>/0">http(s)://<?= $_SERVER['SERVER_NAME'] ?>/update/<?= $deleted_packageId ?>/*</a></li>
 </ul>
-<p>All details about this package, aside from its ID were deleted from our database.</p>
-<p>The <code>.apkg</code> file you previously uploaded was deleted from our server as well.</p>
+<p>Všechny detaily o tomto balíčku, kromě jeho ID byly vymazány z naší databáze.</p>
+<p>Soubor <code>.apkg</code> který jsi pravděpodobně v minulosti nahrál/a byl rovněž odstraněn.</p>
 

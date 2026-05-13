@@ -29,7 +29,7 @@ class PackageManager
     {
         $manager = new CategoryManager();
         if (!$manager->categoryExists($categoryId)) {
-            throw new UserException('Category wasn\'t found');
+            throw new UserException('Kategorie nebyla nalezena.');
         }
         return true;
     }
@@ -40,20 +40,20 @@ class PackageManager
     public function validateName(string $deckName) : bool
     {
         if (empty($deckName)) {
-            throw new UserException('Deck name mustn\'t be empty');
+            throw new UserException('Název balíčku nesmí být prázdný.');
         }
 
         // Replace with "(str_ends_with($deckName, '.apkg'))" in PHP version 8 and newer
         if (substr($deckName, -5) === '.apkg') {
-            throw new UserException('Deck name should not contain the ".apkg" file extension.');
+            throw new UserException('Název balíčku nemá končit souborovou příponou ".apkg"');
         }
 
         if (mb_strlen($deckName) > 63) {
-            throw new UserException('Deck name is too long.');
+            throw new UserException('Název balíčku je moc dlouhý.');
         }
 
         if (mb_strlen($deckName) < 3) {
-        throw new UserException('Deck name is too short.');
+        throw new UserException('Název balíčku je moc krátký.');
     }
 
         return true;
@@ -65,10 +65,10 @@ class PackageManager
     public function validateAuthor(string $author) : bool
     {
         if (empty($author)) {
-            throw new UserException("Author's name mustn't be empty");
+            throw new UserException("Jméno autora nesmí být prázdné.");
         }
         if (mb_strlen($author) > 31) {
-            throw new UserException("Author's name is too long.");
+            throw new UserException("Jméno autora je příliš dlouhé.");
         }
 
         return true;
@@ -80,13 +80,13 @@ class PackageManager
     public function validateEditKey(string $key) : bool
     {
         if (strlen($key) < 6) {
-            throw new UserException("Editing key is too short – 6 characters minimum.");
+            throw new UserException("Editační klíč je moc krátký – musí mít alespoň 6 znaků.");
         }
         if (strlen($key) > 31) {
-            throw new UserException("Editing key is too long.");
+            throw new UserException("Editační klíč je moc dlouhý.");
         }
         if (preg_match('/[^A-Za-z0-9]/', $key)) {
-            throw new UserException("The editing key may only contain letters and numbers.");
+            throw new UserException("Editační klíč může obsahovat pouze číslice a písmena anglické abecedy.");
         }
 
         return true;
@@ -125,11 +125,11 @@ class PackageManager
         $uploadError = $fileUploadInfo['error'];
 
         if ($uploadError === UPLOAD_ERR_INI_SIZE || $uploadError === UPLOAD_ERR_FORM_SIZE || $fileSize > 26214400) {
-            throw new UserException("Your package file is too large – maximum allowed size is 20 MiB for now.");
+            throw new UserException("Tvůj soubor s balíčkem je moc velký, aktuálně je maximální povolená velikost souboru 20 MiB.");
         } else if ($uploadError === UPLOAD_ERR_NO_FILE) {
-            throw new UserException("No file was selected.");
+            throw new UserException("Nebyl vybrán žádný soubor.");
         } else if (!empty($uploadError)) {
-            throw new UserException("An error occurred while uploading the file. Please try again later.");
+            throw new UserException("Během nahrávání souboru došlo k chybě.");
         }
     }
 
@@ -158,7 +158,7 @@ class PackageManager
             strpos($contentType, 'application/octet-stream') === false &&
             strpos($contentDisposition, 'attachment') === false)
         ) {
-            throw new UserException("The provided link does not seem to lead to a direct download of an APKG file.");
+            throw new UserException("Poskytnutý odkaz zřejmě nevede na přímé stažení APKG souboru.");
         }
     }
 
@@ -177,7 +177,7 @@ class PackageManager
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         if ($httpCode >= 300) {
-            throw new UserException("The provided link does not seem to lead to an existing webpage.");
+            throw new UserException("Poskytnutý odkaz zřejmě nevede na existující webovou stránku.");
         }
         //TODO test this
     }

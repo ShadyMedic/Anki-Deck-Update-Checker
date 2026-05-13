@@ -22,28 +22,28 @@ class Stats extends Controller
         $packageFound = $package->load($packageId);
 
         if (!$packageFound) {
-            throw new UserException('No package with this ID was found.', 404009);
+            throw new UserException('Balíček s tímto ID nebyl nalezen.', 404009);
         }
 
         if ($package->isDeleted()) {
-            throw new UserException('This package was deleted.', 410008);
+            throw new UserException('Tento balíček byl smazán.', 410008);
         }
 
         //Do authentication
         if (is_null($key)) {
-            throw new UserException('No editing key was provided.', 401008);
+            throw new UserException('Editační klíč nebyl poskytnut.', 401008);
         }
         $tools = new PackageManager();
         if (!$tools->checkWriteAccess($packageId, $key)) {
-            throw new UserException('The editing key for this package is not valid.', 403004);
+            throw new UserException('Editační klíč pro tento balíček není platný.', 403004);
         }
 
         if ($package->getVersion() === 0) {
-            throw new UserException('This package hasn\'t been uploaded yet.', 406003);
+            throw new UserException('Tento balíček zatím nebyl nahrán.', 406003);
         }
 
         self::$data['layout']['page_id'] = 'stats';
-        self::$data['layout']['title'] = 'Statistics for '.$package->getName();
+        self::$data['layout']['title'] = 'Statistiky pro balíček '.$package->getName();
 
         $manager = new StatisticsManager();
         self::$data['stats']['packageId'] = $packageId;

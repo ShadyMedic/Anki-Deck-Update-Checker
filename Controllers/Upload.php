@@ -23,24 +23,24 @@ class Upload extends Controller
         $packageFound = $package->load($packageId);
 
         if (!$packageFound) {
-            throw new UserException('No package with this ID was found.', 404006);
+            throw new UserException('Balíček s tímto ID nebyl nalezen.', 404006);
         }
 
         if ($package->isDeleted()) {
-            throw new UserException('This package was deleted.', 410003);
+            throw new UserException('Tento balíček byl smazán.', 410003);
         }
 
         if ($package->getVersion() === 0 && $minor) {
-            throw new UserException('The first upload of the package cannot be marked as minor.', 400006);
+            throw new UserException('První verze balíčku nemůže být označena jako malá.', 400006);
         }
 
         //Do authentication
         if (is_null($key)) {
-            throw new UserException('No editing key was provided.', 401004);
+            throw new UserException('Nebyl poskytnut žádný editační klíč.', 401004);
         }
         $authenticator = new PackageManager();
         if (!$authenticator->checkWriteAccess($packageId, $key)) {
-            throw new UserException('The editing key for this package is not valid.', 403001);
+            throw new UserException('Editační klíč pro tento balíček není platný.', 403001);
         }
 
         $nextVersion = ($minor ? $package->getVersion() : $package->getVersion() + 1);
@@ -83,7 +83,7 @@ class Upload extends Controller
                     }
                     break;
                 default:
-                    throw new UserException("The specified package type is invalid.", 400007);
+                    throw new UserException("Specifikovaná metoda sdílení balíčku je neplatná.", 400007);
             }
 
             if (!isset($error)) {
@@ -108,7 +108,7 @@ class Upload extends Controller
         }
 
         self::$data['layout']['page_id'] = 'upload';
-        self::$data['layout']['title'] = 'Upload the Anki Package File';
+        self::$data['layout']['title'] = 'Nahrání souboru s Anki balíčkem';
 
         self::$data['upload']['queryString'] = $queryString;
         self::$data['upload']['packageId'] = $packageId;
